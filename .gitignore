@@ -658,3 +658,5 @@ InitTestScene*.unity
 # End of https://www.toptal.com/developers/gitignore/api/unity,csharp,rider,vscode,visualstudio
 DRUNK/Library/AnnotationManager
 DRUNK/Library/
+DRUNK/Temp/
+DRUNK/.idea/
