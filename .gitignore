@@ -1,4 +1,3 @@
-
 # Created by https://www.toptal.com/developers/gitignore/api/unity,csharp,rider,vscode,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=unity,csharp,rider,vscode,visualstudio
 
@@ -656,7 +655,5 @@ InitTestScene*.unity
 # Ionide (cross platform F# VS Code tools) working folder
 
 # End of https://www.toptal.com/developers/gitignore/api/unity,csharp,rider,vscode,visualstudio
-DRUNK/Library/AnnotationManager
-DRUNK/Library/
-DRUNK/Temp/
-DRUNK/.idea/
+
+.DS_Store
