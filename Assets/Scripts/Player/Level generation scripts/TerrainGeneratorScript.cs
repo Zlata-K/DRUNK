@@ -13,7 +13,7 @@ public class TerrainGeneratorScript : MonoBehaviour
 
     public int blocks = 2; //number of blocks being made, block x block
     public int size = 5;
-    private string[,] level; //for logic [y-axis, x-axis]
+    private string[,] level; //for logic [x-axis, y-axis]
 
 
     void OnValidate() {
