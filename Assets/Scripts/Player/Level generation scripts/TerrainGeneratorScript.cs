@@ -12,9 +12,15 @@ public class TerrainGeneratorScript : MonoBehaviour
     private float tileWidth = 10.0f;
 
     public int blocks = 2; //number of blocks being made, block x block
-    private int size = 5;
+    public int size = 5;
     private string[,] level; //for logic [y-axis, x-axis]
 
+
+    void OnValidate() {
+        blocks = Mathf.Max(blocks, 1);
+        size = Mathf.Max(size, 3);
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -35,10 +41,15 @@ public class TerrainGeneratorScript : MonoBehaviour
                     level[i, j] = "C";
                     Instantiate(crossroads[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.identity);
                 }
-                else if (i % (size - 1) == 0 || j % (size - 1) == 0)
+                else if (i % (size - 1) == 0 )
                 {
                     //set as road
-                    level[i, j] = "R";
+                    //assuming road points west
+                    level[i, j] = "R-1";
+                    Instantiate(roads[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.Euler(0,90,0));
+                }else if (j % (size - 1) == 0)
+                {
+                    level[i, j] = "R-2";
                     Instantiate(roads[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.identity);
                 }
                 else if ((i % (size - 1) == 1 || j % (size - 1) == 1 || i % (size - 1) == size - 2 ||
@@ -46,7 +57,19 @@ public class TerrainGeneratorScript : MonoBehaviour
                 {
                     //we have the block tiles.
                     level[i, j] = "T";
-                    Instantiate(taverns[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.identity);
+                    if (i % (size - 1) == 1 )
+                    {
+                        Instantiate(taverns[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.identity);
+                    }else if ( j % (size - 1) == 1)
+                    {
+                        Instantiate(taverns[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.Euler(0,270,0));
+                    }else if ( i % (size - 1) == size - 2)
+                    {
+                        Instantiate(taverns[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.Euler(0,90,0));
+                    }else
+                    {
+                        Instantiate(taverns[0], new Vector3(i * tileWidth, 0, j * tileWidth), Quaternion.Euler(0,90,0));
+                    }
                 }
                 else
                 {
