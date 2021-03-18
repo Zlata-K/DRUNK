@@ -46,11 +46,9 @@ public class ScoreManager : MonoBehaviour
     {
         if (scores.Count < maxHighscores)
             return true;
-        foreach (ScoreData score in scores) {
-            if (score.score < newscore)
-                return true;
-        }
-        return false;
+        if (scores[0].score > newscore)
+            return false;
+        return true;
     }
 
     // Add the new highscore to list and sort it
