@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,8 +39,10 @@ namespace UI
                 scoreTextBoxes[(int) HighScoreColumns.Positions].GetComponent<TextMeshProUGUI>()
                     .text += index++ + "\n";
 
+                var format = new NumberFormatInfo {NumberGroupSeparator = " "};
+                
                 scoreTextBoxes[(int) HighScoreColumns.HighScores].GetComponent<TextMeshProUGUI>()
-                    .text += highScores[i].score + "\n";
+                    .text += highScores[i].score.ToString("N0", format) + "\n";
 
                 scoreTextBoxes[(int) HighScoreColumns.PlayerNames].GetComponent<TextMeshProUGUI>()
                     .text += highScores[i].name + "\n";
