@@ -403,6 +403,7 @@ MonoBehaviour:
   taverns:
   - {fileID: 5257274834124662024, guid: 39f5a88b72d61428c811dfb09048871d, type: 3}
   blocks: 3
+  size: 5
 --- !u!4 &1553413257
 Transform:
   m_ObjectHideFlags: 0
