@@ -20,7 +20,7 @@ public class TavernGenerationScript : TileGenerationScript
         if (i % (Size - 1) == Size - 2)
         {
             return Instantiate(tiles[0], new Vector3(i * Width, 0, j * Width),
-                Quaternion.Euler(0, 90, 0));
+                Quaternion.Euler(0, 180, 0));
         }
 
         return Instantiate(tiles[0], new Vector3(i * Width, 0, j * Width),

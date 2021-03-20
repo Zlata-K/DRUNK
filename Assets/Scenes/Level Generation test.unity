@@ -375,6 +375,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1553413257}
   - component: {fileID: 1553413256}
+  - component: {fileID: 1553413261}
+  - component: {fileID: 1553413260}
+  - component: {fileID: 1553413259}
+  - component: {fileID: 1553413258}
   m_Layer: 0
   m_Name: Terrain Controller
   m_TagString: Untagged
@@ -394,16 +398,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e79b877d4a6af4601bccedf274462827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roads:
-  - {fileID: 2136748595272707288, guid: d887a563cda444f3588aad68739d3764, type: 3}
-  crossroads:
-  - {fileID: 8169473094080388863, guid: 8cddf08ac075f432590c301c9f66578d, type: 3}
-  fillers:
-  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
-  taverns:
-  - {fileID: 5257274834124662024, guid: 39f5a88b72d61428c811dfb09048871d, type: 3}
   blocks: 3
   size: 5
+  tavernPercent: 0.25
 --- !u!4 &1553413257
 Transform:
   m_ObjectHideFlags: 0
@@ -418,3 +415,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1553413258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553413255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec291f59de422494280549ce6d1ad1fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 8169473094080388863, guid: 8cddf08ac075f432590c301c9f66578d, type: 3}
+--- !u!114 &1553413259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553413255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46bf2a3211ddc4d51a253ad352b14da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
+--- !u!114 &1553413260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553413255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0a04b1b2db34e8c91781aab653747d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 5257274834124662024, guid: 39f5a88b72d61428c811dfb09048871d, type: 3}
+--- !u!114 &1553413261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553413255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52acd288f9e6549e5903c4e48f0ce268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 2136748595272707288, guid: d887a563cda444f3588aad68739d3764, type: 3}
