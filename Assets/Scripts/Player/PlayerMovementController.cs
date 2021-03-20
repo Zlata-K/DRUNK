@@ -6,30 +6,40 @@ namespace Code.Scripts
     // Controller class for the player to allow movement of the player model in the demo scene. (Mostly taken from Lab1)
     public class PlayerMovementController : MonoBehaviour
     {
+        public struct Controls
+        {
+            public KeyCode MoveForwardKey;
+            public KeyCode MoveBackwardKey;
+            public KeyCode MoveRightKey;
+            public KeyCode MoveLeftKey;
+        }
         [SerializeField] private Transform camera;
-        
-        public float acceleration = 1.5f;
-        public float decelerationFactor = 1.5f;
-        public float maxVelocity = 2.0f;
-        public float angularSmoothTime = 0.1f;
+        [SerializeField] private float acceleration = 1.5f;
+        [SerializeField] private float decelerationFactor = 1.5f;
+        [SerializeField] private float maxVelocity = 2.0f;
+        [SerializeField] private float angularSmoothTime = 0.1f;
         
         private static readonly int VelocityXHash = Animator.StringToHash("Velocity X");
         private static readonly int VelocityZHash = Animator.StringToHash("Velocity Z");
-        
+
         private float _angularSmoothVelocity;
         private Vector3 _velocity;
+        
+        private Controls _currentControls;
         private bool _moveForward, _moveBackward, _moveLeft, _moveRight, _freeLook;
+        
+        
         private Animator _animator;
-
-        private const KeyCode MoveForwardKey = KeyCode.W;
-        private const KeyCode MoveBackwardKey = KeyCode.S;
-        private const KeyCode MoveRightKey = KeyCode.D;
-        private const KeyCode MoveLeftKey = KeyCode.A;
-        private const KeyCode FreeLookKey = KeyCode.Mouse1;
+        
         void Awake()
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
+            _currentControls.MoveForwardKey = KeyCode.W;
+            _currentControls.MoveBackwardKey = KeyCode.S;
+            _currentControls.MoveRightKey = KeyCode.D;
+            _currentControls.MoveLeftKey = KeyCode.A;
+            
             _animator = GetComponent<Animator>();
         }
 
@@ -103,15 +113,14 @@ namespace Code.Scripts
         }
         void Update()
         {
-            _moveForward = Input.GetKey(MoveForwardKey);
-            _moveLeft = Input.GetKey(MoveLeftKey);
-            _moveRight = Input.GetKey(MoveRightKey);
-            _moveBackward = Input.GetKey(MoveBackwardKey);
-            _freeLook = Input.GetKey(FreeLookKey);
-            
+            _moveForward = Input.GetKey(_currentControls.MoveForwardKey);
+            _moveLeft = Input.GetKey(_currentControls.MoveLeftKey);
+            _moveRight = Input.GetKey(_currentControls.MoveRightKey);
+            _moveBackward = Input.GetKey(_currentControls.MoveBackwardKey);
+
             VelocityUpdate();
             ConstrainVelocity();
-            if (!_freeLook && _velocity.magnitude > 0.1f)
+            if (_velocity.magnitude > 0.1f)
             {
                 RotateTowardCamera();
             }
