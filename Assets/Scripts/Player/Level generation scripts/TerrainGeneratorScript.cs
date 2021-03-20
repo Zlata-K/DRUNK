@@ -10,6 +10,7 @@ public class TerrainGeneratorScript : MonoBehaviour
 
     public int blocks = 2; //number of blocks being made, block x block
     public int size = 5;
+    public float tavernPercent = 0.25f;
     private RoadGenerationScript _roadScript;
     private CrossGenerationScript _crossRoadScript;
     private TavernGenerationScript _tavernScript;
@@ -19,6 +20,8 @@ public class TerrainGeneratorScript : MonoBehaviour
     {
         blocks = Mathf.Max(blocks, 1);
         size = Mathf.Max(size, 3);
+        tavernPercent = Mathf.Min(tavernPercent, 1);
+        tavernPercent = Mathf.Max(tavernPercent, 0);
     }
 
     private void Awake()
@@ -68,7 +71,7 @@ public class TerrainGeneratorScript : MonoBehaviour
                 }
 
                 else if ((i % (size - 1) == 1 || j % (size - 1) == 1 || i % (size - 1) == size - 2 ||
-                          j % (size - 1) == size - 2) && Random.value > 0.75)
+                          j % (size - 1) == size - 2) && Random.value > (1-tavernPercent))
                 {
                     _tavernScript.Generate(i, j);
                 }
