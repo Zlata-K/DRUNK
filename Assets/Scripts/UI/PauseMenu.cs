@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -8,26 +7,17 @@ namespace UI
     {
         [SerializeField] private GameObject pausePanel;
 
-        // Update is called once per frame
         private void Update()
         {
-            PauseGame();
+            UpdatePauseStatus();
         }
 
-        public void SetHighScoreText()
-        {
-            var highScores = ScoreManager.GetScores();
-            var scoreTextBoxes = highScoreTextPanel.GetComponentsInChildren<TextMeshProUGUI>();
-            
-            SetHighScoreText(highScores, scoreTextBoxes);
-        }
-        
-        private void PauseGame()
+        private void UpdatePauseStatus()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Time.timeScale = 0;
-                pausePanel.SetActive(true);
+                Time.timeScale = 1 - Time.timeScale;
+                pausePanel.SetActive(!pausePanel.activeSelf);
             }
         }
 
@@ -37,7 +27,7 @@ namespace UI
             pausePanel.SetActive(false);
         }
 
-        public void QuitGame()
+        public void Quit2MainMenu()
         {
             Time.timeScale = 1;
             pausePanel.SetActive(false);

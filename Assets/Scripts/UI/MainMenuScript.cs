@@ -21,13 +21,6 @@ namespace UI
             Application.Quit();
         #endif
         }
-
-        public void SetHighScoreText()
-        {
-            var highScores = ScoreManager.GetScores();
-            var scoreTextBoxes = highScoreTextPanel.GetComponentsInChildren<TextMeshProUGUI>();
-            
-            SetHighScoreText(highScores, scoreTextBoxes);
-        }
+        
     }
 }

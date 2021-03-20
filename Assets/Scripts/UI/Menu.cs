@@ -10,9 +10,12 @@ namespace UI
         // serializing this as it is the nicest way to fetch a deactivated game object
         [SerializeField] protected GameObject highScoreTextPanel;
 
-        protected static void SetHighScoreText(IList<ScoreManager.ScoreData> highScores,
-            TextMeshProUGUI[] scoreTextBoxes)
+        protected void SetHighScoreText()
         {
+            
+            var highScores = ScoreManager.GetScores();
+            var scoreTextBoxes = highScoreTextPanel.GetComponentsInChildren<TextMeshProUGUI>();
+            
             var index = 1;
 
             ClearHighScores(scoreTextBoxes);
