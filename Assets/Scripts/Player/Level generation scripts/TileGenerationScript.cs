@@ -12,5 +12,5 @@ public abstract class TileGenerationScript : MonoBehaviour
 
     public int Blocks { get; set; }
 
-    public abstract GameObject Generate(int i, int j);
+    public abstract GameObject Generate(int column, int row);
 }

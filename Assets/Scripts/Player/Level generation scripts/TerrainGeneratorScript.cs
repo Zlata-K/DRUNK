@@ -6,11 +6,12 @@ using Random = UnityEngine.Random;
 
 public class TerrainGeneratorScript : MonoBehaviour
 {
-    private float tileWidth = 10.0f;
-
-    public int blocks = 2; //number of blocks being made, block x block
-    public int size = 5;
-    public float tavernPercent = 0.25f;
+    private readonly float _tileWidth = 10.0f;
+    
+    [SerializeField] private int blocks = 2; //number of blocks being made, block x block
+    [SerializeField] private int size = 5;
+    [SerializeField] private float tavernPercent = 0.25f;
+    
     private RoadGenerationScript _roadScript;
     private CrossGenerationScript _crossRoadScript;
     private TavernGenerationScript _tavernScript;
@@ -29,22 +30,22 @@ public class TerrainGeneratorScript : MonoBehaviour
         //Initialize tile scripts
         _roadScript = GetComponent<RoadGenerationScript>();
         _roadScript.Size = size;
-        _roadScript.Width = tileWidth;
+        _roadScript.Width = _tileWidth;
         _roadScript.Blocks = blocks;
         
         _crossRoadScript = GetComponent<CrossGenerationScript>();
         _crossRoadScript.Size = size;
-        _crossRoadScript.Width = tileWidth;
+        _crossRoadScript.Width = _tileWidth;
         _crossRoadScript.Blocks = blocks;
         
         _tavernScript = GetComponent<TavernGenerationScript>();
         _tavernScript.Size = size;
-        _tavernScript.Width = tileWidth;
+        _tavernScript.Width = _tileWidth;
         _tavernScript.Blocks = blocks;
         
         _fillerScript = GetComponent<FillerGenerationScript>();
         _fillerScript.Size = size;
-        _fillerScript.Width = tileWidth;
+        _fillerScript.Width = _tileWidth;
         _fillerScript.Blocks = blocks;
     }
 
