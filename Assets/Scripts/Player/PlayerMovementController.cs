@@ -14,16 +14,7 @@ namespace Code.Scripts
         [SerializeField] private float decelerationFactor = 1.5f;
         [SerializeField] private float maxVelocity = 2.0f;
         [SerializeField] private float angularSmoothTime = 0.1f;
-        
-        public KeyCode MoveForwardKey
-        { get; set; }
-        public KeyCode MoveBackwardKey
-        { get; set; }
-        public KeyCode MoveRightKey
-        { get; set; }
-        public KeyCode MoveLeftKey
-        { get; set; }
-        
+
         private static readonly int VelocityXHash = Animator.StringToHash("Velocity X");
         private static readonly int VelocityZHash = Animator.StringToHash("Velocity Z");
 
@@ -41,12 +32,7 @@ namespace Code.Scripts
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
-            
-            MoveForwardKey = KeyCode.W;
-            MoveBackwardKey = KeyCode.S;
-            MoveRightKey = KeyCode.D;
-            MoveLeftKey = KeyCode.A;
-            
+
             _animator = GetComponent<Animator>();
         }
 
@@ -120,10 +106,10 @@ namespace Code.Scripts
         }
         void Update()
         {
-            _moveForward = Input.GetKey(MoveForwardKey);
-            _moveLeft = Input.GetKey(MoveLeftKey);
-            _moveRight = Input.GetKey(MoveRightKey);
-            _moveBackward = Input.GetKey(MoveBackwardKey);
+            _moveForward = Input.GetKey(Indestructibles.Controls.MoveForwardKey);
+            _moveLeft = Input.GetKey(Indestructibles.Controls.MoveLeftKey);
+            _moveRight = Input.GetKey(Indestructibles.Controls.MoveRightKey);
+            _moveBackward = Input.GetKey(Indestructibles.Controls.MoveBackwardKey);
 
             VelocityUpdate();
             ConstrainVelocity();
@@ -147,13 +133,13 @@ namespace Code.Scripts
             if (_drunkennessTimer <= 0.0f)
             {
                 _drunkennessTimer = 1.0f;
-                DrunkennessHandler.OnSoberingUp(_drinksStillInBody, _drunkennessTimer);
+                DrunkennessHandler.UpdateBeerBelly(_drinksStillInBody, _drunkennessTimer);
             }
 
             // drink a regular beer every time the player presses U
             if (Input.GetKeyDown(KeyCode.U))
             {
-                _drinksStillInBody.Add(new RegularBeer());
+                _drinksStillInBody.Add(new UpsideDownBeer());
                 DrunkennessHandler.OnDrink(_drinksStillInBody[_drinksStillInBody.Count - 1]);
             }
         }

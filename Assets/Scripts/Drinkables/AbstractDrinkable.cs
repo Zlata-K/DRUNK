@@ -12,7 +12,7 @@ namespace Drinkables
     {
         private Vignette _vignette;
 
-        private float _effectTimer; // timer to stop the beer's special effect (independent of sobering)
+        protected float EffectTimer; // timer to stop the beer's special effect (independent of sobering)
         private float _drunkennessTimer = Indestructibles.SoberingTime;
 
         public abstract void Drink();
@@ -24,11 +24,21 @@ namespace Drinkables
             return _drunkennessTimer;
         }
 
-        public void SetDrunkennessTimer(float timeSinceLastCheck)
+        public void SetBeerTimeLeftInBody(float timeSinceLastCheck)
         {
             _drunkennessTimer -= timeSinceLastCheck;
         }
 
+        public float GetEffectTimer()
+        {
+            return EffectTimer;
+        }
+
+        public void SetEffectTimeLeft(float timeSinceLastCheck)
+        {
+            EffectTimer -= timeSinceLastCheck;
+        }
+        
         protected void CommonDrunkennessEffects()
         {
             // All beers will have a base score multiplier of 2
@@ -43,7 +53,7 @@ namespace Drinkables
             }
         }
 
-        protected void CommonSoberingEffects()
+        public void SoberUp()
         {
             Indestructibles.ScoreMultiplier /= 2;
             if (_vignette != null)
