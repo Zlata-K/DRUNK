@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Player;
+using Structs;
+using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 namespace Drinkables
@@ -11,6 +13,9 @@ namespace Drinkables
     public abstract class AbstractDrinkable
     {
         private Vignette _vignette;
+
+        protected PlayerData PlayerData =
+            GameObject.Find("player").GetComponent<PlayerManager>().PlayerData;
 
         protected float EffectTimer; // timer to stop the beer's special effect (independent of sobering)
         private float _drunkennessTimer = Indestructibles.SoberingTime;
@@ -38,12 +43,12 @@ namespace Drinkables
         {
             EffectTimer -= timeSinceLastCheck;
         }
-        
+
         protected void CommonDrunkennessEffects()
         {
             // All beers will have a base score multiplier of 2
-            Indestructibles.ScoreMultiplier *= 2;
-            
+            PlayerData.ScoreMultiplier *= 2;
+
             // the effects can be changed, i just put vignette first as a PoC
             Indestructibles.Volume.profile.TryGetSettings(out _vignette);
             if (_vignette != null)
@@ -55,7 +60,7 @@ namespace Drinkables
 
         public void SoberUp()
         {
-            Indestructibles.ScoreMultiplier /= 2;
+            PlayerData.ScoreMultiplier /= 2;
             if (_vignette != null)
             {
                 // _vignette.intensity.value = Mathf.Max(_vignette.intensity.value - 0.1f, 0);

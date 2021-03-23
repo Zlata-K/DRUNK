@@ -11,12 +11,15 @@ namespace Player
             chosenDrink.Drink();
         }
 
-        public static void UpdateBeerBelly(IEnumerable<AbstractDrinkable> drinksInBody, float timePassed)
+        public static void UpdateBeerBelly(List<AbstractDrinkable> drinksInBody, float timePassed)
         {
-            var abstractDrinkables = drinksInBody.ToList();
-
-            StopEffects(abstractDrinkables, timePassed);
-            OnSoberingUp(abstractDrinkables, timePassed);
+            if (drinksInBody == null) return;
+            
+            // always remove water from body
+            drinksInBody.RemoveAll(drinks => drinks is Water);
+            
+            StopEffects(drinksInBody, timePassed);
+            OnSoberingUp(drinksInBody, timePassed);
         }
 
         private static void StopEffects(IEnumerable<AbstractDrinkable> drinksInBody, float timePassed)
@@ -48,12 +51,6 @@ namespace Player
                 else
                 {
                     abstractDrinkables[i].SetBeerTimeLeftInBody(timeSinceLastCheck);
-                }
-
-                // this is to avoid bugs if the player drinks while the sobering function is being called
-                if (i == 0)
-                {
-                    break;
                 }
             }
         }

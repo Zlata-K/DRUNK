@@ -8,15 +8,15 @@ namespace Drinkables
         public override void Drink()
         {
             EffectTimer = 15.0f;
-            Indestructibles.Controls = 
-                new KeyControls(KeyCode.S, KeyCode.W, KeyCode.A, KeyCode.D);
+            Indestructibles.Controls.InverseKeys();
+            PlayerData.ScoreMultiplier *= 2;
             CommonDrunkennessEffects();
         }
 
         public override void StopDrinkingEffect()
         {
-            Indestructibles.Controls = 
-                new KeyControls(KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A);
+            Indestructibles.Controls.InverseKeys();
+            PlayerData.ScoreMultiplier /= 2;
         }
     }
 }

@@ -16,5 +16,16 @@ namespace Structs
             MoveRightKey = right;
             MoveLeftKey = left;
         }
+
+        public void InverseKeys()
+        {
+            var tempF = MoveForwardKey;
+            MoveForwardKey = MoveBackwardKey;
+            MoveBackwardKey = tempF;
+
+            var tempR = MoveRightKey;
+            MoveRightKey = MoveLeftKey;
+            MoveLeftKey = tempR;
+        }
     }
 }
