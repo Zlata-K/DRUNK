@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Drinkables;
+using Player;
 using UnityEngine;
 
 namespace Code.Scripts
@@ -26,6 +29,9 @@ namespace Code.Scripts
 
         private float _angularSmoothVelocity;
         private Vector3 _velocity;
+
+        private float _drunkennessTimer = 1.0f;
+        private List<AbstractDrinkable> _drinksStillInBody = new List<AbstractDrinkable>();
         
         private bool _moveForward, _moveBackward, _moveLeft, _moveRight, _freeLook;
         
@@ -126,9 +132,30 @@ namespace Code.Scripts
             {
                 RotateTowardCamera();
             }
-            
+
             _animator.SetFloat(VelocityXHash, _velocity.x);
             _animator.SetFloat(VelocityZHash, _velocity.z);
+            
+            // the next few lines are just for debugging purposes
+            // when you press U, the player will drink a beer and the beer's effects will take place
+            // it does not currently handle the case where water is drank --> this is just to give
+            // an idea in regards to the general architecture.
+            _drunkennessTimer -= Time.deltaTime;
+
+            // check every second to see if one of the beers has left the body
+            // beers currently last 6 seconds in the body for testing purposes
+            if (_drunkennessTimer <= 0.0f)
+            {
+                _drunkennessTimer = 1.0f;
+                DrunkennessHandler.OnSoberingUp(_drinksStillInBody, _drunkennessTimer);
+            }
+
+            // drink a regular beer every time the player presses U
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                _drinksStillInBody.Add(new RegularBeer());
+                DrunkennessHandler.OnDrink(_drinksStillInBody[_drinksStillInBody.Count - 1]);
+            }
         }
     }
 }

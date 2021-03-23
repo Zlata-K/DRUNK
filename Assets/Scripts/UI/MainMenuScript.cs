@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using TMPro;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
 namespace UI
 {
