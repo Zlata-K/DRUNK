@@ -3579,7 +3579,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585248118}
-  m_LocalRotation: {x: 0.19878995, y: -0.000000018853381, z: 0.000000003824185, w: 0.98004216}
+  m_LocalRotation: {x: 0.19878995, y: 0.000000018853381, z: -0.000000003824185, w: 0.98004216}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3938,6 +3938,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles:
   - {fileID: 5257274834124662024, guid: 39f5a88b72d61428c811dfb09048871d, type: 3}
+  - {fileID: 5257274834124662024, guid: 7f2213022ec344da195ce8f38bc578e2, type: 3}
+  - {fileID: 5257274834124662024, guid: 56feeff6aac9644428b01823e7485060, type: 3}
 --- !u!114 &2102274813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3966,7 +3968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocks: 3
   size: 5
-  tavernPercent: 0.25
+  tavernPercent: 1
 --- !u!4 &2102274815
 Transform:
   m_ObjectHideFlags: 0

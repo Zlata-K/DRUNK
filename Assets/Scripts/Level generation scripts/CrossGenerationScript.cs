@@ -9,6 +9,6 @@ public class CrossGenerationScript : TileGenerationScript
     {
         //set as crossroad
         //TODO::add logic to check if the crossroad is a map edge or corner
-        return Instantiate(tiles[0], new Vector3(column * Width, 0, row * Width), Quaternion.identity);
+        return Instantiate(tiles[Random.Range(0, tiles.Count)], new Vector3(column * Width, 0, row * Width), Quaternion.identity);
     }
 }
