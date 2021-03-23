@@ -3924,6 +3924,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles:
   - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
+  - {fileID: 1137456157411793519, guid: a81121ebe4ab24533b69f44728d1e40e, type: 3}
+  - {fileID: 1137456157411793519, guid: 5f9ffa138ad224d16af4e321fee301da, type: 3}
+  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
+  - {fileID: 1137456157411793519, guid: e52083100df10407c9bc64a7543aea5b, type: 3}
+  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
 --- !u!114 &2102274812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3968,7 +3973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocks: 3
   size: 5
-  tavernPercent: 1
+  tavernPercent: 0.25
 --- !u!4 &2102274815
 Transform:
   m_ObjectHideFlags: 0
