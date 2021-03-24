@@ -16,6 +16,7 @@ namespace Drinkables
         {
             Indestructibles.Player.GetComponent<Animator>().speed += 0.1f;
             Indestructibles.PlayerData.ScoreMultiplier /= 4;
+            CommonDrunkennessEffects();
         }
 
         protected override void StopDrinkingEffect()

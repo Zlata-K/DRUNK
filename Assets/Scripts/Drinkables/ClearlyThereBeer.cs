@@ -1,4 +1,6 @@
-﻿namespace Drinkables
+﻿using UnityEngine;
+
+namespace Drinkables
 {
     public class ClearlyThereBeer : AbstractDrinkable
     {
@@ -12,10 +14,20 @@
         protected override void Drink()
         {
             Indestructibles.PlayerData.ClearlyThereStack++;
-
-            foreach (var renderComponent in Indestructibles.Renderers)
+            
+            if (Indestructibles.PlayerData.ClearlyThereStack == 1)
             {
-                renderComponent.enabled = false;
+                foreach (var renderComponent in Indestructibles.Renderers)
+                {
+                    Material material;
+                    (material = renderComponent.material).shader = Shader.Find("Transparent/Diffuse");
+
+                    // I have no choice to make a transparency variable and assign it
+                    // Since renderComponent.material.color.a returns a temporary value
+                    var transparency = material.color;
+                    transparency.a = 0.2f;
+                    material.color = transparency;
+                }
             }
 
             Indestructibles.PlayerData.ScoreMultiplier /= 4;
@@ -31,7 +43,12 @@
             {
                 foreach (var renderComponent in Indestructibles.Renderers)
                 {
-                    renderComponent.enabled = true;
+                    Material material;
+                    (material = renderComponent.material).shader = Shader.Find("Standard");
+
+                    var transparency = material.color;
+                    transparency.a = 1.0f;
+                    material.color = transparency;
                 }
             }
 
