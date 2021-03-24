@@ -2,12 +2,17 @@
 {
     public class Water : AbstractDrinkable
     {
-        public override void Drink()
+        private void Awake()
+        {
+            Drink();
+        }
+        
+        protected override void Drink()
         {
             SoberUp();
         }
 
-        public override void StopDrinkingEffect()
+        protected override void StopDrinkingEffect()
         {
             // does nothing
         }

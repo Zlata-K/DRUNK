@@ -1,22 +1,42 @@
-﻿using Structs;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Drinkables
 {
     public class UpsideDownBeer : AbstractDrinkable
     {
-        public override void Drink()
+        private void Awake()
         {
-            EffectTimer = 15.0f;
-            Indestructibles.Controls.InverseKeys();
-            PlayerData.ScoreMultiplier *= 2;
+            Drink();
+            Invoke($"StopDrinkingEffect", 15.0f);
+            Invoke($"SoberUp", Indestructibles.SoberingTime);
+        }
+
+        protected override void Drink()
+        {
+            Indestructibles.PlayerData.UpsideDownStack++;
+
+            // Only inverse if this is the only `Upside Down` beer in the player's belly
+            if (Indestructibles.PlayerData.UpsideDownStack == 1)
+            {
+                Indestructibles.Controls.InverseKeys();
+            }
+
+            Indestructibles.PlayerData.ScoreMultiplier *= 2;
             CommonDrunkennessEffects();
         }
 
-        public override void StopDrinkingEffect()
+        protected override void StopDrinkingEffect()
         {
-            Indestructibles.Controls.InverseKeys();
-            PlayerData.ScoreMultiplier /= 2;
+            // Only go back to normal if this is the last `Upside Down` beer in the 
+            // player's belly
+            if (Indestructibles.PlayerData.UpsideDownStack == 1)
+            {
+                Indestructibles.Controls.InverseKeys();
+            }
+
+            Indestructibles.PlayerData.UpsideDownStack--;
+
+            Indestructibles.PlayerData.ScoreMultiplier /= 2;
         }
     }
 }

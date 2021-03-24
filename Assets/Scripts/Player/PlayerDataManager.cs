@@ -3,14 +3,13 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerManager: MonoBehaviour
+    public class PlayerDataManager : MonoBehaviour
     {
         public PlayerData PlayerData { get; set; }
 
         private void Awake()
         {
-            PlayerData = new PlayerData(Vector3.zero, 1);
+            PlayerData = new PlayerData(gameObject.transform.position);
         }
-        
     }
 }

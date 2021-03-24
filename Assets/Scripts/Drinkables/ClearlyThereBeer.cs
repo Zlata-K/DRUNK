@@ -1,22 +1,42 @@
-﻿using UnityEngine;
-
-namespace Drinkables
+﻿namespace Drinkables
 {
     public class ClearlyThereBeer : AbstractDrinkable
     {
-        
-        Renderer renderer = GameObject.Find("player").GetComponent<Renderer>();
-        
-        public override void Drink()
+        private void Awake()
         {
-            renderer.enabled = false;
-            PlayerData.ScoreMultiplier /= 4;
+            Drink();
+            Invoke($"StopDrinkingEffect", 10.0f);
+            Invoke($"SoberUp", Indestructibles.SoberingTime);
         }
 
-        public override void StopDrinkingEffect()
+        protected override void Drink()
         {
-            renderer.enabled = true;
-            PlayerData.ScoreMultiplier *= 4;
+            Indestructibles.PlayerData.ClearlyThereStack++;
+
+            foreach (var renderComponent in Indestructibles.Renderers)
+            {
+                renderComponent.enabled = false;
+            }
+
+            Indestructibles.PlayerData.ScoreMultiplier /= 4;
+            Indestructibles.PlayerData.LastSeenPosition = Indestructibles.Player.transform.position;
+            CommonDrunkennessEffects();
+        }
+
+        protected override void StopDrinkingEffect()
+        {
+            // Only go back to being seen if there are no other `Clearly There` beers
+            // in the player's belly
+            if (Indestructibles.PlayerData.ClearlyThereStack == 1)
+            {
+                foreach (var renderComponent in Indestructibles.Renderers)
+                {
+                    renderComponent.enabled = true;
+                }
+            }
+
+            Indestructibles.PlayerData.ClearlyThereStack--;
+            Indestructibles.PlayerData.ScoreMultiplier *= 4;
         }
     }
 }

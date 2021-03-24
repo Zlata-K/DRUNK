@@ -2,12 +2,19 @@
 {
     public class RegularBeer : AbstractDrinkable
     {
-        public override void Drink()
+        
+        private void Awake()
+        {
+            Drink();
+            Invoke($"SoberUp", Indestructibles.SoberingTime);
+        }
+        
+        protected override void Drink()
         {
             CommonDrunkennessEffects();
         }
 
-        public override void StopDrinkingEffect()
+        protected override void StopDrinkingEffect()
         {
             // no effect
         }
