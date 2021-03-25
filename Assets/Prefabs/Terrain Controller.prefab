@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6932460680886662700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6932460680886662698}
+  - component: {fileID: 6932460680886662699}
+  - component: {fileID: 6932460680886662696}
+  - component: {fileID: 6932460680886662697}
+  - component: {fileID: 6932460680886662702}
+  - component: {fileID: 6932460680886662703}
+  m_Layer: 0
+  m_Name: Terrain Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6932460680886662698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932460680886662700}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.0128498, z: 7.252604}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6932460680886662699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932460680886662700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79b877d4a6af4601bccedf274462827, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blocks: 3
+  size: 5
+  tavernPercent: 0.25
+  outerTile: {fileID: 1137456157411793519, guid: f06f241bf1a0148508afb36745d9ddea,
+    type: 3}
+--- !u!114 &6932460680886662696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932460680886662700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52acd288f9e6549e5903c4e48f0ce268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 2136748595272707288, guid: d887a563cda444f3588aad68739d3764, type: 3}
+--- !u!114 &6932460680886662697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932460680886662700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0a04b1b2db34e8c91781aab653747d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 5257274834124662024, guid: 39f5a88b72d61428c811dfb09048871d, type: 3}
+  - {fileID: 5257274834124662024, guid: 7f2213022ec344da195ce8f38bc578e2, type: 3}
+  - {fileID: 5257274834124662024, guid: 56feeff6aac9644428b01823e7485060, type: 3}
+--- !u!114 &6932460680886662702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932460680886662700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46bf2a3211ddc4d51a253ad352b14da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
+  - {fileID: 1137456157411793519, guid: a81121ebe4ab24533b69f44728d1e40e, type: 3}
+  - {fileID: 1137456157411793519, guid: 5f9ffa138ad224d16af4e321fee301da, type: 3}
+  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
+  - {fileID: 1137456157411793519, guid: e52083100df10407c9bc64a7543aea5b, type: 3}
+  - {fileID: 1137456157411793519, guid: c74ed99dd12ec4351854b1ddc4c5e618, type: 3}
+--- !u!114 &6932460680886662703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932460680886662700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec291f59de422494280549ce6d1ad1fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 8169473094080388863, guid: 06d55edac852e43a48e043dcf09e6623, type: 3}
+  - {fileID: 8169473094080388863, guid: 8f34987c22f064bd9a155b110cc6957f, type: 3}
+  - {fileID: 8169473094080388863, guid: 8cddf08ac075f432590c301c9f66578d, type: 3}

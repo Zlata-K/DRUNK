@@ -11,6 +11,7 @@ public class TerrainGeneratorScript : MonoBehaviour
     [SerializeField] private int blocks = 2; //number of blocks being made, block x block
     [SerializeField] private int size = 5;
     [SerializeField] private float tavernPercent = 0.25f;
+    [SerializeField] private GameObject outerTile;
     
     private RoadGenerationScript _roadScript;
     private CrossGenerationScript _crossRoadScript;
@@ -58,6 +59,21 @@ public class TerrainGeneratorScript : MonoBehaviour
         //(n-1)*b+1
         //we would need 7 by 7 tiles to generate this level
         var temp = (size - 1) * blocks + 1;
+        
+        //Generate outer walls
+        for (int edge1 = -1; edge1 <= temp; edge1++)
+        {
+             Instantiate(outerTile, new Vector3(edge1 * _tileWidth, 0, -1 * _tileWidth), Quaternion.Euler(0, 90*Random.Range(0,4), 0));
+             Instantiate(outerTile, new Vector3(edge1 * _tileWidth, 0, temp * _tileWidth), Quaternion.Euler(0, 90*Random.Range(0,4), 0));
+        }
+        
+        for (int edge2 = 0; edge2 < temp; edge2++)
+        {
+            Instantiate(outerTile, new Vector3(-1 * _tileWidth, 0, edge2 * _tileWidth), Quaternion.Euler(0, 90*Random.Range(0,4), 0));
+            Instantiate(outerTile, new Vector3(temp * _tileWidth, 0, edge2 * _tileWidth), Quaternion.Euler(0, 90*Random.Range(0,4), 0));
+        }
+        
+        //Generate play area
         for (int i = 0; i < temp; i++)
         {
             for (int j = 0; j < temp; j++)
