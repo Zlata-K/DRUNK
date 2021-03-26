@@ -15,6 +15,7 @@ public class ScoreManager : MonoBehaviour
         public DateTime date;
     }
 
+    public const int maxNameLength = 12;
     public const int maxHighscores = 10; // Is 10 highscores enough ?
 
     private static string scoreFilename = Path.Combine(Application.persistentDataPath, "scores.txt");
@@ -56,6 +57,8 @@ public class ScoreManager : MonoBehaviour
     {
         if (!IsHighScore(score))
             return;
+        if (name.Length > maxNameLength)
+            name = name.Substring(0, maxNameLength);
         scores.Add(new ScoreData { date = System.DateTime.Now, name = name, score = score });
         scores.Sort((ScoreData a, ScoreData b) => { return a.score - b.score; });
         if (scores.Count > maxHighscores)
