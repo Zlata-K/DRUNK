@@ -1456,8 +1456,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0
-  m_VerticalDamping: 0
+  m_HorizontalDamping: 0.75
+  m_VerticalDamping: 0.75
   m_ScreenX: 0.5
   m_ScreenY: 0.6
   m_DeadZoneWidth: 0
@@ -2031,8 +2031,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968869306}
-  m_LocalRotation: {x: 0.21658354, y: 0.0000000083989855, z: -0.0000000018633088,
-    w: 0.9762641}
+  m_LocalRotation: {x: 0.21658354, y: -0.000000008398987, z: 0.000000001863309, w: 0.9762641}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3476,8 +3475,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0
-  m_VerticalDamping: 0
+  m_HorizontalDamping: 0.75
+  m_VerticalDamping: 0.75
   m_ScreenX: 0.5
   m_ScreenY: 0.55
   m_DeadZoneWidth: 0
@@ -3753,7 +3752,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585248118}
-  m_LocalRotation: {x: 0.19878995, y: -0.000000018853381, z: 0.000000003824185, w: 0.98004216}
+  m_LocalRotation: {x: 0.19878998, y: 0.000000008431489, z: -0.0000000017102281, w: 0.98004216}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3810,8 +3809,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0
-  m_VerticalDamping: 0
+  m_HorizontalDamping: 0.75
+  m_VerticalDamping: 0.75
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_DeadZoneWidth: 0
@@ -4044,7 +4043,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2023580670}
-  m_LocalRotation: {x: 0.21658356, y: 0.000000033595942, z: -0.000000007453238, w: 0.9762641}
+  m_LocalRotation: {x: 0.21658356, y: -0.000000033595942, z: 0.000000007453238, w: 0.9762641}
   m_LocalPosition: {x: 0, y: 5, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -4135,6 +4134,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4125609758914831649, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125609758914831649, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7271871181434480097, guid: 57b700931abce4a43bb08104067c3079,
         type: 3}
       propertyPath: m_Name
@@ -4145,6 +4154,46 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 2023580674}
+    - target: {fileID: 7621735788738149843, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7621735788738149843, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7621735788738149843, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7621735788738149843, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7621735788738149843, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7904722933232978784, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7904722933232978784, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7904722933232978784, guid: 57b700931abce4a43bb08104067c3079,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.87
+      objectReference: {fileID: 0}
     - target: {fileID: 8043764161638645595, guid: 57b700931abce4a43bb08104067c3079,
         type: 3}
       propertyPath: m_RootOrder
