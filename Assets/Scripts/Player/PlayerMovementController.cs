@@ -47,7 +47,7 @@ namespace Code.Scripts
 
             if (_moveBackward && _velocity.z > -maxVelocity)
             {
-                _velocity.z -= Time.deltaTime * acceleration;
+                _velocity.z -= Time.deltaTime * 2.0f * acceleration;
             }
             else if (!_moveBackward && _velocity.z < 0.0f)
             {
@@ -135,7 +135,7 @@ namespace Code.Scripts
             if (Input.GetKeyDown(KeyCode.U))
             {
                 var beer = new GameObject();
-                beer.transform.parent = _belly.transform;
+                beer.transform.parent = transform;
                 beer.AddComponent<UpsideDownBeer>();
             }
         }
