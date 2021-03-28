@@ -21,7 +21,7 @@ public class NPCStateMachine: MonoBehaviour
         _chase = new Chase();
         _idle = new Idle();
 
-        _currentState = _chase;
+        _currentState = _wander;
         _player = GameObject.FindWithTag("Player");
     }
 

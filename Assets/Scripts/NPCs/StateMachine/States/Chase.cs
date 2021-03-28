@@ -18,15 +18,11 @@ public class Chase : State
         Seek(player, npc);
     }
 
-    private void Pursuit(GameObject player)
-    {
-
-        
-    }
-    
     private void Seek(GameObject player, GameObject npc)
     {
-        Vector3 desiredVelocity = Vector3.Normalize(player.transform.position - npc.transform.position) * _maxVelocity;
+        Vector3 futureLocation = player.transform.position + player.GetComponent<Rigidbody>().velocity;
+        
+        Vector3 desiredVelocity = Vector3.Normalize(npc.transform.position - futureLocation) * _maxVelocity;
 
         Vector3 steering = desiredVelocity - npc.GetComponent<Rigidbody>().velocity;
 
@@ -47,7 +43,7 @@ public class Chase : State
 
     private void LookWhereYouAreGoing(GameObject npc, Vector3 direction)
     {
-        var lookRotation = Quaternion.LookRotation(direction);
+        var lookRotation = Quaternion.LookRotation(-1 * direction);
         npc.transform.rotation = Quaternion.RotateTowards(npc.transform.rotation, lookRotation, 100f * Time.deltaTime);
 
         Quaternion.Angle(npc.transform.rotation, lookRotation);
