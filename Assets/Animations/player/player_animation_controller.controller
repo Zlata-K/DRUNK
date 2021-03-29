@@ -105,7 +105,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 0
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Velocity Z
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -160,7 +160,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 0
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -570,7 +570,7 @@ AnimatorState:
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
+  m_IKOnFeet: 1
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
@@ -609,7 +609,7 @@ BlendTree:
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 1
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -876,19 +876,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Velocity X
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: Drunkeness
+    m_Controller: {fileID: 0}
+  - m_Name: Intoxication
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -928,7 +928,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 0
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Velocity Z
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1152,7 +1152,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 0
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1168,7 +1168,7 @@ AnimatorTransition:
   m_Name: 
   m_Conditions: []
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1218962418679297060}
+  m_DstState: {fileID: 0}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -1214,7 +1214,7 @@ BlendTree:
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 1
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1743,7 +1743,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 0
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Velocity Z
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1914,7 +1914,7 @@ BlendTree:
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 1
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -2013,7 +2013,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Velocity Z
     m_Mirror: 0
-  m_BlendParameter: Drunkeness
+  m_BlendParameter: Intoxication
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1
