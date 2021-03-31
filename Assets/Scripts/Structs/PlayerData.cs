@@ -11,12 +11,18 @@ namespace Structs
         
         public int UpsideDownStack { get; set; }
         
-        public PlayerData(Vector3 lastSeenPosition)
+        public Vector3 Velocity { get; set; }
+        
+        public Vector3 PreviousPosition { get; set; }
+
+        public PlayerData(Vector3 currentPosition)
         {
-            LastSeenPosition = lastSeenPosition;
+            LastSeenPosition = currentPosition;
             ScoreMultiplier = 1;
             ClearlyThereStack = 0;
             UpsideDownStack = 0;
+            PreviousPosition = currentPosition;
+            Velocity = Vector3.zero;
         }
     }
 }

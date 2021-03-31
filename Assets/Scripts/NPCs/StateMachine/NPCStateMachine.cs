@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 public class NPCStateMachine: MonoBehaviour
 {
@@ -12,8 +10,9 @@ public class NPCStateMachine: MonoBehaviour
     private State _chase;
     
     private GameObject _player;
+    private NPCManager _npcManager;
 
-    private float _maxDistance = 10f;
+    [SerializeField] private AudioClip[] bumpingSounds;
 
     void Start()
     {
@@ -22,28 +21,57 @@ public class NPCStateMachine: MonoBehaviour
         _idle = new Idle();
 
         _currentState = _wander;
+        
         _player = GameObject.FindWithTag("Player");
+        _npcManager = GetComponent<NPCManager>();
     }
 
     private void Update()
     {
-        //CheckForStopChasing();
         _currentState.Move(_player, gameObject);
+        
+        float distanceFromPlayer = Vector3.Distance(_player.transform.position, transform.position);
+        CheckPlayerOutOfRange(distanceFromPlayer);
+        CheckPlayerBackInRange(distanceFromPlayer);
     }
 
-    private void CheckForStopChasing()
+    //----- State change functions -----
+    
+    
+    /*
+     * If the player collides with a NPC that is not chasing him, start chase.
+     */
+    public void CollidedWithPlayer()
     {
-        if (Vector3.Distance(_player.transform.position, transform.position) > _maxDistance
-                && _currentState == _chase)
+        if (_currentState != _chase)
+        {
+            GetComponent<AudioSource>().PlayOneShot(bumpingSounds[0]);
+            GetComponent<Animator>().SetTrigger(Animator.StringToHash("Get Hit"));
+            _currentState = _chase;
+        }
+    }
+    
+    /*
+     * If the player get out of range during chase, start wandering.
+     */
+    private void CheckPlayerOutOfRange(float distanceFromPlayer)
+    {
+        if ( _currentState == _chase &&
+             distanceFromPlayer > NPCsGlobalVariables.MaxChaseDistance)
         {
             _currentState = _wander;
+            _npcManager.LookingForPlayer = true;
         }
-            
     }
-
-    private void OnCollisionEnter(Collision other)
+    
+    /*
+     * If the player is back in range and was previously chased by the NPC, chase again.
+     */
+    private void CheckPlayerBackInRange(float distanceFromPlayer)
     {
-        if (other.gameObject.tag == "Player")
+        if (_currentState == _wander &&
+                 _npcManager.LookingForPlayer &&
+                 distanceFromPlayer < NPCsGlobalVariables.MaxChaseDistance)
         {
             _currentState = _chase;
         }
