@@ -12,31 +12,31 @@ public class Wander : State
      */
     private int numberOfMoves = 0;
     private float waitTimeStamp = 0;
-    
-    public Wander()
+
+    public Wander(NPCManager npcManager)
     {
-        name = "Wander";
+        _npcManager = npcManager;
         numberOfMoves = (int)Random.Range(1.0f, 10.0f);
     }
 
-    public override void Move(GameObject player, GameObject npc)
+    public override void Move()
     {
         if (waitTimeStamp < Time.time)
         {
-            Wandering(npc);
+            Wandering();
         }
     }
     
-    private void Wandering(GameObject npc)
+    private void Wandering()
     {
         if (reachedTarget)
         {
-           FindNewTarget(npc);
+           FindNewTarget();
         }
         
-        MoveTowardsTarget(npc);
+        MoveTowardsTarget();
 
-        if (Vector3.Distance(npc.transform.position, _target) < 1.0f)
+        if (Vector3.Distance(_npcManager.transform.position, _target) < 1.0f)
         {
             reachedTarget = true;
             numberOfMoves -= 1;
@@ -44,15 +44,15 @@ public class Wander : State
 
         if (numberOfMoves == 0)
         {
-            StopMoving(npc);
+            StopMoving();
         }
     }
 
-    private void FindNewTarget(GameObject npc)
+    private void FindNewTarget()
     {
-        Vector3 npcVelocity = npc.GetComponent<NPCManager>().Velocity;
+        Vector3 npcVelocity = _npcManager.Rigidbody.velocity;
             
-        Vector3 circle_position = npc.transform.position +
+        Vector3 circle_position = _npcManager.transform.position +
                                   Vector3.Normalize(npcVelocity) * NPCsGlobalVariables.WanderCircleDistance;
 
         _target = circle_position + Random.insideUnitSphere * NPCsGlobalVariables.WanderCircleRadius;
@@ -61,25 +61,25 @@ public class Wander : State
         reachedTarget = false;
     }
 
-    private void MoveTowardsTarget(GameObject npc)
+    private void MoveTowardsTarget()
     {
-        Vector3 direction = Vector3.Normalize(_target - npc.transform.position);
+        Vector3 direction = Vector3.Normalize(_target - _npcManager.transform.position);
 
         //The NPC will always looking where it needs to go.
-        LookWhereYouAreGoing(npc, direction);
+        LookWhereYouAreGoing(direction);
 
         //The NPC always walk forward.
         Vector3 velocity = Vector3.forward * NPCsGlobalVariables.WanderMaxVelocity;
 
-        npc.GetComponent<Animator>().SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
-        npc.GetComponent<Animator>().SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
+        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
+        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
     }
 
-    private void StopMoving(GameObject npc)
+    private void StopMoving()
     {
         waitTimeStamp = NPCsGlobalVariables.WanderWaitTime + Time.time;
         numberOfMoves = (int)Random.Range(0.0f, 10.0f);
-        npc.GetComponent<Animator>().SetFloat(NPCsGlobalVariables.VelocityXHash, 0);
-        npc.GetComponent<Animator>().SetFloat(NPCsGlobalVariables.VelocityZHash, 0);
+        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, 0);
+        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, 0);
     }
 }

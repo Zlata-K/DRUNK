@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class Chase : State
 {
-    public Chase()
+    public Chase(NPCManager npcManager)
     {
-        name = "Chase";
+        _npcManager = npcManager;
     }
 
-    public override void Move(GameObject player, GameObject npc)
+    public override void Move()
     {
-        Chasing(player, npc);
+        Chasing();
     }
     
-    private void Chasing(GameObject player, GameObject npc)
+    private void Chasing()
     {
-        Vector3 futureLocation = player.transform.position + player.GetComponent<PlayerDataManager>().PlayerData.Velocity * NPCsGlobalVariables.ChasePredictionMultiplier;
+        Vector3 futureLocation = Indestructibles.Player.transform.position + _npcManager.PlayerRigidbody.velocity * NPCsGlobalVariables.ChasePredictionMultiplier;
         
-        Vector3 desiredVelocity = Vector3.Normalize(futureLocation - npc.transform.position) * NPCsGlobalVariables.ChaseAcceleration;
+        Vector3 desiredVelocity = Vector3.Normalize(futureLocation - _npcManager.transform.position) * NPCsGlobalVariables.ChaseAcceleration;
         
-        Vector3 currentVelocity = npc.GetComponent<NPCManager>().Velocity;
+        Vector3 currentVelocity = _npcManager.GetComponent<Rigidbody>().velocity;
 
         Vector3 steering = desiredVelocity - currentVelocity;
 
@@ -33,12 +33,12 @@ public class Chase : State
         velocity.y = 0;
 
         //The NPC will always looking where it needs to go.
-        LookWhereYouAreGoing(npc, velocity);
+        LookWhereYouAreGoing(velocity);
 
         //The NPC always walk forward.
         velocity = Vector3.forward * velocity.magnitude;
 
-        npc.GetComponent<Animator>().SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
-        npc.GetComponent<Animator>().SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
+        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
+        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
     }
 }

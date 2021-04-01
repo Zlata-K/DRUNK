@@ -2,16 +2,15 @@
 
 public abstract class State
 {
-    protected string name;
 
-    public abstract void Move(GameObject player, GameObject npc);
-
-    public string Name => name;
+    protected NPCManager _npcManager;
     
-    protected void LookWhereYouAreGoing(GameObject npc, Vector3 direction)
+    public abstract void Move();
+
+    protected void LookWhereYouAreGoing(Vector3 direction)
     {
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        npc.transform.rotation = Quaternion.RotateTowards(npc.transform.rotation, lookRotation, NPCsGlobalVariables.MaxAngleChange * Time.deltaTime);
+        _npcManager.transform.rotation = Quaternion.RotateTowards(_npcManager.transform.rotation, lookRotation, NPCsGlobalVariables.MaxAngleChange * Time.deltaTime);
     }
     
 }

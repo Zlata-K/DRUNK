@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Idle : State
 {
-    public Idle()
+    public Idle(NPCManager npcManager)
     {
-        name = "Idle";
+        _npcManager = npcManager;
     }
 
-    public override void Move(GameObject player, GameObject npc)
+    public override void Move()
     {
         //No movement
     }

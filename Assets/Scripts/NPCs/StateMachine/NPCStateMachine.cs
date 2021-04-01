@@ -9,28 +9,26 @@ public class NPCStateMachine: MonoBehaviour
     private State _idle;
     private State _chase;
     
-    private GameObject _player;
     private NPCManager _npcManager;
 
     [SerializeField] private AudioClip[] bumpingSounds;
 
     void Start()
     {
-        _wander = new Wander();
-        _chase = new Chase();
-        _idle = new Idle();
+        _npcManager = GetComponent<NPCManager>();
+        
+        _wander = new Wander(_npcManager);
+        _chase = new Chase(_npcManager);
+        _idle = new Idle(_npcManager);
 
         _currentState = _wander;
-        
-        _player = GameObject.FindWithTag("Player");
-        _npcManager = GetComponent<NPCManager>();
     }
 
     private void Update()
     {
-        _currentState.Move(_player, gameObject);
+        _currentState.Move();
         
-        float distanceFromPlayer = Vector3.Distance(_player.transform.position, transform.position);
+        float distanceFromPlayer = Vector3.Distance( Indestructibles.Player.transform.position, transform.position);
         CheckPlayerOutOfRange(distanceFromPlayer);
         CheckPlayerBackInRange(distanceFromPlayer);
     }
@@ -40,10 +38,11 @@ public class NPCStateMachine: MonoBehaviour
     
     /*
      * If the player collides with a NPC that is not chasing him, start chase.
+     * For now, the collider is of type trigger because there is no navmesh.
      */
-    public void CollidedWithPlayer()
+    public void OnTriggerEnter(Collider collider)
     {
-        if (_currentState != _chase)
+        if (_currentState != _chase && collider.gameObject.CompareTag("Player"))
         {
             GetComponent<AudioSource>().PlayOneShot(bumpingSounds[0]);
             GetComponent<Animator>().SetTrigger(Animator.StringToHash("Get Hit"));
