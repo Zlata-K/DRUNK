@@ -10,6 +10,7 @@ namespace Structs
         public int ClearlyThereStack { get; set; }
         
         public int UpsideDownStack { get; set; }
+        public float IntoxicationLevel { get; set; }
         
         public Vector3 Velocity { get; set; }
         
@@ -23,6 +24,7 @@ namespace Structs
             UpsideDownStack = 0;
             PreviousPosition = currentPosition;
             Velocity = Vector3.zero;
+            IntoxicationLevel = 0.0f;
         }
     }
 }

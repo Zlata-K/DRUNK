@@ -1,5 +1,7 @@
+using System;
 using Drinkables;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Code.Scripts
 {
@@ -7,10 +9,10 @@ namespace Code.Scripts
     // Controller class for the player to allow movement of the player model in the demo scene. (Mostly taken from Lab1)
     public class PlayerMovementController : MonoBehaviour
     {
-        [SerializeField] private Transform camera;
+        [SerializeField] private Transform thirdPersonCamera;
         [SerializeField] private float acceleration = 1.5f;
         [SerializeField] private float decelerationFactor = 1.5f;
-        [SerializeField] private float maxVelocity = 2.0f;
+        [SerializeField] private Vector3 maxVelocities = new Vector3(2.0f,0.0f,2.0f);
         [SerializeField] private float angularSmoothTime = 0.1f;
 
         private static readonly int VelocityXHash = Animator.StringToHash("Velocity X");
@@ -18,25 +20,28 @@ namespace Code.Scripts
 
         private float _angularSmoothVelocity;
         private Vector3 _velocity;
-
+        private Vector3 _velocityJiggle;
+        private Vector3 _currentMaxVelocities;
+        private Vector3 _currentMinVelocities;
         private bool _moveForward, _moveBackward, _moveLeft, _moveRight, _freeLook;
 
-        private Animator _animator;
         private GameObject _belly;
 
         void Awake()
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
-
-            _animator = GetComponent<Animator>();
+            _currentMaxVelocities= maxVelocities;
+            _currentMinVelocities = new Vector3(0.0f,0.0f,0.0f);
             _belly = GameObject.Find("Belly");
+            InvokeRepeating($"VelocityJiggle", 0.0f, 1.0f);
+            InvokeRepeating($"JiggleReset", 0.5f, 1.0f);
         }
 
         private void VelocityUpdate()
         {
             // Forward/Backward update
-            if (_moveForward && _velocity.z < maxVelocity)
+            if (_moveForward && _velocity.z < _currentMaxVelocities.z)
             {
                 _velocity.z += Time.deltaTime * acceleration;
             }
@@ -45,9 +50,9 @@ namespace Code.Scripts
                 _velocity.z -= Time.deltaTime * decelerationFactor * acceleration;
             }
 
-            if (_moveBackward && _velocity.z > -maxVelocity)
+            if (_moveBackward && _velocity.z > -_currentMaxVelocities.z)
             {
-                _velocity.z -= Time.deltaTime * acceleration;
+                _velocity.z -= Time.deltaTime * 2.0f * acceleration;
             }
             else if (!_moveBackward && _velocity.z < 0.0f)
             {
@@ -55,7 +60,7 @@ namespace Code.Scripts
             }
 
             // Left/Right update
-            if (_moveLeft && _velocity.x > -maxVelocity)
+            if (_moveLeft && _velocity.x > -_currentMaxVelocities.x)
             {
                 _velocity.x -= Time.deltaTime * acceleration;
             }
@@ -64,7 +69,7 @@ namespace Code.Scripts
                 _velocity.x += Time.deltaTime * decelerationFactor * acceleration;
             }
 
-            if (_moveRight && _velocity.x < maxVelocity)
+            if (_moveRight && _velocity.x < _currentMaxVelocities.x)
             {
                 _velocity.x += Time.deltaTime * acceleration;
             }
@@ -77,31 +82,99 @@ namespace Code.Scripts
         private void ConstrainVelocity()
         {
             //Forward/Backward constraints
-            if (_moveForward && _velocity.z > maxVelocity)
+            if (_moveForward && _velocity.z > _currentMaxVelocities.z)
             {
-                _velocity.z = maxVelocity;
+                if (_currentMaxVelocities.z < maxVelocities.z)
+                {
+                    _velocity.z -= Time.deltaTime * 2.0f *  acceleration;
+                }
+                else
+                {
+                    _velocity.z = maxVelocities.z;
+                }
             }
 
-            if (_moveBackward && _velocity.z < -maxVelocity)
+            if (_moveBackward && _velocity.z < -_currentMaxVelocities.z)
             {
-                _velocity.z = -maxVelocity;
+                if (-_currentMaxVelocities.z > -maxVelocities.z)
+                {
+                    _velocity.z += Time.deltaTime * 2.0f *  acceleration;
+                }
+                else
+                {
+                    _velocity.z = -maxVelocities.z;
+                }
             }
 
             //Left/Right constraints
-            if (_moveLeft && _velocity.x < -maxVelocity)
+            if (_moveLeft && _velocity.x < -_currentMaxVelocities.x)
             {
-                _velocity.x = -maxVelocity;
+                if (-_currentMaxVelocities.x > -maxVelocities.x)
+                {
+                    _velocity.x += Time.deltaTime * 2.0f *  acceleration;
+                }
+                else
+                {
+                    _velocity.x = -maxVelocities.x;
+                }
             }
 
-            if (_moveRight && _velocity.x > maxVelocity)
+            if (_moveRight && _velocity.x > _currentMaxVelocities.x)
             {
-                _velocity.x = maxVelocity;
+                if (_currentMaxVelocities.x < maxVelocities.x)
+                {
+                    _velocity.x -= Time.deltaTime * 2.0f *  acceleration;
+                }
+                else
+                {
+                    _velocity.x = maxVelocities.x;
+                }
+            }
+            
+            // Min velocity checks
+            if (_currentMinVelocities.z != 0.0f)
+            {
+                if (_moveLeft || _moveRight)
+                {
+                    if (!_moveBackward && _currentMinVelocities.z > 0.0f && _velocity.z < _currentMinVelocities.z)
+                    {
+                        _velocity.z += Time.deltaTime * 2.0f *  acceleration;
+                    }
+                    if (!_moveForward && _currentMinVelocities.z < 0.0f && _velocity.z > _currentMinVelocities.z)
+                    {
+                        _velocity.z -= Time.deltaTime * 2.0f *  acceleration;
+                    }  
+                }
+            } 
+            else if (!_moveForward && !_moveBackward && _velocity.z < 0.1f && _velocity.z > -0.1f)
+            {
+                _velocity.z = 0.0f;
+            }
+            
+            if (_currentMinVelocities.x!= 0.0f)
+            {
+                if (_moveForward || _moveBackward)
+                {
+                    if (!_moveRight && _currentMinVelocities.x < 0.0f && _velocity.x > _currentMinVelocities.x)
+                    {
+                        _velocity.x -= Time.deltaTime * 2.0f * acceleration;
+                    }
+
+                    if (!_moveLeft && _currentMinVelocities.x > 0.0f && _velocity.x < _currentMinVelocities.x)
+                    {
+                        _velocity.x += Time.deltaTime * 2.0f * acceleration;
+                    }
+                }
+            }
+            else if (!_moveLeft && !_moveRight && _velocity.x < 0.1f && _velocity.x > -0.1f)
+            {
+                _velocity.x = 0.0f;
             }
         }
 
         private void RotateTowardCamera()
         {
-            float targetAngle = camera.eulerAngles.y;
+            float targetAngle = thirdPersonCamera.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
                 targetAngle, ref _angularSmoothVelocity,
                 angularSmoothTime);
@@ -123,8 +196,8 @@ namespace Code.Scripts
                 RotateTowardCamera();
             }
 
-            _animator.SetFloat(VelocityXHash, _velocity.x);
-            _animator.SetFloat(VelocityZHash, _velocity.z);
+            Indestructibles.PlayerAnimator.SetFloat(VelocityXHash, _velocity.x);
+            Indestructibles.PlayerAnimator.SetFloat(VelocityZHash, _velocity.z);
 
             // the next few lines are just for debugging purposes
             // when you press U, the player will drink a beer and the beer's effects will take place
@@ -135,9 +208,28 @@ namespace Code.Scripts
             if (Input.GetKeyDown(KeyCode.U))
             {
                 var beer = new GameObject();
-                beer.transform.parent = _belly.transform;
-                beer.AddComponent<UpsideDownBeer>();
+                beer.transform.parent = transform;
+                beer.AddComponent<RegularBeer>();
             }
+        }
+
+        void VelocityJiggle()
+        {
+            var intoxication = Indestructibles.PlayerData.IntoxicationLevel;
+            
+            _currentMaxVelocities.x = maxVelocities.x - Random.Range(0.0f, intoxication/2.0f);
+            _currentMaxVelocities.z = maxVelocities.z - Random.Range(0.0f, intoxication/2.0f);
+            
+            _currentMinVelocities.x = Random.Range(-intoxication/2.0f, intoxication/2.0f);
+            _currentMinVelocities.z = Random.Range(-intoxication/2.0f, intoxication/2.0f);
+        }
+
+        void JiggleReset()
+        {
+            _currentMaxVelocities = maxVelocities;
+            
+            _currentMinVelocities.x = 0.0f;
+            _currentMinVelocities.z = 0.0f;
         }
     }
 }
