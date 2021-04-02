@@ -6,9 +6,12 @@ public class NPCManager : MonoBehaviour
 
     private Rigidbody _rigidbody;
     private Animator _animator;
+    
+    //For some reason, some models are faster than others
+    [SerializeField] private float ModelSpeedMultiplier;
 
     private bool _lookingForPlayer = false;
-    
+
     public Rigidbody PlayerRigidbody => _playerRigidbody;
     public Rigidbody Rigidbody => _rigidbody;
     public Animator Animator => _animator;
@@ -38,5 +41,10 @@ public class NPCManager : MonoBehaviour
         Quaternion currentRotation = transform.rotation;
         transform.rotation = Quaternion.RotateTowards(currentRotation, goalRotation, NPCsGlobalVariables.MaxAngleChange * Time.deltaTime);
         return Quaternion.Angle(currentRotation, goalRotation);
+    }
+
+    public float GetModelSpeed(float normalSpeed)
+    {
+        return normalSpeed * ModelSpeedMultiplier;
     }
 }

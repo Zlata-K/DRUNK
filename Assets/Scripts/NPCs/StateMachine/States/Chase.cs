@@ -44,7 +44,7 @@ public class Chase : State
             goalLocation = Indestructibles.Player.transform.position;
         }
         
-        Vector3 desiredVelocity = Vector3.Normalize(goalLocation - _npcManager.transform.position) * NPCsGlobalVariables.ChaseAcceleration;
+        Vector3 desiredVelocity = Vector3.Normalize(goalLocation - _npcManager.transform.position) * _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseAcceleration);
         
         Vector3 currentVelocity = _npcManager.Rigidbody.velocity;
 
@@ -52,9 +52,9 @@ public class Chase : State
 
         Vector3 velocity = currentVelocity + steering;
 
-        if (Vector3.Magnitude(velocity) > NPCsGlobalVariables.ChaseMaxVelocity)
+        if (Vector3.Magnitude(velocity) > _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity))
         {
-            velocity = (velocity / Vector3.Magnitude(velocity)) * NPCsGlobalVariables.ChaseMaxVelocity;
+            velocity = (velocity / Vector3.Magnitude(velocity)) * _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity);
         }
 
         velocity.y = 0;

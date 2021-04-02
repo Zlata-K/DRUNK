@@ -67,7 +67,7 @@ public class Wander : State
         _npcManager.LookWhereYouAreGoing(direction);
 
         //The NPC always walk forward.
-        _npcManager.SetAnimatorVelocity(Vector3.forward * NPCsGlobalVariables.WanderMaxVelocity);
+        _npcManager.SetAnimatorVelocity(Vector3.forward * _npcManager.GetModelSpeed(NPCsGlobalVariables.WanderMaxVelocity));
     }
 
     private bool TargetReached()
