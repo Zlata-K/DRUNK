@@ -596,6 +596,8 @@ GameObject:
   - component: {fileID: 3171510656569048507}
   - component: {fileID: 1072342135}
   - component: {fileID: 1072342138}
+  - component: {fileID: 1000766405}
+  - component: {fileID: 1000766404}
   m_Layer: 0
   m_Name: npc_1
   m_TagString: Untagged
@@ -760,6 +762,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed9c945424cda848adb607e9e38f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &1000766405
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360468887495049448}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
+--- !u!136 &1000766404
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360468887495049448}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.27983522
+  m_Height: 2.3870974
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &2433367350010403769
 GameObject:
   m_ObjectHideFlags: 0
