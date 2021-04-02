@@ -15,10 +15,11 @@ public struct NPCsGlobalVariables
     public const float WanderWaitTime = 10.0f;
     
     //Chasing behavior variables
-    public const int ChasePredictionMultiplier = 2;
+    public const float ChasePredictionMultiplier = 0.5f;
     public const float ChaseMaxVelocity = 3.0f;
     public const float ChaseAcceleration = 1.8f;
-    
+    public const float FieldOfView = 40.0f;
+
     //Animator speed variable names
     public static readonly int VelocityXHash = Animator.StringToHash("Velocity X");
     public static readonly int VelocityZHash = Animator.StringToHash("Velocity Z");

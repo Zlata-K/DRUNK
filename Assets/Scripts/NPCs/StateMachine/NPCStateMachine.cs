@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 public class NPCStateMachine: MonoBehaviour
 {
     private State _currentState;

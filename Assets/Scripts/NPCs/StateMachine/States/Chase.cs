@@ -1,5 +1,4 @@
-﻿using Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Chase : State
 {
@@ -15,11 +14,39 @@ public class Chase : State
     
     private void Chasing()
     {
-        Vector3 futureLocation = Indestructibles.Player.transform.position + _npcManager.PlayerRigidbody.velocity * NPCsGlobalVariables.ChasePredictionMultiplier;
+        Vector3 velocity = ComputeChaseVelocity();
+
+        //The NPC will always looking where it needs to go.
+        float anglePlayerNpc = _npcManager.LookWhereYouAreGoing(velocity);
+
+        //If the player is out FOV, NPC stop moving and rotate until the player is back in FOV
+        if (anglePlayerNpc > NPCsGlobalVariables.FieldOfView)
+        {
+            velocity = Vector3.zero;
+        }
+
+        //The NPC always walk forward.
+        _npcManager.SetAnimatorVelocity(Vector3.forward * velocity.magnitude);
+    }
+
+    private Vector3 ComputeChaseVelocity()
+    {
+        Vector3 goalLocation;
         
-        Vector3 desiredVelocity = Vector3.Normalize(futureLocation - _npcManager.transform.position) * NPCsGlobalVariables.ChaseAcceleration;
+        //The NPC will predict the future position of the player (pursuit behavior)
+        if (Vector3.Distance(Indestructibles.Player.transform.position, _npcManager.transform.position) > 1)
+        {
+            goalLocation = Indestructibles.Player.transform.position + _npcManager.PlayerRigidbody.velocity * NPCsGlobalVariables.ChasePredictionMultiplier;
+        }
+        //If the NPC is close to the player, just go directly on him
+        else
+        {
+            goalLocation = Indestructibles.Player.transform.position;
+        }
         
-        Vector3 currentVelocity = _npcManager.GetComponent<Rigidbody>().velocity;
+        Vector3 desiredVelocity = Vector3.Normalize(goalLocation - _npcManager.transform.position) * NPCsGlobalVariables.ChaseAcceleration;
+        
+        Vector3 currentVelocity = _npcManager.Rigidbody.velocity;
 
         Vector3 steering = desiredVelocity - currentVelocity;
 
@@ -32,13 +59,6 @@ public class Chase : State
 
         velocity.y = 0;
 
-        //The NPC will always looking where it needs to go.
-        LookWhereYouAreGoing(velocity);
-
-        //The NPC always walk forward.
-        velocity = Vector3.forward * velocity.magnitude;
-
-        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
-        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
+        return velocity;
     }
 }

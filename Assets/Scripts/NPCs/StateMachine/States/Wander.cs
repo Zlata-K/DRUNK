@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Wander : State
 {
@@ -22,7 +20,7 @@ public class Wander : State
     public override void Move()
     {
         if (waitTimeStamp < Time.time)
-        {
+        { 
             Wandering();
         }
     }
@@ -35,15 +33,15 @@ public class Wander : State
         }
         
         MoveTowardsTarget();
-
-        if (Vector3.Distance(_npcManager.transform.position, _target) < 1.0f)
+        
+        if (TargetReached())
         {
             reachedTarget = true;
             numberOfMoves -= 1;
         }
 
         if (numberOfMoves == 0)
-        {
+        { 
             StopMoving();
         }
     }
@@ -52,10 +50,10 @@ public class Wander : State
     {
         Vector3 npcVelocity = _npcManager.Rigidbody.velocity;
             
-        Vector3 circle_position = _npcManager.transform.position +
+        Vector3 circlePosition = _npcManager.transform.position +
                                   Vector3.Normalize(npcVelocity) * NPCsGlobalVariables.WanderCircleDistance;
 
-        _target = circle_position + Random.insideUnitSphere * NPCsGlobalVariables.WanderCircleRadius;
+        _target = circlePosition + Random.insideUnitSphere * NPCsGlobalVariables.WanderCircleRadius;
         _target.y = 0;
             
         reachedTarget = false;
@@ -66,20 +64,21 @@ public class Wander : State
         Vector3 direction = Vector3.Normalize(_target - _npcManager.transform.position);
 
         //The NPC will always looking where it needs to go.
-        LookWhereYouAreGoing(direction);
+        _npcManager.LookWhereYouAreGoing(direction);
 
         //The NPC always walk forward.
-        Vector3 velocity = Vector3.forward * NPCsGlobalVariables.WanderMaxVelocity;
+        _npcManager.SetAnimatorVelocity(Vector3.forward * NPCsGlobalVariables.WanderMaxVelocity);
+    }
 
-        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
-        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
+    private bool TargetReached()
+    {
+        return Vector3.Distance(_npcManager.transform.position, _target) < 0.5f;
     }
 
     private void StopMoving()
     {
         waitTimeStamp = NPCsGlobalVariables.WanderWaitTime + Time.time;
         numberOfMoves = (int)Random.Range(0.0f, 10.0f);
-        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, 0);
-        _npcManager.Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, 0);
+        _npcManager.SetAnimatorVelocity(Vector3.zero);
     }
 }

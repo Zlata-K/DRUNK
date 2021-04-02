@@ -25,4 +25,18 @@ public class NPCManager : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
     }
+
+    public void SetAnimatorVelocity(Vector3 velocity)
+    {
+        Animator.SetFloat(NPCsGlobalVariables.VelocityXHash, velocity.x);
+        Animator.SetFloat(NPCsGlobalVariables.VelocityZHash, velocity.z);
+    }
+    
+    public float LookWhereYouAreGoing(Vector3 direction)
+    {
+        Quaternion goalRotation = Quaternion.LookRotation(direction);
+        Quaternion currentRotation = transform.rotation;
+        transform.rotation = Quaternion.RotateTowards(currentRotation, goalRotation, NPCsGlobalVariables.MaxAngleChange * Time.deltaTime);
+        return Quaternion.Angle(currentRotation, goalRotation);
+    }
 }
