@@ -20,7 +20,7 @@ public class Chase : State
         float anglePlayerNpc = _npcManager.LookWhereYouAreGoing(velocity);
 
         //If the player is out FOV, NPC stop moving and rotate until the player is back in FOV
-        if (anglePlayerNpc > NPCsGlobalVariables.FieldOfView)
+        if (anglePlayerNpc > NPCsGlobalVariables.FieldOfView && _npcManager.GetDistanceWithPlayer() > 4)
         {
             velocity = Vector3.zero;
         }
@@ -34,7 +34,7 @@ public class Chase : State
         Vector3 goalLocation;
         
         //The NPC will predict the future position of the player (pursuit behavior)
-        if (Vector3.Distance(Indestructibles.Player.transform.position, _npcManager.transform.position) > 1)
+        if (_npcManager.GetDistanceWithPlayer() > 1)
         {
             goalLocation = Indestructibles.Player.transform.position + _npcManager.PlayerRigidbody.velocity * NPCsGlobalVariables.ChasePredictionMultiplier;
         }

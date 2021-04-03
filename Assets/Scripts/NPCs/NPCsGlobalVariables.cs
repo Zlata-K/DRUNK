@@ -17,7 +17,7 @@ public struct NPCsGlobalVariables
     //Chasing behavior variables
     public const float ChasePredictionMultiplier = 0.5f;
     public const float ChaseMaxVelocity = 2.5f;
-    public const float ChaseAcceleration = 1.8f;
+    public const float ChaseAcceleration = 1.6f;
     public const float FieldOfView = 40.0f;
 
     //Animator speed variable names

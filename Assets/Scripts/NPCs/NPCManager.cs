@@ -47,4 +47,9 @@ public class NPCManager : MonoBehaviour
     {
         return normalSpeed * ModelSpeedMultiplier;
     }
+
+    public float GetDistanceWithPlayer()
+    {
+        return Vector3.Distance(Indestructibles.Player.transform.position, transform.position);
+    }
 }
