@@ -39,12 +39,12 @@ public class NPCStateMachine: MonoBehaviour
      * If the player collides with a NPC that is not chasing him, start chase.
      * For now, the collider is of type trigger because there is no navmesh.
      */
-    public void OnTriggerEnter(Collider collider)
+    public void OnCollisionEnter(Collision collision)
     {
-        if (_currentState != _chase && collider.gameObject.CompareTag("Player"))
+        if (_currentState != _chase && collision.gameObject.CompareTag("Player"))
         {
-            GetComponent<AudioSource>().PlayOneShot(bumpingSounds[0]);
-            GetComponent<Animator>().SetTrigger(Animator.StringToHash("Get Hit"));
+            _npcManager.AudioSource.PlayOneShot(bumpingSounds[0]);
+            _npcManager.Animator.SetTrigger(Animator.StringToHash("Get Hit"));
             _currentState = _chase;
         }
     }
