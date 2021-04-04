@@ -10,7 +10,7 @@ namespace UI
         // serializing this as it is the nicest way to fetch a deactivated game object
         [SerializeField] protected GameObject highScoreTextPanel;
 
-        protected void SetHighScoreText()
+        public void SetHighScoreText()
         {
             
             var highScores = ScoreManager.GetScores();
