@@ -11,10 +11,10 @@ namespace Structs
         
         public int UpsideDownStack { get; set; }
         public float IntoxicationLevel { get; set; }
-        
-        public PlayerData(Vector3 lastSeenPosition)
+
+        public PlayerData(Vector3 currentPosition)
         {
-            LastSeenPosition = lastSeenPosition;
+            LastSeenPosition = currentPosition;
             ScoreMultiplier = 1;
             ClearlyThereStack = 0;
             UpsideDownStack = 0;
