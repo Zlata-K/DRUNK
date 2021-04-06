@@ -6,11 +6,13 @@ using UnityEngine;
 public class TriggerInteractableScript : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private float _mapTime = 2;
     private static readonly int Activated = Animator.StringToHash("Activated");
     [SerializeField] private float cooldown;
     private float _timer = 0;
     
     private bool _triggered = false;
+    private bool _mapTriggered = false;
 
     private void OnTriggerExit(Collider other)
     {
@@ -18,7 +20,7 @@ public class TriggerInteractableScript : MonoBehaviour
         {
             _animator.SetBool(Activated, true);
             _timer = 0.0f;
-            NavigationGraph.ReGenerateClusterLinks(transform.position);
+            StartCoroutine(RefreshCluster(_mapTime));
         }
     }
 
@@ -46,10 +48,16 @@ public class TriggerInteractableScript : MonoBehaviour
             {
                 _animator.SetBool(Activated, false);
                 _triggered = false;
-                NavigationGraph.ReGenerateClusterLinks(transform.position);
+                StartCoroutine(RefreshCluster(0.1f));
             }
 
             _timer += Time.deltaTime;
         }
+    }
+    
+    private IEnumerator RefreshCluster(float t)
+    {
+        yield return new WaitForSecondsRealtime(t);
+        NavigationGraph.ReGenerateClusterLinks(transform.position);
     }
 }
