@@ -18,6 +18,7 @@ public class TriggerInteractableScript : MonoBehaviour
         {
             _animator.SetBool(Activated, true);
             _timer = 0.0f;
+            NavigationGraph.ReGenerateClusterLinks(transform.position);
         }
     }
 
@@ -45,6 +46,7 @@ public class TriggerInteractableScript : MonoBehaviour
             {
                 _animator.SetBool(Activated, false);
                 _triggered = false;
+                NavigationGraph.ReGenerateClusterLinks(transform.position);
             }
 
             _timer += Time.deltaTime;
