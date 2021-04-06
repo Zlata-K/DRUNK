@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/Animations/NPCs.meta
-guid: da030a82088f4904fbfea689974a625e
-=======
-guid: e3e97d26646d04113a7995befc57288c
->>>>>>> 57bcbd6 (Quick add of interactable):Assets/Animations/Environment/Barrel block.meta
+guid: 14800fcaa72704ae19914df91f883d69
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
