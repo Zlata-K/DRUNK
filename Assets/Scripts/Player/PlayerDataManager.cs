@@ -7,7 +7,7 @@ namespace Player
     {
         public PlayerData PlayerData { get; set; }
 
-        private void Awake()
+        private void Start()
         {
             PlayerData = new PlayerData(gameObject.transform.position);
         }

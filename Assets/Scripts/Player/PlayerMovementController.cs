@@ -27,6 +27,23 @@ namespace Code.Scripts
 
         private GameObject _belly;
 
+        private void OnDrawGizmos()
+        {
+            var graph = NavigationGraph.graph;
+
+            foreach (var cluster in graph) {
+                foreach (var node in cluster.Value) {
+
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(node.position, 0.5F);
+                    foreach (var link in node.links) {
+                        Gizmos.color = Color.black;
+                        Gizmos.DrawLine(node.position, link.node.position);
+                    }
+                }
+            }
+        }
+
         void Awake()
         {
             Cursor.lockState = CursorLockMode.Confined;

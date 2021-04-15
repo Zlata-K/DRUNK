@@ -78,25 +78,28 @@ public class TerrainGeneratorScript : MonoBehaviour
         {
             for (int j = 0; j < temp; j++)
             {
+                GameObject obj;
+
                 if (i % (size - 1) == 0 && j % (size - 1) == 0)
                 {
-                    _crossRoadScript.Generate(i, j);
+                    obj = _crossRoadScript.Generate(i, j);
                 }
                 else if (i % (size - 1) == 0 || j % (size - 1) == 0)
                 {
-                    _roadScript.Generate(i, j);
+                    obj = _roadScript.Generate(i, j);
                 }
-
                 else if ((i % (size - 1) == 1 || j % (size - 1) == 1 || i % (size - 1) == size - 2 ||
                           j % (size - 1) == size - 2) && Random.value > (1-tavernPercent))
                 {
-                    _tavernScript.Generate(i, j);
+                    obj = _tavernScript.Generate(i, j);
                 }
                 else
                 {
-                    _fillerScript.Generate(i, j);
+                    obj = _fillerScript.Generate(i, j);
                 }
+                NavigationGraph.AddNodes(obj);
             }
         }
+        NavigationGraph.ReGenerateAllLinks();
     }
 }
