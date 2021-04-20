@@ -27,7 +27,7 @@ public class Chase : State
         float anglePlayerNpc = _npcManager.LookWhereYouAreGoing(velocity);
 
         //If the player is out FOV, NPC stop moving and rotate until the player is back in FOV
-        if (anglePlayerNpc > NPCsGlobalVariables.FieldOfView && _npcManager.GetDistanceWithPlayer() > 4)
+        if (anglePlayerNpc > NPCsGlobalVariables.FieldOfView && _npcManager.GetDistanceWithPlayer() > NPCsGlobalVariables.ChasePlayerRange)
         {
             velocity = Vector3.zero;
         }
@@ -96,10 +96,7 @@ public class Chase : State
                 _currentTargetLocation = _playerData.LastSeenPosition;
             } else
             {
-                if (Node.CanSeeNode(path[1], _npcManager.transform.position))
-                    _currentTargetLocation = path[1].position;
-                else
-                    _currentTargetLocation = path[0].position;
+                _currentTargetLocation = path[NPCsGlobalVariables.NextElementInPath].position;
             }
         }
     }
