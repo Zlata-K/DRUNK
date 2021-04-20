@@ -2,7 +2,7 @@
 
 namespace Structs
 {
-    public struct PlayerData
+    public class PlayerData
     {
         public Vector3 LastSeenPosition { get; set; }
         public int ScoreMultiplier { get; set; }

@@ -11,5 +11,13 @@ namespace Player
         {
             PlayerData = new PlayerData(gameObject.transform.position);
         }
+
+        private void Update()
+        {
+            if (PlayerData.ClearlyThereStack == 0) {
+                PlayerData.LastSeenPosition = transform.position;
+            }
+
+        }
     }
 }
