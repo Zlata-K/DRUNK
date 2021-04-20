@@ -19,6 +19,9 @@ public struct NPCsGlobalVariables
     public const float ChaseMaxVelocity = 2.5f;
     public const float ChaseAcceleration = 1.6f;
     public const float FieldOfView = 40.0f;
+    public const float ChasePlayerRange = 4f;
+    public const float WithinTargetNodeRange = 1.2f;
+    public static readonly Vector3 DefaultInitialVector = new Vector3(0,100,0);
 
     //Animator speed variable names
     public static readonly int VelocityXHash = Animator.StringToHash("Velocity X");

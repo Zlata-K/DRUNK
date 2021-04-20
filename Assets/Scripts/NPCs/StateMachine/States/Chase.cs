@@ -1,17 +1,25 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Player;
+using Structs;
+using UnityEngine;
 
 public class Chase : State
 {
+    private Vector3 _currentTargetLocation = NPCsGlobalVariables.DefaultInitialVector;
+    private readonly PlayerData _playerData;
+
     public Chase(NPCManager npcManager)
     {
         _npcManager = npcManager;
+        _playerData = Indestructibles.Player.GetComponent<PlayerDataManager>()
+            .PlayerData;
     }
 
     public override void Move()
     {
         Chasing();
     }
-    
+
     private void Chasing()
     {
         Vector3 velocity = ComputeChaseVelocity();
@@ -31,21 +39,23 @@ public class Chase : State
 
     private Vector3 ComputeChaseVelocity()
     {
-        Vector3 goalLocation;
-        
+        Vector3 targetLocation;
+
         //The NPC will predict the future position of the player (pursuit behavior)
-        if (_npcManager.GetDistanceWithPlayer() > 1)
+        if (_npcManager.GetDistanceWithPlayer() > NPCsGlobalVariables.ChasePlayerRange)
         {
-            goalLocation = Indestructibles.Player.transform.position + _npcManager.PlayerRigidbody.velocity * NPCsGlobalVariables.ChasePredictionMultiplier;
+            ComputeAStar();
+            targetLocation = _currentTargetLocation; 
         }
         //If the NPC is close to the player, just go directly on him
         else
         {
-            goalLocation = Indestructibles.Player.transform.position;
+            targetLocation = _playerData.LastSeenPosition;
         }
-        
-        Vector3 desiredVelocity = Vector3.Normalize(goalLocation - _npcManager.transform.position) * _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseAcceleration);
-        
+
+        Vector3 desiredVelocity = Vector3.Normalize(targetLocation - _npcManager.transform.position) *
+                                  _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseAcceleration);
+
         Vector3 currentVelocity = _npcManager.Rigidbody.velocity;
 
         Vector3 steering = desiredVelocity - currentVelocity;
@@ -54,11 +64,40 @@ public class Chase : State
 
         if (Vector3.Magnitude(velocity) > _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity))
         {
-            velocity = (velocity / Vector3.Magnitude(velocity)) * _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity);
+            velocity = (velocity / Vector3.Magnitude(velocity)) *
+                       _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity);
         }
 
         velocity.y = 0;
 
         return velocity;
+    }
+
+    private void ComputeAStar()
+    {
+        Vector3 nodeWithoutY = Vector3.zero;
+        if (_currentTargetLocation != NPCsGlobalVariables.DefaultInitialVector)
+        {
+            nodeWithoutY = new Vector3(_currentTargetLocation.x, 0, _currentTargetLocation.z);
+        }
+
+        if (_currentTargetLocation == NPCsGlobalVariables.DefaultInitialVector ||
+            Vector3.Distance(_npcManager.transform.position, nodeWithoutY) <
+            NPCsGlobalVariables.WithinTargetNodeRange)
+        {
+            Node npcNode = NavigationGraph.GetClosestNode(_npcManager.transform.position);
+            Node playerNode = NavigationGraph.GetClosestNode(_playerData.LastSeenPosition);
+
+            List<Node> path = Pathfinding.Astar(npcNode, playerNode);
+
+            if (path.Count < 2)
+            {
+                _currentTargetLocation = _playerData.LastSeenPosition;
+            }
+            else
+            {
+                _currentTargetLocation = path[1].position;
+            }
+        }
     }
 }
