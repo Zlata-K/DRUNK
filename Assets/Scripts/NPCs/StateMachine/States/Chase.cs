@@ -11,8 +11,7 @@ public class Chase : State
     public Chase(NPCManager npcManager)
     {
         _npcManager = npcManager;
-        _playerData = Indestructibles.Player.GetComponent<PlayerDataManager>()
-            .PlayerData;
+        _playerData = Indestructibles.Player.GetComponent<PlayerDataManager>().PlayerData;
     }
 
     public override void Move()
@@ -42,17 +41,19 @@ public class Chase : State
         Vector3 targetLocation;
 
         //The NPC will predict the future position of the player (pursuit behavior)
-        if (_npcManager.GetDistanceWithPlayer() > NPCsGlobalVariables.ChasePlayerRange)
+        if (_npcManager.GetDistanceWithPlayer() > NPCsGlobalVariables.ChasePlayerRange) // TODO add raycast here
         {
             ComputeAStar();
-            targetLocation = _currentTargetLocation; 
+            targetLocation = _currentTargetLocation;
         }
         //If the NPC is close to the player, just go directly on him
         else
         {
+            _currentTargetLocation = NPCsGlobalVariables.DefaultInitialVector;
             targetLocation = _playerData.LastSeenPosition;
         }
 
+        // TODO Check if we can't see the target (raycast) and do smth
         Vector3 desiredVelocity = Vector3.Normalize(targetLocation - _npcManager.transform.position) *
                                   _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseAcceleration);
 
@@ -83,7 +84,7 @@ public class Chase : State
 
         if (_currentTargetLocation == NPCsGlobalVariables.DefaultInitialVector ||
             Vector3.Distance(_npcManager.transform.position, nodeWithoutY) <
-            NPCsGlobalVariables.WithinTargetNodeRange)
+            NPCsGlobalVariables.WithinTargetNodeRange) // TODO Add check if we can see target node
         {
             Node npcNode = NavigationGraph.GetClosestNode(_npcManager.transform.position);
             Node playerNode = NavigationGraph.GetClosestNode(_playerData.LastSeenPosition);
@@ -93,10 +94,12 @@ public class Chase : State
             if (path.Count < 2)
             {
                 _currentTargetLocation = _playerData.LastSeenPosition;
-            }
-            else
+            } else
             {
-                _currentTargetLocation = path[1].position;
+                if (Node.CanSeeNode(path[1], _npcManager.transform.position))
+                    _currentTargetLocation = path[1].position;
+                else
+                    _currentTargetLocation = path[0].position;
             }
         }
     }

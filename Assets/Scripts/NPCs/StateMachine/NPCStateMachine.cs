@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class NPCStateMachine: MonoBehaviour
+public class NPCStateMachine : MonoBehaviour
 {
     private State _currentState;
 
     private State _wander;
     private State _idle;
     private State _chase;
-    
+
     private NPCManager _npcManager;
 
     [SerializeField] private AudioClip[] bumpingSounds;
@@ -15,7 +15,7 @@ public class NPCStateMachine: MonoBehaviour
     void Start()
     {
         _npcManager = GetComponent<NPCManager>();
-        
+
         _wander = new Wander(_npcManager);
         _chase = new Chase(_npcManager);
         _idle = new Idle(_npcManager);
@@ -41,27 +41,25 @@ public class NPCStateMachine: MonoBehaviour
      */
     public void OnCollisionEnter(Collision collision)
     {
-        if (_currentState != _chase && collision.gameObject.CompareTag("Player"))
-        {
+        if (_currentState != _chase && collision.gameObject.CompareTag("Player")) {
             _npcManager.AudioSource.PlayOneShot(bumpingSounds[0]);
             _npcManager.Animator.SetTrigger(Animator.StringToHash("Get Hit"));
             _currentState = _chase;
         }
     }
-    
+
     /*
      * If the player get out of range during chase, start wandering.
      */
     private void CheckPlayerOutOfRange(float distanceFromPlayer)
     {
-        if ( _currentState == _chase &&
-             distanceFromPlayer > NPCsGlobalVariables.MaxChaseDistance)
-        {
+        if (_currentState == _chase &&
+             distanceFromPlayer > NPCsGlobalVariables.MaxChaseDistance) {
             _currentState = _wander;
             _npcManager.LookingForPlayer = true;
         }
     }
-    
+
     /*
      * If the player is back in range and was previously chased by the NPC, chase again.
      */
@@ -69,8 +67,7 @@ public class NPCStateMachine: MonoBehaviour
     {
         if (_currentState == _wander &&
                  _npcManager.LookingForPlayer &&
-                 distanceFromPlayer < NPCsGlobalVariables.MaxChaseDistance)
-        {
+                 distanceFromPlayer < NPCsGlobalVariables.MaxChaseDistance) {
             _currentState = _chase;
         }
     }

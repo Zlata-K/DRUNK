@@ -16,7 +16,9 @@ public class Node
 
     public void AddLink(Node other, float weight)
     {
-        if (other == this) // Don't try to link with yourself
+        Link link = links.Find((Link l) => { return l.node == other; });
+
+        if (other == this || link != null) // Don't try to link with yourself and don't link twice
             return;
         links.Add(new Link { node = other, weight = weight });
         other.links.Add(new Link { node = this, weight = weight }); // Link in both ways
@@ -32,14 +34,21 @@ public class Node
         }
     }
 
-    public bool CanSeeNode(Node node)
+    public static bool CanSeeNode(Node node, Vector3 pos)
     {
-        return CanSeeNode(node, (node.position - position).magnitude);
+        return node.CanSeeNode(new Node { position = pos, links = null });
     }
 
-    public bool CanSeeNode(Node node, float dist)
+    public bool CanSeeNode(Node node)
     {
-        return !Physics.SphereCast(position, NavigationGraph.nodeSize, node.position - position, out _, dist);
+        Vector3 dir = node.position - position;
+
+        return CanSeeNode(node, dir.magnitude, dir);
+    }
+
+    public bool CanSeeNode(Node node, float dist, Vector3 dir)
+    {
+        return !Physics.SphereCast(position, NavigationGraph.nodeSize, dir, out _, dist) && !Physics.Raycast(position, dir, dist);
     }
 
     // Check this node links to remove non-valid ones
@@ -47,12 +56,11 @@ public class Node
     {
         for (int i = links.Count - 1; i >= 0; i--) { // iterating in reverse to safely remove items while iterationg
             Node other = links[i].node;
-            float dist = (position - other.position).magnitude;
 
             // Check if we can still see the other node
-            if (!CanSeeNode(other, dist)) {
+            if (!CanSeeNode(other)) {
                 // If we hit smth, remove the link : it's not accurate anymore
-                links.RemoveAt(i);
+                RemoveLink(other);
             }
         }
     }
@@ -71,9 +79,10 @@ public class Node
         bool addedNewNodes = false;
 
         foreach (var node in cluster.ToArray()) { // The ToArray is to iterate over a copy of the list, and so we can add new items while iterating
-            float dist = (position - node.position).magnitude;
+            Vector3 tmp_dir = (position - node.position);
+            float dist = tmp_dir.magnitude;
 
-            if (CanSeeNode(node, dist)) {
+            if (CanSeeNode(node, dist, tmp_dir)) {
                 // If we can see the node, link the 2 nodes together
 
 
@@ -175,7 +184,7 @@ public class NavigationGraph
     }
 
     // A function to get the closest node to a point
-    // TODO (non-urgent) : check in neighbouring clusters too, maybe there will be a closer point 
+    // TODO (non-urgent) : check in neighbouring clusters too, maybe there will be a closer point
     public static Node GetClosestNode(Vector3 pos)
     {
         List<Node> nodes = GetCluster(pos); // Get the cluster containing this position
@@ -185,7 +194,7 @@ public class NavigationGraph
         foreach (var item in nodes) { // Look over all the nodes to find the closest
             float dist = (item.position - pos).magnitude;
 
-            if (dist < minDist) {
+            if (dist < minDist && Node.CanSeeNode(item, pos)) {
                 res = item;
                 minDist = dist;
             }
@@ -280,9 +289,10 @@ public class NavigationGraph
             
             foreach (var node in cluster) {
                 foreach (var node2 in neighbourCluster) {
-                    float dist = (node.position - node2.position).magnitude;
+                    Vector3 tmp_dir = (node.position - node2.position);
+                    float dist = tmp_dir.magnitude;
 
-                    if (node.CanSeeNode(node2, dist)) {
+                    if (node.CanSeeNode(node2, dist, tmp_dir)) {
                         node.AddLink(node2, dist);
                     }
                 }
