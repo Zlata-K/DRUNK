@@ -19,6 +19,7 @@ namespace Drinkables
         protected void CommonDrunkennessEffects()
         {
             // All beers will have a base score multiplier of 2
+            // TODO: Update to base score multiplier directly off intoxication level instead.
             Indestructibles.PlayerData.ScoreMultiplier *= 2;
             if (Indestructibles.PlayerData.IntoxicationLevel < 1.0f)
                 Indestructibles.PlayerData.IntoxicationLevel += 0.1f;

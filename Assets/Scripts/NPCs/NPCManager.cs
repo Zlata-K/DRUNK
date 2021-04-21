@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEditor.Animations;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class NPCManager : MonoBehaviour
 {
@@ -60,6 +61,10 @@ public class NPCManager : MonoBehaviour
             Animator.SetLayerWeight(PunchLayerIndex,0.0f);
         }
 
+        if (Indestructibles.PlayerData.IsKnockedOut)
+        {
+            _stateMachine.StartWandering();
+        }
     }
 
     public void SetAnimatorVelocity(Vector3 velocity)
@@ -92,7 +97,7 @@ public class NPCManager : MonoBehaviour
     }
     public void StartPunching()
     {
-        if (_canPunch)
+        if (_canPunch && !Punching)
         {
             Punching = true;
             Animator.Play("Punch", PunchLayerIndex, 0f);
@@ -131,7 +136,11 @@ public class NPCManager : MonoBehaviour
         {
             if (_canChase && !IsChasing())
             {
-                AudioSource.PlayOneShot(bumpingSounds[0]);
+                if (bumpingSounds.Length > 0)
+                {
+                    AudioSource.PlayOneShot(bumpingSounds[Random.Range(0,bumpingSounds.Length-1)]);
+                }
+                
                 Animator.SetTrigger(Animator.StringToHash("Get Hit"));
                 _stateMachine.StartChasing();
 

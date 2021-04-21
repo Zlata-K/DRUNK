@@ -1223,8 +1223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feffdb661d50754ea42d89a0db3d954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bumpingSounds:
-  - {fileID: 8300000, guid: 5658fdda65f59ec41b7147b533b6ed85, type: 3}
 --- !u!82 &1998947194
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1334,6 +1332,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModelSpeedMultiplier: 0.935
+  bumpingSounds:
+  - {fileID: 8300000, guid: 5658fdda65f59ec41b7147b533b6ed85, type: 3}
+  - {fileID: 8300000, guid: f3e65452acdaf1e49ad50b10ca24ce58, type: 3}
 --- !u!54 &1939176866
 Rigidbody:
   m_ObjectHideFlags: 0
