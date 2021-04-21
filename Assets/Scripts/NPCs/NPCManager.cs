@@ -132,21 +132,19 @@ public class NPCManager : MonoBehaviour
      */
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (_canChase && !IsChasing() && collision.gameObject.CompareTag("Player"))
         {
-            if (_canChase && !IsChasing())
+            
+            if (bumpingSounds.Length > 0)
             {
-                if (bumpingSounds.Length > 0)
-                {
-                    AudioSource.PlayOneShot(bumpingSounds[Random.Range(0,bumpingSounds.Length-1)]);
-                }
-                
-                Animator.SetTrigger(Animator.StringToHash("Get Hit"));
-                _stateMachine.StartChasing();
-
-                _canPunch = false;
-                Invoke(nameof(PunchCooldown), 1.0f);
+                AudioSource.PlayOneShot(bumpingSounds[Random.Range(0,bumpingSounds.Length-1)]);
             }
+            
+            Animator.SetTrigger(Animator.StringToHash("Get Hit"));
+            _stateMachine.StartChasing();
+
+            _canPunch = false;
+            Invoke(nameof(PunchCooldown), 1.0f);
         }
     }
 }

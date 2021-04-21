@@ -27,7 +27,6 @@ public class NPCStateMachine : MonoBehaviour
     private void Update()
     {
         CurrentState.Move();
-        
         float distanceFromPlayer = Vector3.Distance( Indestructibles.Player.transform.position, transform.position);
         CheckPlayerOutOfRange(distanceFromPlayer);
         CheckPlayerBackInRange(distanceFromPlayer);
