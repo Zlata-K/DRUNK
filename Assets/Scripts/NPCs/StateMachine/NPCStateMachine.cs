@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor.Animations;
+using UnityEngine;
 
 public class NPCStateMachine: MonoBehaviour
 {
-    private State _currentState;
+
+    public State CurrentState { get; set;}
 
     private State _wander;
     private State _idle;
     private State _chase;
     
     private NPCManager _npcManager;
-
-    [SerializeField] private AudioClip[] bumpingSounds;
-
+    
     void Start()
     {
         _npcManager = GetComponent<NPCManager>();
@@ -20,44 +21,30 @@ public class NPCStateMachine: MonoBehaviour
         _chase = new Chase(_npcManager);
         _idle = new Idle(_npcManager);
 
-        _currentState = _wander;
+        CurrentState = _wander;
     }
 
     private void Update()
     {
-        _currentState.Move();
+        CurrentState.Move();
         
         float distanceFromPlayer = Vector3.Distance( Indestructibles.Player.transform.position, transform.position);
         CheckPlayerOutOfRange(distanceFromPlayer);
         CheckPlayerBackInRange(distanceFromPlayer);
+        
     }
 
     //----- State change functions -----
-    
-    
-    /*
-     * If the player collides with a NPC that is not chasing him, start chase.
-     * For now, the collider is of type trigger because there is no navmesh.
-     */
-    public void OnCollisionEnter(Collision collision)
-    {
-        if (_currentState != _chase && collision.gameObject.CompareTag("Player"))
-        {
-            _npcManager.AudioSource.PlayOneShot(bumpingSounds[0]);
-            _npcManager.Animator.SetTrigger(Animator.StringToHash("Get Hit"));
-            _currentState = _chase;
-        }
-    }
     
     /*
      * If the player get out of range during chase, start wandering.
      */
     private void CheckPlayerOutOfRange(float distanceFromPlayer)
     {
-        if ( _currentState == _chase &&
+        if ( CurrentState == _chase &&
              distanceFromPlayer > NPCsGlobalVariables.MaxChaseDistance)
         {
-            _currentState = _wander;
+            CurrentState = _wander;
             _npcManager.LookingForPlayer = true;
         }
     }
@@ -67,11 +54,21 @@ public class NPCStateMachine: MonoBehaviour
      */
     private void CheckPlayerBackInRange(float distanceFromPlayer)
     {
-        if (_currentState == _wander &&
+        if (CurrentState == _wander &&
                  _npcManager.LookingForPlayer &&
                  distanceFromPlayer < NPCsGlobalVariables.MaxChaseDistance)
         {
-            _currentState = _chase;
+            CurrentState = _chase;
         }
+    }
+
+    public void StartWandering()
+    {
+        CurrentState = _wander;
+    }
+
+    public void StartChasing()
+    {
+        CurrentState = _chase;
     }
 }

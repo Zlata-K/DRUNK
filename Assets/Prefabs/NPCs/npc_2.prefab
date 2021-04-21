@@ -1232,6 +1232,7 @@ GameObject:
   - component: {fileID: 115960195}
   - component: {fileID: 1723136554}
   - component: {fileID: 1723136555}
+  - component: {fileID: 6971136531528647151}
   m_Layer: 0
   m_Name: npc_2
   m_TagString: Untagged
@@ -1421,12 +1422,26 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500611806986081382}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.27983522
+  m_Radius: 0.57
   m_Height: 1.9679128
   m_Direction: 1
   m_Center: {x: -0, y: 1.1095922, z: 0}
+--- !u!136 &6971136531528647151
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500611806986081382}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.6940569
+  m_Height: 2.8614495
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8682238, z: 0.0026543937}
 --- !u!1 &8621493740808349076
 GameObject:
   m_ObjectHideFlags: 0

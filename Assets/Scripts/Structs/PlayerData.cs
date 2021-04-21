@@ -11,7 +11,7 @@ namespace Structs
         
         public int UpsideDownStack { get; set; }
         public float IntoxicationLevel { get; set; }
-
+        public int HP { get; set; }
         public PlayerData(Vector3 currentPosition)
         {
             LastSeenPosition = currentPosition;
@@ -19,6 +19,7 @@ namespace Structs
             ClearlyThereStack = 0;
             UpsideDownStack = 0;
             IntoxicationLevel = 0.0f;
+            HP = 3;
         }
     }
 }
