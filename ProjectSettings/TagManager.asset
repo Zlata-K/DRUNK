@@ -7,6 +7,7 @@ TagManager:
   - BuffaloDrink
   - ClearlyDrink
   - FlippedDrink
+  - Light
   layers:
   - Default
   - TransparentFX
