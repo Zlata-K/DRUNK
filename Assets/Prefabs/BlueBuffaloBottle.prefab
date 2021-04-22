@@ -90,8 +90,9 @@ GameObject:
   - component: {fileID: 9208232958606202163}
   - component: {fileID: 5216835794736208534}
   - component: {fileID: 8034733764718079580}
+  - component: {fileID: -4506028412954078318}
   m_Layer: 0
-  m_Name: BlueBuffaloBottle 1
+  m_Name: BlueBuffaloBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,7 +106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8395245967258161033}
   m_LocalRotation: {x: -0.70603323, y: 0.038950812, z: 0.038950812, w: 0.7060331}
-  m_LocalPosition: {x: 0.9754003, y: 0, z: 0.85220003}
+  m_LocalPosition: {x: -7, y: 0, z: 0.85220003}
   m_LocalScale: {x: 108.03938, y: 108.03938, z: 108.03938}
   m_Children:
   - {fileID: 7379202294103858933}
@@ -159,3 +160,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &-4506028412954078318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395245967258161033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caec7c8644849d5b36077bfcc5e9ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
