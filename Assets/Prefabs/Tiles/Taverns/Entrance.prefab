@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4216559673361767338}
   - component: {fileID: 7135162797536511081}
   - component: {fileID: 187612038860657568}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9184055565142749900}
   - component: {fileID: 1942344598537244097}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Illumination
   m_TagString: Light
   m_Icon: {fileID: 0}

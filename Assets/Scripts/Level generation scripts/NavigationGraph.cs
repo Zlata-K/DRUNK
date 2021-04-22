@@ -37,7 +37,12 @@ public class Node
 
     public static bool CanSeeNode(Node node, Vector3 pos)
     {
-        return node.CanSeeNode(new Node {position = pos, links = null});
+        return node.CanSeeNode(new Node { position = pos, links = null });
+    }
+
+    public static bool CanSeeNode(Node node, Vector3 pos, float dist, Vector3 dir)
+    {
+        return node.CanSeeNode(new Node { position = pos, links = null }, dist, dir);
     }
 
     public bool CanSeeNode(Node node)
@@ -49,7 +54,7 @@ public class Node
 
     public bool CanSeeNode(Node node, float dist, Vector3 dir)
     {
-        return !Physics.SphereCast(position, NavigationGraph.nodeSize, node.position - position, out _, dist);
+        return !Physics.SphereCast(position, NavigationGraph.nodeSize, dir, out _, dist) && !Physics.Raycast(position, dir, dist);
     }
 
     // Check this node links to remove non-valid ones
@@ -85,7 +90,7 @@ public class Node
         foreach (var node in cluster.ToArray())
         {
             // The ToArray is to iterate over a copy of the list, and so we can add new items while iterating
-            Vector3 tmp_dir = (position - node.position);
+            Vector3 tmp_dir = (node.position - position);
             float dist = tmp_dir.magnitude;
 
             if (CanSeeNode(node, dist, tmp_dir))
@@ -99,7 +104,7 @@ public class Node
                 // continue;
 
                 // if dist > nodesMaxDistance, add in between nodes
-                if (dist > NavigationGraph.maxLinkLength && dist < NavigationGraph.nodesMaxDistance && canCreateNew)
+                if (dist > NavigationGraph.maxLinkLength && dist < NavigationGraph.nodesMaxDistance && canCreateNew && false) // Disable this for now
                 {
                     int nb = (int) (dist / NavigationGraph.maxLinkLength); // compute nb of nodes to add
                     Vector3 dir = (node.position - position).normalized;
@@ -116,8 +121,7 @@ public class Node
                             // If we fail creating an intermediate node, try to use the closest one
                             Node close = NavigationGraph.GetClosestNode(pos);
 
-                            if (close != null && (close.position - pos).magnitude < NavigationGraph.wallOffset)
-                            {
+                            if (close != null && (close.position - pos).magnitude < NavigationGraph.wallOffset) {
                                 tmp = close;
                             }
                             else
@@ -209,27 +213,29 @@ public class NavigationGraph
     }
 
     // A function to get the closest node to a point
-    // TODO (non-urgent) : check in neighbouring clusters too, maybe there will be a closer point
-    public static Node GetClosestNode(Vector3 pos)
+    public static Node GetClosestNode(Vector3 pos, bool check_see = true)
     {
-        List<Node> nodes = GetCluster(pos); // Get the cluster containing this position
+        List<List<Node>> nodes_list = new List<List<Node>>();
         Node res = null;
         float minDist = clusterWidth * 2; // Big init value
 
-        foreach (var item in nodes)
-        {
-            // Look over all the nodes to find the closest
-            float dist = (item.position - pos).magnitude;
+        nodes_list.Add(GetCluster(pos)); // Get the cluster containing this position
+        // Look for the clusters around the current one
+        foreach (var dir in ordinalDirections) {
+            nodes_list.Add(GetCluster(pos + (dir * clusterWidth)));
+        }
+        foreach (var nodes in nodes_list) {
+            foreach (var item in nodes) { // Look over all the nodes to find the closest
+                Vector3 dir = (pos - item.position);
+                float dist = dir.magnitude;
 
-            // && Node.CanSeeNode(item, pos) was removed
-            if (dist < minDist )
-            {
-                res = item;
-                minDist = dist;
+                if (dist < minDist && (check_see || Node.CanSeeNode(item, pos, (dist > 1 ? dist - 1 : dist - (dist / 10)), dir))) {
+                    res = item;
+                    minDist = dist;
+                }
             }
         }
-
-        return res;
+        return res == null && check_see ? GetClosestNode(pos, false) : res;
     }
 
     // Internal utility fonction to recursively get the compoments of "Environment" gameObjects.
@@ -266,7 +272,7 @@ public class NavigationGraph
         };
         Node close = GetClosestNode(pos);
 
-        if (close != null && (close.position - pos).magnitude < wallOffset) // If we have a very close neighbour, abort
+        if (close != null && (close.position - pos).magnitude <= nodeSize) // If we have a very close neighbour, abort
             return null;
         if (Physics.CheckSphere(node.position, nodeSize)) // if we are inside/close to a wall, abort
             return null;
@@ -337,7 +343,7 @@ public class NavigationGraph
             {
                 foreach (var node2 in neighbourCluster)
                 {
-                    Vector3 tmp_dir = (node.position - node2.position);
+                    Vector3 tmp_dir = (node2.position - node.position);
                     float dist = tmp_dir.magnitude;
 
                     if (node.CanSeeNode(node2, dist, tmp_dir))

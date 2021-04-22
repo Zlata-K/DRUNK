@@ -10,6 +10,7 @@ TagManager:
   - Light
   - NPC
   - Hand
+  - GraphNode
   layers:
   - Default
   - TransparentFX

@@ -97,7 +97,16 @@ public class TerrainGeneratorScript : MonoBehaviour
                 {
                     obj = _fillerScript.Generate(i, j);
                 }
-                NavigationGraph.AddNodes(obj);
+                // Small hack to refresh the colliders (saw that on internet, no idea if it really working or not)
+                obj.SetActive(false);
+                obj.SetActive(true);
+                //NavigationGraph.AddNodes(obj);
+                foreach (Transform child in obj.transform) {
+                    if (child.CompareTag("GraphNode")) {
+                        NavigationGraph.CreateNode(child.position);
+                        Destroy(child.gameObject);
+                    }
+                }
             }
         }
         NavigationGraph.ReGenerateAllLinks();
