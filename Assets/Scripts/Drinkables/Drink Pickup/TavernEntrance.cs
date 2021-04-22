@@ -8,7 +8,7 @@ public class TavernEntrance : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameObject.Find("DrinkChoiceCanvas").GetComponent<DrinkChoice>().isActive = true;
+            GameObject.Find("DrinkChoiceCanvas").GetComponent<DrinkChoice>().EnterTheBar();
         }
     }
 }

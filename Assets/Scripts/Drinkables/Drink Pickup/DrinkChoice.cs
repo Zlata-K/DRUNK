@@ -20,115 +20,84 @@ public class DrinkChoice : MonoBehaviour
     [SerializeField] private GameObject buffaloButton;
     [SerializeField] private GameObject clearlyButton;
     [SerializeField] private GameObject flippedButton;
-    
-    private int randomDrink;
-    public bool isActive;
+
     private float timeCounter = 0;
-    private bool randomIsChosen;
-    
+
     void Update()
     {
-        if (isActive)
+        if (menuPanel.activeSelf)
         {
-            Time.timeScale = 0;
-            menuPanel.SetActive(isActive);
-            GenerateRandomDrink();
             timeCounter += Time.unscaledDeltaTime;
 
             if (timeCounter > timeLimit)
             {
-                isActive = false;
-                menuPanel.SetActive(isActive);
-                clearlyButton.SetActive(false);
-                buffaloButton.SetActive(false);
-                flippedButton.SetActive(false);
-                Time.timeScale = 1;
-                timeCounter = 0;
-                randomIsChosen = false;
+                LeaveBar();
             }
         }
     }
 
     private void GenerateRandomDrink()
     {
-        if (!randomIsChosen)
+        var randomDrink = Random.Range(0, 3);
+        if (randomDrink == 0)
         {
-            randomDrink = Random.Range(0, 3);
-            if (randomDrink == 0)
-            {
-                buffaloButton.SetActive(true);
-            }
-            else if (randomDrink == 1)
-            {
-                clearlyButton.SetActive(true);
-            }
-            else
-            {
-                flippedButton.SetActive(true);
-            }
-
-            randomIsChosen = true;
+            buffaloButton.SetActive(true);
+        }
+        else if (randomDrink == 1)
+        {
+            clearlyButton.SetActive(true);
+        }
+        else
+        {
+            flippedButton.SetActive(true);
         }
     }
 
     public void ConsumeBuffalo()
     {
-        isActive = false;
-        menuPanel.SetActive(isActive);
-        clearlyButton.SetActive(false);
-        buffaloButton.SetActive(false);
-        flippedButton.SetActive(false);
-        Time.timeScale = 1;
+        LeaveBar();
         Instantiate(buffaloDrink);
-        randomIsChosen = false;
     }
 
     public void ConsumeClearlyThere()
     {
-        isActive = false;
-        menuPanel.SetActive(isActive);
-        clearlyButton.SetActive(false);
-        buffaloButton.SetActive(false);
-        flippedButton.SetActive(false);
-        Time.timeScale = 1;
+        LeaveBar();
         Instantiate(clearlyDrink);
-        randomIsChosen = false;
     }
 
     public void ConsumeUpsideDown()
     {
-        isActive = false;
-        menuPanel.SetActive(isActive);
-        clearlyButton.SetActive(false);
-        buffaloButton.SetActive(false);
-        flippedButton.SetActive(false);
-        Time.timeScale = 1;
+        LeaveBar();
         Instantiate(flippedDrink);
-        randomIsChosen = false;
     }
 
     public void ConsumeWater()
     {
-        isActive = false;
-        menuPanel.SetActive(isActive);
-        clearlyButton.SetActive(false);
-        buffaloButton.SetActive(false);
-        flippedButton.SetActive(false);
-        Time.timeScale = 1;
+        LeaveBar();
         Instantiate(waterDrink);
-        randomIsChosen = false;
     }
 
     public void ConsumeBeer()
     {
-        isActive = false;
-        menuPanel.SetActive(isActive);
+        LeaveBar();
+        Instantiate(beerDrink);
+    }
+
+    public void EnterTheBar()
+    {
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        timeCounter = 0;
+        menuPanel.SetActive(true);
+        GenerateRandomDrink();
+    }
+
+    public void LeaveBar()
+    {
         clearlyButton.SetActive(false);
         buffaloButton.SetActive(false);
         flippedButton.SetActive(false);
+        menuPanel.SetActive(false);
         Time.timeScale = 1;
-        Instantiate(beerDrink);
-        randomIsChosen = false;
     }
-    
 }
