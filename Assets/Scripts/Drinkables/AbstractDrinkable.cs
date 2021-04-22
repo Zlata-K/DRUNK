@@ -19,10 +19,8 @@ namespace Drinkables
         protected void CommonDrunkennessEffects()
         {
             // All beers will have a base score multiplier of 2
-            // TODO: Update to base score multiplier directly off intoxication level instead.
             Indestructibles.PlayerData.ScoreMultiplier *= 2;
-            if (Indestructibles.PlayerData.IntoxicationLevel < 1.0f)
-                Indestructibles.PlayerData.IntoxicationLevel += 0.1f;
+            Indestructibles.PlayerData.IntoxicationLevel += 0.1f;
             Indestructibles.PlayerAnimator.SetFloat(IntoxicationHash, Indestructibles.PlayerData.IntoxicationLevel);
             // the effects can be changed, i just put vignette first as a PoC
             Indestructibles.Volume.profile.TryGetSettings(out _vignette);
@@ -35,8 +33,7 @@ namespace Drinkables
         protected void SoberUp()
         {
             Indestructibles.PlayerData.ScoreMultiplier /= 2;
-            if (Indestructibles.PlayerData.IntoxicationLevel > 0.0f)
-                Indestructibles.PlayerData.IntoxicationLevel -= 0.1f;
+            Indestructibles.PlayerData.IntoxicationLevel -= 0.1f;
             Indestructibles.PlayerAnimator.SetFloat(IntoxicationHash, Indestructibles.PlayerData.IntoxicationLevel);
             if (_vignette != null)
             {

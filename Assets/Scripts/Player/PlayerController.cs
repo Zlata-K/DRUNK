@@ -2,6 +2,7 @@
 using Drinkables;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Player
@@ -10,15 +11,14 @@ namespace Player
     {
         [SerializeField] private AudioClip[] gruntSounds;
         [SerializeField] private GameManager gameManager;
-        [SerializeField] private bool debugMode;
-        private static readonly int IntoxicationHash = Animator.StringToHash("Intoxication");
 
-        private bool _invincible;
-        private bool _onHitSoberUp = true;
+        [Header("Debug Variables")]
+        public bool invincible;
+        public bool onHitSoberUp = true;
+        
         private int _healthPoints = 3;
         private bool _isDead;
-        
-        private GameObject _belly;
+      
         private Rigidbody _rigidbody;
         private SkinnedMeshRenderer[] _renderers;
         private AudioSource _audioSource;
@@ -29,8 +29,6 @@ namespace Player
         
         private void Awake()
         {
-            _belly = GameObject.Find("Belly");
-            
             _rigidbody = GetComponent<Rigidbody>();
             _renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
             _audioSource = GetComponent<AudioSource>();
@@ -41,20 +39,20 @@ namespace Player
 
         private void Update()
         {
-            if (debugMode)
+            if (Indestructibles.DebugEnabled)
             {
                 // Invincible toggle
-                if (Input.GetKeyDown(KeyCode.I))
+                if (Input.GetKeyDown(Indestructibles.DebugControls.ToggleInvincible))
                 {
-                    _invincible = !_invincible;
+                    invincible = !invincible;
                 } 
                 // OnHit Sober Up toggle
-                if (Input.GetKeyDown(KeyCode.O))
+                if (Input.GetKeyDown(Indestructibles.DebugControls.ToggleSoberOnHit))
                 {
-                    _onHitSoberUp = !_onHitSoberUp;
+                    onHitSoberUp = !onHitSoberUp;
                 } 
                 // drink a regular beer every time the player presses U
-                if (Input.GetKeyDown(KeyCode.U))
+                if (Input.GetKeyDown(Indestructibles.DebugControls.DrinkABeer))
                 {
                     var beer = new GameObject();
                     beer.transform.parent = transform;
@@ -69,7 +67,7 @@ namespace Player
         }
         void DisableInvincible()
         {
-            _invincible = false;
+            invincible = false;
         }
 
         void FlickerModel()
@@ -108,7 +106,7 @@ namespace Player
                 }
             }
 
-            if (other.gameObject.CompareTag("Hand") && !_invincible)
+            if (other.gameObject.CompareTag("Hand") && !invincible)
             {
                 var npcManager = other.transform.root.gameObject.GetComponent<NPCManager>();
                 if (npcManager.IsChasing() && npcManager.Punching && !Indestructibles.PlayerData.IsKnockedOut)
@@ -124,9 +122,9 @@ namespace Player
                     if (--_healthPoints <= 0)
                     {
                         Indestructibles.PlayerData.IsKnockedOut = true;
-                        Indestructibles.PlayerData.IntoxicationLevel = 0.0f;
                         _animator.SetTrigger(Animator.StringToHash("Knocked Out"));
                         gameManager.OnPlayerDeath();
+                        Indestructibles.PlayerData.IntoxicationLevel = 0.0f;
                         ClearEffects();
                         return;
                     }
@@ -139,7 +137,7 @@ namespace Player
                     _rigidbody.AddForce(direction * 5.0f, ForceMode.Impulse);
                     Invoke(nameof(EnableRootMotion), 0.5f);
 
-                    _invincible = true;
+                    invincible = true;
                     Invoke(nameof(DisableInvincible),2.0f);
                 
                     // Flicker effect
@@ -147,16 +145,10 @@ namespace Player
                     Invoke(nameof(StopFlicker),2.0f);
                     
                     // Sober up
-                    if (_onHitSoberUp)
+                    if (onHitSoberUp)
                     {
-                        Indestructibles.PlayerData.IntoxicationLevel -= 0.5f;
-                        if (Indestructibles.PlayerData.IntoxicationLevel < 0.0f)
-                            Indestructibles.PlayerData.IntoxicationLevel = 0.0f;
-                        _animator.SetFloat(IntoxicationHash, Indestructibles.PlayerData.IntoxicationLevel);
-                        if (_vignette != null)
-                        {
-                            _vignette.intensity.value = Indestructibles.PlayerData.IntoxicationLevel;
-                        }
+                        Indestructibles.PlayerData.IntoxicationLevel -= 0.25f;
+                        ClearEffects();
                     }
                 }
                 

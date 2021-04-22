@@ -19,6 +19,10 @@ public static class Indestructibles
     public static readonly Animator PlayerAnimator = Player.GetComponent<Animator>();
     
     // Movement stuff
-    public static KeyControls Controls =
-        new KeyControls(KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A);
+    public static MovementControls MovementControls =
+        new MovementControls(KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A);
+    // Debug stuff
+    public static DebugControls DebugControls =
+        new DebugControls(KeyCode.U, KeyCode.I, KeyCode.O);
+    public static bool DebugEnabled = true;
 }

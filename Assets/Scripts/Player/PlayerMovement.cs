@@ -26,23 +26,6 @@ namespace Code.Scripts
         
         private bool _moveForward, _moveBackward, _moveLeft, _moveRight, _freeLook;
         
-        private void OnDrawGizmos()
-        {
-            var graph = NavigationGraph.graph;
-
-            foreach (var cluster in graph) {
-                foreach (var node in cluster.Value) {
-
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(node.position, 0.5F);
-                    foreach (var link in node.links) {
-                        Gizmos.color = Color.black;
-                        Gizmos.DrawLine(node.position, link.node.position);
-                    }
-                }
-            }
-        }
-
         void Awake()
         {
             Cursor.lockState = CursorLockMode.Confined;
@@ -200,10 +183,10 @@ namespace Code.Scripts
 
         void Update()
         {
-            _moveForward = Input.GetKey(Indestructibles.Controls.MoveForwardKey);
-            _moveLeft = Input.GetKey(Indestructibles.Controls.MoveLeftKey);
-            _moveRight = Input.GetKey(Indestructibles.Controls.MoveRightKey);
-            _moveBackward = Input.GetKey(Indestructibles.Controls.MoveBackwardKey);
+            _moveForward = Input.GetKey(Indestructibles.MovementControls.MoveForwardKey);
+            _moveLeft = Input.GetKey(Indestructibles.MovementControls.MoveLeftKey);
+            _moveRight = Input.GetKey(Indestructibles.MovementControls.MoveRightKey);
+            _moveBackward = Input.GetKey(Indestructibles.MovementControls.MoveBackwardKey);
 
             VelocityUpdate();
             ConstrainVelocity();
