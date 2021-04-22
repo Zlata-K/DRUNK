@@ -65,7 +65,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiles:
+  - {fileID: 2136748595272707288, guid: aa0a24b646f7940068f90bb33ba1c205, type: 3}
+  - {fileID: 2136748595272707288, guid: d804037ee774142e1a311c4c7393711c, type: 3}
   - {fileID: 2136748595272707288, guid: d887a563cda444f3588aad68739d3764, type: 3}
+  - {fileID: 2136748595272707288, guid: d804037ee774142e1a311c4c7393711c, type: 3}
+  - {fileID: 2136748595272707288, guid: d887a563cda444f3588aad68739d3764, type: 3}
+  - {fileID: 2136748595272707288, guid: d804037ee774142e1a311c4c7393711c, type: 3}
 --- !u!114 &6932460680886662697
 MonoBehaviour:
   m_ObjectHideFlags: 0
