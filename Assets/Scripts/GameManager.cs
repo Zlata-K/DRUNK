@@ -21,6 +21,21 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("GameOverMenu");
     }
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 1)
+        {
+            Indestructibles.SetDefaultValues();
+        }
+    }
     private void OnDrawGizmos()
     {
         var graph = NavigationGraph.graph;

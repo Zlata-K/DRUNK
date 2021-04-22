@@ -14,7 +14,7 @@ namespace Player
 
         [Header("Debug Variables")]
         public bool invincible;
-        public bool onHitSoberUp = true;
+        public bool onHitSoberUp;
         
         private int _healthPoints = 3;
         private bool _isDead;
@@ -27,7 +27,7 @@ namespace Player
         
         private Vignette _vignette;
         
-        private void Awake()
+        private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
             _renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -90,6 +90,7 @@ namespace Player
         void ClearEffects()
         {
             Indestructibles.Volume.profile.TryGetSettings(out _vignette);
+            _animator.SetFloat(Animator.StringToHash("Intoxication"), Indestructibles.PlayerData.IntoxicationLevel);
             if (_vignette != null)
             {
                 _vignette.intensity.value = Indestructibles.PlayerData.IntoxicationLevel;
