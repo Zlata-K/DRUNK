@@ -30,6 +30,10 @@ namespace UI
         {
             Time.timeScale = 1;
             pausePanel.SetActive(false);
+            if (GameObject.Find("DrinkChoiceCanvas").GetComponent<DrinkChoice>().wasActive)
+            {
+                GameObject.Find("DrinkChoiceCanvas").transform.Find("Menu").gameObject.SetActive(true);
+            }
         }
 
         public void Quit2MainMenu()
