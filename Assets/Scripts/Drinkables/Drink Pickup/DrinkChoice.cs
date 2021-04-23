@@ -21,8 +21,14 @@ public class DrinkChoice : MonoBehaviour
 
     private float timeCounter = 0;
     public bool wasActive;
+    private GameObject countdownPanel;
 
-    void Update()
+    private void Start()
+    {
+        countdownPanel = transform.Find("Menu").Find("Countdown").gameObject;
+    }
+
+    private void Update()
     {
         if (GameObject.Find("PauseCanvas").transform.Find("MainPanel").gameObject.activeSelf && menuPanel.activeSelf)
         {
@@ -33,11 +39,11 @@ public class DrinkChoice : MonoBehaviour
         {
             wasActive = false;
             timeCounter += Time.unscaledDeltaTime;
-            transform.Find("Menu").Find("Countdown").gameObject.GetComponent<Text>().text = Math.Round(timeLimit - timeCounter).ToString();
+            countdownPanel.GetComponent<Text>().text = Math.Round(timeLimit - timeCounter).ToString();
 
             if (timeCounter > timeLimit)
             {
-                transform.Find("Menu").Find("Countdown").gameObject.GetComponent<Text>().text = "";
+                countdownPanel.GetComponent<Text>().text = "";
                 LeaveBar();
             }
         }

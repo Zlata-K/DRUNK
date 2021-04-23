@@ -6,7 +6,13 @@ namespace UI
     public class PauseMenu : Menu
     {
         [SerializeField] private GameObject pausePanel;
+        private GameObject drinkChoiceCanvas;
 
+        private void Start()
+        {
+            drinkChoiceCanvas = GameObject.Find("DrinkChoiceCanvas");
+        }
+        
         private void Update()
         {
             UpdatePauseStatus();
@@ -19,9 +25,9 @@ namespace UI
                 Time.timeScale = 1 - Time.timeScale;
                 pausePanel.SetActive(!pausePanel.activeSelf);
 
-                if (!pausePanel.activeSelf && GameObject.Find("DrinkChoiceCanvas").GetComponent<DrinkChoice>().wasActive)
+                if (!pausePanel.activeSelf && drinkChoiceCanvas.GetComponent<DrinkChoice>().wasActive)
                 {
-                    GameObject.Find("DrinkChoiceCanvas").transform.Find("Menu").gameObject.SetActive(true);
+                    drinkChoiceCanvas.transform.Find("Menu").gameObject.SetActive(true);
                 }
             }
         }
@@ -30,9 +36,9 @@ namespace UI
         {
             Time.timeScale = 1;
             pausePanel.SetActive(false);
-            if (GameObject.Find("DrinkChoiceCanvas").GetComponent<DrinkChoice>().wasActive)
+            if (drinkChoiceCanvas.GetComponent<DrinkChoice>().wasActive)
             {
-                GameObject.Find("DrinkChoiceCanvas").transform.Find("Menu").gameObject.SetActive(true);
+                drinkChoiceCanvas.transform.Find("Menu").gameObject.SetActive(true);
             }
         }
 

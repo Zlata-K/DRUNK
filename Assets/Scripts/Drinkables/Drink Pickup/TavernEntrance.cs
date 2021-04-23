@@ -9,11 +9,13 @@ public class TavernEntrance : MonoBehaviour
 
     private bool tavernOpen;
     private float cooldown;
-
+    private GameObject lights;
+    
     private void Start()
     {
         tavernOpen = true;
         cooldown = 0;
+        lights = transform.Find("Illumination").gameObject;
     }
 
     private void Update()
@@ -21,12 +23,12 @@ public class TavernEntrance : MonoBehaviour
         if (!tavernOpen)
         {
             cooldown += Time.deltaTime;
-            this.transform.Find("Illumination").gameObject.SetActive(false);
+            lights.SetActive(false);
             if (cooldown > tavernCoolDown)
             {
                 tavernOpen = true;
                 cooldown = 0;
-                this.transform.Find("Illumination").gameObject.SetActive(true);
+                lights.SetActive(true);
             }
         }
     }
