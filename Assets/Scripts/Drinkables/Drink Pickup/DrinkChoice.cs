@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Drinkables;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 
@@ -28,9 +29,11 @@ public class DrinkChoice : MonoBehaviour
         if (menuPanel.activeSelf)
         {
             timeCounter += Time.unscaledDeltaTime;
+            transform.Find("Menu").Find("Countdown").gameObject.GetComponent<Text>().text = Math.Round(timeLimit - timeCounter).ToString();
 
             if (timeCounter > timeLimit)
             {
+                transform.Find("Menu").Find("Countdown").gameObject.GetComponent<Text>().text = "";
                 LeaveBar();
             }
         }
