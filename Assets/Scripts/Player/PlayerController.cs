@@ -12,8 +12,7 @@ namespace Player
     {
         [SerializeField] private AudioClip[] gruntSounds;
         [SerializeField] private GameManager gameManager;
-        [SerializeField] private UIManager uiManager;
-        
+
         [Header("Debug Variables")]
         [SerializeField] private bool invincible;
         [SerializeField] private bool onHitSoberUp;
@@ -126,7 +125,7 @@ namespace Player
         void AddPoint()
         {
             Indestructibles.PlayerData.CurrentScore += 1 * Indestructibles.PlayerData.ScoreMultiplier;
-            uiManager.RefreshUI();
+            Indestructibles.UIManager.RefreshUI();
         }
         void OnTriggerEnter(Collider other)
         {
@@ -159,6 +158,7 @@ namespace Player
                         gameManager.OnPlayerDeath();
                         Indestructibles.PlayerData.IntoxicationLevel = 0.0f;
                         ClearEffects();
+                        CancelInvoke(nameof(AddPoint));
                     }
                     else
                     {
@@ -206,7 +206,6 @@ namespace Player
             if (other.gameObject.CompareTag("NPC"))
             {
                 other.gameObject.GetComponent<NPCManager>().StopPunching();
-                
             }
         }
 

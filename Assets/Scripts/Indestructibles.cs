@@ -32,7 +32,7 @@ public static class Indestructibles
 
     public static void SetDefaultValues()
     {
-        UIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        UIManager = GameObject.Find("UI").GetComponent<UIManager>();
         Volume = GameObject.Find("Camera").GetComponent<PostProcessVolume>();
         
         Player = GameObject.Find("player");
