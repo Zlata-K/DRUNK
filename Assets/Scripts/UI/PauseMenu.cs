@@ -34,6 +34,9 @@ namespace UI
 
         public void UnpauseGame()
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+            
             Time.timeScale = 1;
             pausePanel.SetActive(false);
             
@@ -41,6 +44,7 @@ namespace UI
             {
                 drinkChoiceCanvas.transform.Find("Menu").gameObject.SetActive(true);
             }
+            
         }
 
         public void Quit2MainMenu()

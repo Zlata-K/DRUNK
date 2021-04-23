@@ -9,7 +9,7 @@ namespace Drinkables
             Drink();
             Invoke($"StopDrinkingEffect", 10.0f);
             Invoke($"SoberUp", Indestructibles.SoberingTime);
-            Indestructibles.UIManager.AddEffect("ClearlyThere", Color.yellow, 15.0f);
+            Indestructibles.UIManager.AddEffect("ClearlyThere", Color.yellow, 10.0f);
         }
 
         protected override void Drink()

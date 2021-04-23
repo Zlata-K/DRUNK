@@ -107,6 +107,9 @@ public class DrinkChoice : MonoBehaviour
 
     public void LeaveBar()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+        
         clearlyButton.SetActive(false);
         buffaloButton.SetActive(false);
         flippedButton.SetActive(false);
