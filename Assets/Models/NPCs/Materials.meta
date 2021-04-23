@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Unity Assets/VillagePack/Well/Well.fbm.meta
+<<<<<<< HEAD
+guid: d8b0506a5339b444e80c5f59da4215b0
+=======
+guid: f1c4cdd839a9fbb4dbf017161a90de16
+>>>>>>> main
+=======
 guid: fc78cb6df68fced4486346446a4d9bbb
+>>>>>>> main:Assets/Models/NPCs/Materials.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
