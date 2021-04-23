@@ -2,14 +2,14 @@
 
 namespace Structs
 {
-    public struct KeyControls
+    public struct MovementControls
     {
         public KeyCode MoveForwardKey { get; set; }
         public KeyCode MoveBackwardKey { get; set; }
         public KeyCode MoveRightKey { get; set; }
         public KeyCode MoveLeftKey { get; set; }
 
-        public KeyControls(KeyCode forward, KeyCode backward, KeyCode right, KeyCode left)
+        public MovementControls(KeyCode forward, KeyCode backward, KeyCode right, KeyCode left)
         {
             MoveForwardKey = forward;
             MoveBackwardKey = backward;

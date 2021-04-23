@@ -7,7 +7,7 @@ namespace Code.Scripts
 {
     [RequireComponent(typeof(Animator))]
     // Controller class for the player to allow movement of the player model in the demo scene. (Mostly taken from Lab1)
-    public class PlayerMovementController : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Transform thirdPersonCamera;
         [SerializeField] private float acceleration = 1.5f;
@@ -23,36 +23,19 @@ namespace Code.Scripts
         private Vector3 _velocityJiggle;
         private Vector3 _currentMaxVelocities;
         private Vector3 _currentMinVelocities;
+        
         private bool _moveForward, _moveBackward, _moveLeft, _moveRight, _freeLook;
-
-        private GameObject _belly;
-
-        private void OnDrawGizmos()
-        {
-            var graph = NavigationGraph.graph;
-
-            foreach (var cluster in graph) {
-                foreach (var node in cluster.Value) {
-
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(node.position, 0.5F);
-                    foreach (var link in node.links) {
-                        Gizmos.color = Color.black;
-                        Gizmos.DrawLine(node.position, link.node.position);
-                    }
-                }
-            }
-        }
-
+        
         void Awake()
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
+            
             _currentMaxVelocities= maxVelocities;
             _currentMinVelocities = new Vector3(0.0f,0.0f,0.0f);
-            _belly = GameObject.Find("Belly");
-            InvokeRepeating($"VelocityJiggle", 0.0f, 1.0f);
-            InvokeRepeating($"JiggleReset", 0.5f, 1.0f);
+
+            InvokeRepeating(nameof(VelocityJiggle), 0.0f, 1.0f);
+            InvokeRepeating(nameof(JiggleReset), 0.5f, 1.0f);
         }
 
         private void VelocityUpdate()
@@ -200,10 +183,10 @@ namespace Code.Scripts
 
         void Update()
         {
-            _moveForward = Input.GetKey(Indestructibles.Controls.MoveForwardKey);
-            _moveLeft = Input.GetKey(Indestructibles.Controls.MoveLeftKey);
-            _moveRight = Input.GetKey(Indestructibles.Controls.MoveRightKey);
-            _moveBackward = Input.GetKey(Indestructibles.Controls.MoveBackwardKey);
+            _moveForward = Input.GetKey(Indestructibles.MovementControls.MoveForwardKey);
+            _moveLeft = Input.GetKey(Indestructibles.MovementControls.MoveLeftKey);
+            _moveRight = Input.GetKey(Indestructibles.MovementControls.MoveRightKey);
+            _moveBackward = Input.GetKey(Indestructibles.MovementControls.MoveBackwardKey);
 
             VelocityUpdate();
             ConstrainVelocity();
@@ -215,19 +198,7 @@ namespace Code.Scripts
 
             Indestructibles.PlayerAnimator.SetFloat(VelocityXHash, _velocity.x);
             Indestructibles.PlayerAnimator.SetFloat(VelocityZHash, _velocity.z);
-
-            // the next few lines are just for debugging purposes
-            // when you press U, the player will drink a beer and the beer's effects will take place
-            // it does not currently handle the case where water is drank --> this is just to give
-            // an idea in regards to the general architecture.
-
-            // drink a regular beer every time the player presses U
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                var beer = new GameObject();
-                beer.transform.parent = transform;
-                beer.AddComponent<RegularBeer>();
-            }
+            
         }
 
         void VelocityJiggle()
@@ -248,5 +219,6 @@ namespace Code.Scripts
             _currentMinVelocities.x = 0.0f;
             _currentMinVelocities.z = 0.0f;
         }
+        
     }
 }
