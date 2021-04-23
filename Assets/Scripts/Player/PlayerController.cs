@@ -13,8 +13,8 @@ namespace Player
         [SerializeField] private GameManager gameManager;
 
         [Header("Debug Variables")]
-        public bool invincible;
-        public bool onHitSoberUp;
+        [SerializeField] private bool invincible;
+        [SerializeField] private bool onHitSoberUp;
         
         private int _healthPoints = 3;
         private bool _isDead;
