@@ -1,5 +1,6 @@
 ﻿using Player;
 using Structs;
+using UI;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
@@ -21,12 +22,17 @@ public static class Indestructibles
     
     // Movement stuff
     public static MovementControls MovementControls;
+    
     // Debug stuff
     public static DebugControls DebugControls;
     public static bool DebugEnabled;
+    
+    // UI Stuff
+    public static UIManager UIManager;
 
     public static void SetDefaultValues()
     {
+        UIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         Volume = GameObject.Find("Camera").GetComponent<PostProcessVolume>();
         
         Player = GameObject.Find("player");
@@ -36,7 +42,13 @@ public static class Indestructibles
         
         MovementControls = new MovementControls(KeyCode.W, KeyCode.S, KeyCode.D, KeyCode.A);
         
-        DebugControls = new DebugControls(KeyCode.U, KeyCode.I, KeyCode.O);
+        DebugControls = new DebugControls(
+            KeyCode.V,
+            KeyCode.B,
+            KeyCode.N,
+            KeyCode.M,
+            KeyCode.I,
+            KeyCode.O);
         DebugEnabled = true;
     }
 }

@@ -9,6 +9,7 @@ namespace Drinkables
             Drink();
             Invoke($"StopDrinkingEffect", 10.0f);
             Invoke($"SoberUp", Indestructibles.SoberingTime);
+            Indestructibles.UIManager.AddEffect("ClearlyThere", Color.yellow, 15.0f);
         }
 
         protected override void Drink()
@@ -29,9 +30,9 @@ namespace Drinkables
                     material.color = transparency;
                 }
             }
-
-            Indestructibles.PlayerData.ScoreMultiplier /= 4;
+            
             Indestructibles.PlayerData.LastSeenPosition = Indestructibles.Player.transform.position;
+            Indestructibles.PlayerData.CurrentScore += 10 * Indestructibles.PlayerData.ScoreMultiplier;
             CommonDrunkennessEffects();
         }
 
@@ -53,7 +54,6 @@ namespace Drinkables
             }
 
             Indestructibles.PlayerData.ClearlyThereStack--;
-            Indestructibles.PlayerData.ScoreMultiplier *= 4;
         }
     }
 }
