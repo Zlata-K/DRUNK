@@ -4150,7 +4150,7 @@ MonoBehaviour:
     type: 3}
   beerDrink: {fileID: 130212357125625971, guid: cbab19f0dcba84e8e853ea4586a9d9a4,
     type: 3}
-  timeLimit: 5
+  timeLimit: 3
   buffaloButton: {fileID: 68264244}
   clearlyButton: {fileID: 2016506384}
   flippedButton: {fileID: 1151836525}
