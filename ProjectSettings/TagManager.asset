@@ -8,6 +8,8 @@ TagManager:
   - ClearlyDrink
   - FlippedDrink
   - Light
+  - NPC
+  - Hand
   layers:
   - Default
   - TransparentFX

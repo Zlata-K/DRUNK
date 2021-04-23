@@ -18,7 +18,7 @@ namespace Drinkables
             // Only inverse if this is the only `Upside Down` beer in the player's belly
             if (Indestructibles.PlayerData.UpsideDownStack == 1)
             {
-                Indestructibles.Controls.InverseKeys();
+                Indestructibles.MovementControls.InverseKeys();
             }
 
             Indestructibles.PlayerData.ScoreMultiplier *= 2;
@@ -31,7 +31,7 @@ namespace Drinkables
             // player's belly
             if (Indestructibles.PlayerData.UpsideDownStack == 1)
             {
-                Indestructibles.Controls.InverseKeys();
+                Indestructibles.MovementControls.InverseKeys();
             }
 
             Indestructibles.PlayerData.UpsideDownStack--;
