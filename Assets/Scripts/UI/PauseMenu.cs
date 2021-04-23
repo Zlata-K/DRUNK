@@ -22,7 +22,7 @@ namespace UI
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Time.timeScale = 1 - Time.timeScale;
+                Time.timeScale = drinkChoiceCanvas.activeSelf ? 0 : 1;
                 pausePanel.SetActive(!pausePanel.activeSelf);
 
                 if (!pausePanel.activeSelf && drinkChoiceCanvas.GetComponent<DrinkChoice>().wasActive)
@@ -36,6 +36,7 @@ namespace UI
         {
             Time.timeScale = 1;
             pausePanel.SetActive(false);
+            
             if (drinkChoiceCanvas.GetComponent<DrinkChoice>().wasActive)
             {
                 drinkChoiceCanvas.transform.Find("Menu").gameObject.SetActive(true);
