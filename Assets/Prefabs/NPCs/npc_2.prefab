@@ -1099,9 +1099,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2275935614733076314}
+  - component: {fileID: 1849709891263647894}
   m_Layer: 0
   m_Name: RightHand
-  m_TagString: Untagged
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1123,6 +1124,19 @@ Transform:
   m_Father: {fileID: 4739041076915766956}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1849709891263647894
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7759173803082838314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1517784
+  m_Center: {x: 0.07, y: -0.009776652, z: -6.474812e-11}
 --- !u!1 &8065451041514526583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,9 +1246,10 @@ GameObject:
   - component: {fileID: 115960195}
   - component: {fileID: 1723136554}
   - component: {fileID: 1723136555}
+  - component: {fileID: 6971136531528647151}
   m_Layer: 0
   m_Name: npc_2
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1286,8 +1301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feffdb661d50754ea42d89a0db3d954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bumpingSounds:
-  - {fileID: 8300000, guid: f3e65452acdaf1e49ad50b10ca24ce58, type: 3}
 --- !u!82 &115960193
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1397,6 +1410,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModelSpeedMultiplier: 1.05
+  bumpingSounds:
+  - {fileID: 8300000, guid: 5658fdda65f59ec41b7147b533b6ed85, type: 3}
+  - {fileID: 8300000, guid: f3e65452acdaf1e49ad50b10ca24ce58, type: 3}
 --- !u!54 &1723136554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1423,10 +1439,24 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.27983522
-  m_Height: 1.9679128
+  m_Radius: 0.56999993
+  m_Height: 2.6783247
   m_Direction: 1
-  m_Center: {x: -0, y: 1.1095922, z: 0}
+  m_Center: {x: 0, y: 1.4647982, z: 0}
+--- !u!136 &6971136531528647151
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500611806986081382}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.6940569
+  m_Height: 3.621671
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.2483333, z: 0.0026543937}
 --- !u!1 &8621493740808349076
 GameObject:
   m_ObjectHideFlags: 0

@@ -1165,10 +1165,11 @@ GameObject:
   - component: {fileID: 1998947194}
   - component: {fileID: 1998947196}
   - component: {fileID: 1939176866}
-  - component: {fileID: 1939176867}
+  - component: {fileID: 4783397422208087322}
+  - component: {fileID: 4136114656225536344}
   m_Layer: 0
   m_Name: npc_4
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1222,8 +1223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feffdb661d50754ea42d89a0db3d954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bumpingSounds:
-  - {fileID: 8300000, guid: 5658fdda65f59ec41b7147b533b6ed85, type: 3}
 --- !u!82 &1998947194
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1333,6 +1332,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModelSpeedMultiplier: 0.935
+  bumpingSounds:
+  - {fileID: 8300000, guid: 5658fdda65f59ec41b7147b533b6ed85, type: 3}
+  - {fileID: 8300000, guid: f3e65452acdaf1e49ad50b10ca24ce58, type: 3}
 --- !u!54 &1939176866
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1349,7 +1351,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!136 &1939176867
+--- !u!136 &4783397422208087322
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1359,10 +1361,24 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.27983522
-  m_Height: 2.0072227
+  m_Radius: 0.3
+  m_Height: 1.83
   m_Direction: 1
-  m_Center: {x: -0, y: 1.0899373, z: 0}
+  m_Center: {x: -0, y: 1.07, z: 0}
+--- !u!136 &4136114656225536344
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4879426342101109162}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.7482998
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.81164837, z: 0}
 --- !u!1 &4886308371611335588
 GameObject:
   m_ObjectHideFlags: 0
@@ -2083,9 +2099,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3015923439139035798}
+  - component: {fileID: 7094692932457186816}
   m_Layer: 0
   m_Name: RightHand
-  m_TagString: Untagged
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2109,6 +2126,19 @@ Transform:
   m_Father: {fileID: 8614116982875741024}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7094692932457186816
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6764712817107905766}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.06515785
+  m_Center: {x: -0.07, y: -0.022047456, z: -0.000008898794}
 --- !u!1 &7026024756904007203
 GameObject:
   m_ObjectHideFlags: 0
