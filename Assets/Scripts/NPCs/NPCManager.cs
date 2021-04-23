@@ -93,7 +93,7 @@ public class NPCManager : MonoBehaviour
 
     public bool IsChasing()
     {
-        return _stateMachine.CurrentState.GetType() == typeof(Chase);
+        return _stateMachine != null && _stateMachine.CurrentState.GetType() == typeof(Chase);
     }
     public void StartPunching()
     {
