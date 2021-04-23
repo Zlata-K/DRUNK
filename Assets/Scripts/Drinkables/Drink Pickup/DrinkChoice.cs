@@ -6,9 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-
-//using Random = System.Random;
-
 public class DrinkChoice : MonoBehaviour
 {
     [SerializeField] private GameObject menuPanel;
@@ -23,11 +20,18 @@ public class DrinkChoice : MonoBehaviour
     [SerializeField] private GameObject flippedButton;
 
     private float timeCounter = 0;
+    public bool wasActive;
 
     void Update()
     {
-        if (menuPanel.activeSelf)
+        if (GameObject.Find("PauseCanvas").transform.Find("MainPanel").gameObject.activeSelf && menuPanel.activeSelf)
         {
+            menuPanel.SetActive(false);
+            wasActive = true;
+        }
+        else if (menuPanel.activeSelf)
+        {
+            wasActive = false;
             timeCounter += Time.unscaledDeltaTime;
             transform.Find("Menu").Find("Countdown").gameObject.GetComponent<Text>().text = Math.Round(timeLimit - timeCounter).ToString();
 

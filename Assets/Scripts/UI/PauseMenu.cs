@@ -18,6 +18,11 @@ namespace UI
             {
                 Time.timeScale = 1 - Time.timeScale;
                 pausePanel.SetActive(!pausePanel.activeSelf);
+
+                if (!pausePanel.activeSelf && GameObject.Find("DrinkChoiceCanvas").GetComponent<DrinkChoice>().wasActive)
+                {
+                    GameObject.Find("DrinkChoiceCanvas").transform.Find("Menu").gameObject.SetActive(true);
+                }
             }
         }
 
