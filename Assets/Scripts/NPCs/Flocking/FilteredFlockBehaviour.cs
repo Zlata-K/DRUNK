@@ -1,36 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class FilteredFlockBehavior : FlockBehaviour
+namespace NPCs.Flocking
 {
-    [SerializeField] protected ContextFilter filter;
-    
-    protected List<Transform> RemoveElementFromContextByName(List<Transform> context, string name)
+    public abstract class FilteredFlockBehavior : FlockBehaviour
     {
-        List<Transform> filteredContext = new List<Transform>(context);
-        foreach (Transform element in context)
-        {
-            if (element.name == name)
-            {
-                filteredContext.Remove(element);
-            }
-        }
-        
-        return filteredContext;
-    }
+        [SerializeField] protected ContextFilter filter;
     
-    protected List<Transform> RemoveItSelfFromContext(List<Transform> context, NPCManager npc)
-    {
-        List<Transform> filteredContext = new List<Transform>(context);
-        foreach (Transform element in context)
+        protected List<Transform> RemoveElementFromContextByName(List<Transform> context, string gameObjectName)
         {
-            if (element == npc.transform)
+            List<Transform> filteredContext = new List<Transform>(context);
+            foreach (Transform element in context)
             {
-                filteredContext.Remove(element);
+                if (element.name == gameObjectName)
+                {
+                    filteredContext.Remove(element);
+                }
             }
-        }
         
-        return filteredContext;
+            return filteredContext;
+        }
+    
+        protected List<Transform> RemoveItSelfFromContext(List<Transform> context, NPCManager npc)
+        {
+            List<Transform> filteredContext = new List<Transform>(context);
+            foreach (Transform element in context)
+            {
+                if (element == npc.transform)
+                {
+                    filteredContext.Remove(element);
+                }
+            }
+        
+            return filteredContext;
+        }
     }
 }

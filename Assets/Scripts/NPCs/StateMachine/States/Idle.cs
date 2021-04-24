@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Idle : State
+﻿namespace NPCs.StateMachine.States
 {
-    public override void Move()
+    public class Idle : State
     {
-        //No movement
+        public override void Move()
+        {
+            //No movement
+        }
     }
 }

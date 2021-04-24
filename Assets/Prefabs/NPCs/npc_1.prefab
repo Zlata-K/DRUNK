@@ -653,8 +653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feffdb661d50754ea42d89a0db3d954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _avoidObstacles: {fileID: 11400000, guid: f318d320cd24dad429cea449e1115d6b, type: 2}
-  _avoidNPCs: {fileID: 11400000, guid: 0e1eaca2bb2bc724988edbc0caec2ec5, type: 2}
+  avoidObstacles: {fileID: 11400000, guid: f318d320cd24dad429cea449e1115d6b, type: 2}
+  avoidNpCs: {fileID: 11400000, guid: 0e1eaca2bb2bc724988edbc0caec2ec5, type: 2}
 --- !u!82 &1072342135
 AudioSource:
   m_ObjectHideFlags: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed9c945424cda848adb607e9e38f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModelSpeedMultiplier: 1
+  modelSpeedMultiplier: 1
   bumpingSounds:
   - {fileID: 8300000, guid: 47560b5d0b79a9c4c822cb1325717785, type: 3}
   - {fileID: 8300000, guid: 3fcd211958e867846b1855ece95c0876, type: 3}

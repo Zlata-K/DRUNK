@@ -1,50 +1,53 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Flock/Behaviour/Composite")]
-public class CompositeBehaviour : FlockBehaviour
+namespace NPCs.Flocking.Behaviour
 {
-    [SerializeField] private FlockBehaviour[] behaviours;
-    [SerializeField] private float[] weights;
-
-    public FlockBehaviour[] Behaviours
+    [CreateAssetMenu(menuName = "Flock/Behaviour/Composite")]
+    public class CompositeBehaviour : FlockBehaviour
     {
-        get => behaviours;
-        set => behaviours = value;
-    }
+        [SerializeField] private FlockBehaviour[] behaviours;
+        [SerializeField] private float[] weights;
 
-    public float[] Weights
-    {
-        get => weights;
-        set => weights = value;
-    }
+        public FlockBehaviour[] Behaviours
+        {
+            get => behaviours;
+            set => behaviours = value;
+        }
+
+        public float[] Weights
+        {
+            get => weights;
+            set => weights = value;
+        }
     
-    public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
-    {
-        //handle data mismatch
-        if (weights.Length != behaviours.Length)
+        public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
         {
-            Debug.LogError("Data mismatch in " + name, this);
-            return Vector3.zero;
-        }
-        
-        Vector3 move = Vector3.zero;
-
-        for(int index = 0; index < behaviours.Length; index++)
-        {
-            Vector3 partialMove = behaviours[index].CalculateMove(npc, context, flock) * weights[index];
-
-            if (partialMove != Vector3.zero)
+            //handle data mismatch
+            if (Weights.Length != Behaviours.Length)
             {
-                if (partialMove.sqrMagnitude > weights[index] * weights[index])
-                {
-                    partialMove = partialMove.normalized * weights[index];
-                }
-                
-                move += partialMove;
+                Debug.LogError("Data mismatch in " + name, this);
+                return Vector3.zero;
             }
+        
+            Vector3 move = Vector3.zero;
+
+            for(int index = 0; index < Behaviours.Length; index++)
+            {
+                Vector3 partialMove = Behaviours[index].CalculateMove(npc, context, flock) * Weights[index];
+
+                if (partialMove != Vector3.zero)
+                {
+                    if (partialMove.sqrMagnitude > Weights[index] * Weights[index])
+                    {
+                        partialMove = partialMove.normalized * Weights[index];
+                    }
+                
+                    move += partialMove;
+                }
+            }
+            move.y = 0;
+            return move;
         }
-        move.y = 0;
-        return move;
     }
 }

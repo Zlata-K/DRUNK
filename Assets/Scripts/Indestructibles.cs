@@ -1,4 +1,5 @@
-﻿using Player;
+﻿using NPCs.Flocking;
+using Player;
 using Structs;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;

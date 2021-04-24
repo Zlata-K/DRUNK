@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Flocking : State
+﻿namespace NPCs.StateMachine.States
 {
-    public override void Move()
+    public class Flocking : State
     {
-        //Let the flocking manager define NPC movements
+        public override void Move()
+        {
+            //Let the flocking manager define NPC movements
+        }
     }
 }

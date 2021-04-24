@@ -1,39 +1,52 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Flock/Behaviour/Avoidance")]
+namespace NPCs.Flocking.Behaviour
+{
+    [CreateAssetMenu(menuName = "Flock/Behaviour/Avoidance")]
 
 //Move agent away from the neighbour agents
-public class AvoidanceBehaviour : FilteredFlockBehavior
-{
-    public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
+    public class AvoidanceBehaviour : FilteredFlockBehavior
     {
-        Vector3 avoidanceMove = Vector3.zero;
-        int nAvoid = 0;
-        List<Transform> filteredContext = (filter == null) ? context : filter.Filter(npc, context);
-        filteredContext = (filter == null) ? filteredContext : RemoveElementFromContextByName(filteredContext, "Ground");
-        filteredContext = (filter == null) ? filteredContext : RemoveElementFromContextByName(filteredContext, "RightHand");
-        filteredContext = (filter == null) ? filteredContext : RemoveItSelfFromContext(filteredContext, npc);
-        if(filteredContext.Count == 0)
-            return Vector3.zero;
-        
-        foreach (Transform item in filteredContext)
+        public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
         {
-            nAvoid++;
-            avoidanceMove += (npc.transform.position - item.position);
-            /*if (Vector3.SqrMagnitude(item.position - npc.transform.position) < flock.SquareAvoidanceRadius)
+            Vector3 avoidanceMove = Vector3.zero;
+            int nAvoid = 0;
+
+            var filteredContext = FilterContext(context, npc);
+            
+            if (filteredContext.Count == 0)
+            {
+                return Vector3.zero;
+            }
+
+            foreach (Transform item in filteredContext)
             {
                 nAvoid++;
                 avoidanceMove += (npc.transform.position - item.position);
-            }*/
+            }
+
+            if (nAvoid > 0)
+            {
+                avoidanceMove /= nAvoid;
+            }
+
+            return avoidanceMove;
         }
 
-        if (nAvoid > 0)
+        private List<Transform> FilterContext(List<Transform> context, NPCManager npc)
         {
-            avoidanceMove /= nAvoid;
+            List<Transform> filteredContext = (filter == null) ? context : filter.Filter(npc, context);
 
+            filteredContext = (filter == null)
+                ? filteredContext
+                : RemoveElementFromContextByName(filteredContext, "Ground");
+
+            filteredContext = (filter == null)
+                ? filteredContext
+                : RemoveElementFromContextByName(filteredContext, "RightHand");
+
+            return filter == null ? filteredContext : RemoveItSelfFromContext(filteredContext, npc);
         }
-
-        return avoidanceMove;
     }
 }
