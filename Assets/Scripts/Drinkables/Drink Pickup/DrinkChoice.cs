@@ -30,7 +30,7 @@ public class DrinkChoice : MonoBehaviour
 
     private void Update()
     {
-        if (GameObject.Find("PauseCanvas").transform.Find("MainPanel").gameObject.activeSelf && menuPanel.activeSelf)
+        if (GameObject.Find("Canvas").transform.Find("MainPanel").gameObject.activeSelf && menuPanel.activeSelf)
         {
             menuPanel.SetActive(false);
             wasActive = true;
@@ -107,6 +107,9 @@ public class DrinkChoice : MonoBehaviour
 
     public void LeaveBar()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+        
         clearlyButton.SetActive(false);
         buffaloButton.SetActive(false);
         flippedButton.SetActive(false);
