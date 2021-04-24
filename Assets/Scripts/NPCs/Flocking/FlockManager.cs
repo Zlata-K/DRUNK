@@ -22,6 +22,7 @@ namespace NPCs.Flocking
         private PlayerData _playerData;
         private bool _agentReachedNode = true;
         private NPCManager _closestAgentToPlayer;
+        private List<Node> pathTest = new List<Node>();
 
         public Vector3 CurrentTargetLocation => _currentTargetLocation;
 
@@ -36,7 +37,8 @@ namespace NPCs.Flocking
             if (_agents.Count < 1)
                 return;
 
-            if (_agentReachedNode)
+            if (_agentReachedNode || !Node.CanSeeNode(NavigationGraph.GetClosestNode(_currentTargetLocation),
+                GetPositionOfClosestAgent()))
             {
                 ComputeAStarForFlock();
                 _agentReachedNode = false;
@@ -50,7 +52,8 @@ namespace NPCs.Flocking
             Node npcNode = NavigationGraph.GetClosestNode(GetPositionOfClosestAgent());
             Node playerNode = NavigationGraph.GetClosestNode(_playerData.LastSeenPosition);
 
-            List<Node> path = Pathfinding.Astar(npcNode, playerNode);
+            List<Node> path = Pathfinding.Astar(npcNode, playerNode); 
+            pathTest = path;
 
             if (path == null)
             {
@@ -134,6 +137,19 @@ namespace NPCs.Flocking
                 npc.LookWhereYouAreGoing(velocity);
                 npc.SetAnimatorVelocity(npc.GetModelSpeed(velocity.magnitude) * Vector3.forward);
             }
+        }
+        
+        private void OnDrawGizmos()
+        {
+            var graph = NavigationGraph.graph;
+            
+                foreach (var node in pathTest) {
+
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(node.position, 0.5F);
+
+                }
+            
         }
     }
 }

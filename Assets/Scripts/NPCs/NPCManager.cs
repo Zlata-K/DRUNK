@@ -25,6 +25,8 @@ namespace NPCs
         [SerializeField] private float modelSpeedMultiplier;
         [SerializeField] private AudioClip[] bumpingSounds;
 
+        private Vector3 _previousLocation;
+
         public Rigidbody Rigidbody => _rigidbody;
         public Animator Animator => _animator;
         public AudioSource AudioSource => _audioSource;
@@ -43,6 +45,8 @@ namespace NPCs
             _agentCollider = GetComponent<Collider>();
             _stateMachine = GetComponent<NPCStateMachine>();
             _punchLayerIndex = _animator.GetLayerIndex($"Punch Layer");
+            _previousLocation = transform.position;
+            InvokeRepeating(nameof(GetUnstuck), 2.0f, 1.0f);
         }
 
         private void Update()
@@ -160,6 +164,17 @@ namespace NPCs
             }
 
             return context;
+        }
+
+        private void GetUnstuck()
+        {
+            if (Vector3.Distance(_previousLocation, transform.position) < 0.3f &&
+                _stateMachine.CurrentState.GetType() == typeof(StateMachine.States.Flocking))
+            {
+                _stateMachine.StartChasing();
+            }
+
+            _previousLocation = transform.position;
         }
     }
 }
