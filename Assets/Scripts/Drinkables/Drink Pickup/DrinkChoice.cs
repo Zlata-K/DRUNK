@@ -119,7 +119,7 @@ public class DrinkChoice : MonoBehaviour
         menuPanel.SetActive(false);
         Time.timeScale = 1;
         // Spawn NPCs when player leave the bar (even if they don't order anything, the bartender will be pissed the player didn't order !)
-        Invoke(nameof(SpawnNPCs), 0.5F);
+        Invoke(nameof(SpawnNPCs), 1);
     }
 
     public void SpawnNPCs()
