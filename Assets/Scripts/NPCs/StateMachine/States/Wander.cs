@@ -80,7 +80,7 @@ namespace NPCs.StateMachine.States
                 NpcManager.GetComponent<NPCStateMachine>().StartIdle();
             }
 
-            if (_pathToTarget == null)
+            if (_pathToTarget == null || _pathToTarget.Count < 1)
             {
                 NpcManager.GetComponent<NPCStateMachine>().StartIdle();
                 return;
