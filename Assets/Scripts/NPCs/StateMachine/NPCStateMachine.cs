@@ -30,7 +30,7 @@ namespace NPCs.StateMachine
             _idle = new Idle();
             _flocking = new global::NPCs.StateMachine.States.Flocking();
 
-            CurrentState = _chase;
+            CurrentState = _wander;
         }
 
         private void Update()

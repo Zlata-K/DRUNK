@@ -204,5 +204,12 @@ namespace NPCs
             _canPunch = false;
             Invoke(nameof(PunchCooldown), 1.0f);
         }
+            
+        public void SpawnChasing()
+        {
+            //I know people don't like Invoke but we need this to run 1 frame after start
+            Invoke("StartChasing", 0.1f);
+        }
     }
 }
+
