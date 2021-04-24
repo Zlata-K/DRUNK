@@ -13,7 +13,7 @@ public class NPCStateMachine : MonoBehaviour
 
     private NPCManager _npcManager;
     
-    void Start()
+    void Awake()
     {
         _npcManager = GetComponent<NPCManager>();
 
@@ -30,7 +30,6 @@ public class NPCStateMachine : MonoBehaviour
         float distanceFromPlayer = Vector3.Distance( Indestructibles.Player.transform.position, transform.position);
         CheckPlayerOutOfRange(distanceFromPlayer);
         CheckPlayerBackInRange(distanceFromPlayer);
-        
     }
 
     /*

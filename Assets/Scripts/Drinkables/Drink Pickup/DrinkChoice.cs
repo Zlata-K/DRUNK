@@ -22,6 +22,7 @@ public class DrinkChoice : MonoBehaviour
     private float timeCounter = 0;
     public bool wasActive;
     private GameObject countdownPanel;
+    private Vector3 LastEntrencePos;
 
     private void Start()
     {
@@ -96,13 +97,15 @@ public class DrinkChoice : MonoBehaviour
         Instantiate(beerDrink);
     }
 
-    public void EnterTheBar()
+    public void EnterTheBar(Vector3 pos)
     {
         Cursor.visible = true;
         Time.timeScale = 0;
         timeCounter = 0;
         menuPanel.SetActive(true);
         GenerateRandomDrink();
+        pos.y = 0; // Ensure the NPC is on the ground
+        LastEntrencePos = pos;
     }
 
     public void LeaveBar()
@@ -115,5 +118,16 @@ public class DrinkChoice : MonoBehaviour
         flippedButton.SetActive(false);
         menuPanel.SetActive(false);
         Time.timeScale = 1;
+        // Spawn NPCs when player leave the bar (even if they don't order anything, the bartender will be pissed the player didn't order !)
+        Invoke(nameof(SpawnNPCs), 0.5F);
+    }
+
+    public void SpawnNPCs()
+    {
+        for (int i = 0; i < 2; i++) { // Spawn 2 npcs, could be tweaked based on difficulty or whatever
+            var obj = TerrainGeneratorScript.SpawnNPC(LastEntrencePos);
+
+            obj.GetComponent<NPCManager>().StartChasing();
+        }
     }
 }

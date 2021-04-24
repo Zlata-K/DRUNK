@@ -124,10 +124,10 @@ public class TerrainGeneratorScript : MonoBehaviour
         NavigationGraph.ReGenerateAllLinks();
     }
 
-    public static void SpawnNPC(Vector3 pos)
+    public static GameObject SpawnNPC(Vector3 pos)
     {
         GameObject obj = NPCs[Random.Range(0, NPCs.Count - 1)];
 
-        Instantiate(obj, pos, Quaternion.identity);
+        return Instantiate(obj, pos, Quaternion.identity);
     }
 }
