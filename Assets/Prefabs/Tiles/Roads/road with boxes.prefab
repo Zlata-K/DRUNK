@@ -253,6 +253,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Medfan_RectBox
       objectReference: {fileID: 0}
+    - target: {fileID: 1489629583498642614, guid: be6be0b19c7224d4cbec8bb57a4d7b9a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4060531000104592132, guid: be6be0b19c7224d4cbec8bb57a4d7b9a,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 431878ca8e312184f9c5731faedfcee8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be6be0b19c7224d4cbec8bb57a4d7b9a, type: 3}
 --- !u!1001 &1123169490877819668
@@ -317,10 +328,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 10.244
       objectReference: {fileID: 0}
+    - target: {fileID: 2765353657376318174, guid: 251c8624e01c15b468d2b8804159d173,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 431878ca8e312184f9c5731faedfcee8,
+        type: 2}
     - target: {fileID: 2853573975186051655, guid: 251c8624e01c15b468d2b8804159d173,
         type: 3}
       propertyPath: m_Name
       value: Medfan_SquareBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 2853573975186051655, guid: 251c8624e01c15b468d2b8804159d173,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 251c8624e01c15b468d2b8804159d173, type: 3}
@@ -466,10 +488,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2765353657376318174, guid: 251c8624e01c15b468d2b8804159d173,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 431878ca8e312184f9c5731faedfcee8,
+        type: 2}
     - target: {fileID: 2853573975186051655, guid: 251c8624e01c15b468d2b8804159d173,
         type: 3}
       propertyPath: m_Name
       value: Medfan_SquareBox (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2853573975186051655, guid: 251c8624e01c15b468d2b8804159d173,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 251c8624e01c15b468d2b8804159d173, type: 3}

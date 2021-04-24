@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Drinkables;
+using NPCs;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;

@@ -1,4 +1,5 @@
-﻿using Player;
+﻿using NPCs.Flocking;
+using Player;
 using Structs;
 using UI;
 using UnityEngine;
@@ -8,6 +9,9 @@ using UnityEngine.SceneManagement;
 // General variables that we only need one instance of and that are present in multiple files
 public static class Indestructibles
 {
+    //Flocking stuff
+    public static FlockManager FlockManagerInstance;
+    
     // Camera stuff
     public static PostProcessVolume Volume;
     
@@ -32,6 +36,8 @@ public static class Indestructibles
 
     public static void SetDefaultValues()
     {
+        FlockManagerInstance = GameObject.Find("NPCMovementCoordinator").GetComponent<FlockManager>();
+        
         UIManager = GameObject.Find("UI").GetComponent<UIManager>();
         Volume = GameObject.Find("Camera").GetComponent<PostProcessVolume>();
         

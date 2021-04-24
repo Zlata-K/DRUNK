@@ -1,4 +1,5 @@
 ﻿using Drinkables;
+using NPCs;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using Random = UnityEngine.Random;
