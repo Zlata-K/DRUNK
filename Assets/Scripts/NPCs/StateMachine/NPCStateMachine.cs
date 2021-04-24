@@ -13,7 +13,7 @@ public class NPCStateMachine : MonoBehaviour
 
     private NPCManager _npcManager;
     
-    void Awake()
+    void Start()
     {
         _npcManager = GetComponent<NPCManager>();
 
