@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Idle : State
+public class Flocking : State
 {
     public override void Move()
     {
-        //No movement
+        //Let the flocking manager define NPC movements
     }
 }

@@ -962,6 +962,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_full_with_Leaves
       objectReference: {fileID: 0}
+    - target: {fileID: 5124016543971891505, guid: 461731a6488b440efa7d1ee0fc3728bf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5501139568698262411, guid: 461731a6488b440efa7d1ee0fc3728bf,
         type: 3}
       propertyPath: m_RootOrder
@@ -1190,6 +1195,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 57078981300702125}
     m_Modifications:
+    - target: {fileID: 2651203317971257179, guid: 16c9b5da12c6949bcb5a50e1f252d737,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765258081070927364, guid: 16c9b5da12c6949bcb5a50e1f252d737,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8294080171432105527, guid: 16c9b5da12c6949bcb5a50e1f252d737,
         type: 3}
       propertyPath: m_RootOrder
@@ -1265,6 +1280,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Oldtree
       objectReference: {fileID: 0}
+    - target: {fileID: 8669901335268822157, guid: 16c9b5da12c6949bcb5a50e1f252d737,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16c9b5da12c6949bcb5a50e1f252d737, type: 3}
 --- !u!1 &5590477017938728407 stripped
@@ -1286,10 +1306,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3057216844350857435}
     m_Modifications:
+    - target: {fileID: 831252829130615083, guid: f03c015de99cb4eeaaf60e97b9994830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8504203383165227506, guid: f03c015de99cb4eeaaf60e97b9994830,
         type: 3}
       propertyPath: m_Name
       value: acacia
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504203383165227506, guid: f03c015de99cb4eeaaf60e97b9994830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9029487763875777352, guid: f03c015de99cb4eeaaf60e97b9994830,
         type: 3}

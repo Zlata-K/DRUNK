@@ -6,6 +6,9 @@ public class Wander : State
     private Queue<Node> _pathToTarget;
     private Vector3 _currentTargetNode;
     private bool reachedTarget = true;
+    
+    private readonly FlockBehaviour _avoidObstacles;
+    private readonly FlockBehaviour _avoidNPCs;
 
     /*
      * After a random number of moves (between 1 and 10), the NPC stop moving for few seconds.
@@ -13,10 +16,12 @@ public class Wander : State
     private int numberOfMoves = 0;
     private float waitTimeStamp = 0;
 
-    public Wander(NPCManager npcManager)
+    public Wander(NPCManager npcManager, FlockBehaviour avoidObstacles, FlockBehaviour avoidNPCs)
     {
         _npcManager = npcManager;
         numberOfMoves = (int) Random.Range(1.0f, 10.0f);
+        _avoidObstacles = avoidObstacles;
+        _avoidNPCs = avoidNPCs;
     }
 
     public override void Move()
@@ -77,9 +82,13 @@ public class Wander : State
             _currentTargetNode = _pathToTarget.Dequeue().position;
             _currentTargetNode.y = 0;
         }
-
-        Vector3 direction = Vector3.Normalize(_currentTargetNode - _npcManager.transform.position);
-
+        
+        Vector3 direction = _currentTargetNode - _npcManager.transform.position;
+        direction += _avoidObstacles.CalculateMove(_npcManager, _npcManager.GetNearbyObjects(0.5f), null) * 0.2f;
+        direction += _avoidNPCs.CalculateMove(_npcManager, _npcManager.GetNearbyObjects(0.5f), null) * 4f;
+        direction = Vector3.Normalize(direction);
+        direction.y = 0;
+        
         //The NPC will always looking where it needs to go.
         _npcManager.LookWhereYouAreGoing(direction);
 

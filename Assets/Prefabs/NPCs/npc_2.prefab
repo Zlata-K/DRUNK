@@ -1301,6 +1301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feffdb661d50754ea42d89a0db3d954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _avoidObstacles: {fileID: 11400000, guid: f318d320cd24dad429cea449e1115d6b, type: 2}
+  _avoidNPCs: {fileID: 11400000, guid: 0e1eaca2bb2bc724988edbc0caec2ec5, type: 2}
 --- !u!82 &115960193
 AudioSource:
   m_ObjectHideFlags: 0

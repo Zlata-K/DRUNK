@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public struct NPCsGlobalVariables
+public static class NPCsGlobalVariables
 {
     //NPC State Machine variables
-    public const float MaxChaseDistance = 25.0f;
-    
+    public const float MaxChaseDistance = 40.0f;
+
     //Look where you are going variables
     public const float MaxAngleChange = 150.0f;
     
@@ -18,7 +18,7 @@ public struct NPCsGlobalVariables
     public const float ChaseMaxVelocity = 2.5f;
     public const float ChaseAcceleration = 1.6f;
     public const float FieldOfView = 40.0f;
-    public const float ChasePlayerRange = 4f;
+    public const float ChasePlayerRange = 5f;
     public const float WithinTargetNodeRange = 0.5f;
     public static readonly Vector3 DefaultInitialVector = new Vector3(0,100,0);
     public const byte NextElementInPath = 1;

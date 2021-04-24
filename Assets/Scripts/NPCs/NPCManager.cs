@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(Collider))]
 public class NPCManager : MonoBehaviour
 {
     private Rigidbody _playerRigidbody;
@@ -10,6 +12,8 @@ public class NPCManager : MonoBehaviour
     private Rigidbody _rigidbody;
     private Animator _animator;
     private AudioSource _audioSource;
+    private Collider _agentCollider;
+
     private NPCStateMachine _stateMachine;
     
     private int _punchLayerIndex;
@@ -29,6 +33,8 @@ public class NPCManager : MonoBehaviour
     public Rigidbody Rigidbody => _rigidbody;
     public Animator Animator => _animator;
     public AudioSource AudioSource => _audioSource;
+    public Collider AgentCollider => _agentCollider;
+    
     public int PunchLayerIndex => _punchLayerIndex;
     public bool LookingForPlayer
     {
@@ -47,6 +53,7 @@ public class NPCManager : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
+        _agentCollider = GetComponent<Collider>();
         _stateMachine = GetComponent<NPCStateMachine>();
         _punchLayerIndex = _animator.GetLayerIndex("Punch Layer");
     }
@@ -77,7 +84,7 @@ public class NPCManager : MonoBehaviour
     {
         Quaternion goalRotation = Quaternion.LookRotation(direction);
         Quaternion currentRotation = transform.rotation;
-        transform.rotation = Quaternion.RotateTowards(currentRotation, goalRotation, NPCsGlobalVariables.MaxAngleChange * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(currentRotation, goalRotation,  NPCsGlobalVariables.MaxAngleChange * Time.deltaTime);
         return Quaternion.Angle(currentRotation, goalRotation);
     }
 
@@ -88,7 +95,7 @@ public class NPCManager : MonoBehaviour
 
     public float GetDistanceWithPlayer()
     {
-        return Vector3.Distance(Indestructibles.Player.transform.position, transform.position);
+        return Vector3.Distance(Indestructibles.PlayerData.LastSeenPosition, transform.position);
     }
 
     public bool IsChasing()
@@ -130,14 +137,14 @@ public class NPCManager : MonoBehaviour
      * If the player collides with a NPC that is not chasing him, start chase.
      * For now, the collider is of type trigger because there is no navmesh.
      */
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (_canChase && !IsChasing() && collision.gameObject.CompareTag("Player"))
         {
             
             if (bumpingSounds.Length > 0)
             {
-                AudioSource.PlayOneShot(bumpingSounds[Random.Range(0,bumpingSounds.Length-1)]);
+                AudioSource.PlayOneShot(bumpingSounds[Random.Range(0,bumpingSounds.Length)]);
             }
             
             Animator.SetTrigger(Animator.StringToHash("Get Hit"));
@@ -146,5 +153,27 @@ public class NPCManager : MonoBehaviour
             _canPunch = false;
             Invoke(nameof(PunchCooldown), 1.0f);
         }
+    }
+    
+    public void Move(Vector3 velocity)
+    {
+        LookWhereYouAreGoing(velocity);
+        SetAnimatorVelocity(GetModelSpeed(velocity.magnitude) * Vector3.forward);
+    }
+    
+    public List<Transform> GetNearbyObjects(float neighborRadius)
+    {
+        List<Transform> context = new List<Transform>();
+        Collider[] contextColliders = Physics.OverlapSphere(transform.position, neighborRadius);
+
+        foreach (Collider collider in contextColliders)
+        {
+            if (collider != AgentCollider)
+            {
+                context.Add(collider.transform);
+            }
+        }
+
+        return context;
     }
 }

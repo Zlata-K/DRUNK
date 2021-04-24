@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
             Indestructibles.SetDefaultValues();
         }
     }
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         var graph = NavigationGraph.graph;
 
@@ -51,5 +51,5 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 }

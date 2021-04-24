@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 // General variables that we only need one instance of and that are present in multiple files
 public static class Indestructibles
 {
+    //Flocking stuff
+    public static FlockManager FlockManagerInstance;
+    
     // Camera stuff
     public static PostProcessVolume Volume;
     
@@ -27,6 +30,8 @@ public static class Indestructibles
 
     public static void SetDefaultValues()
     {
+        FlockManagerInstance = GameObject.Find("NPCMovementCoordinator").GetComponent<FlockManager>();
+        
         Volume = GameObject.Find("Camera").GetComponent<PostProcessVolume>();
         
         Player = GameObject.Find("player");
