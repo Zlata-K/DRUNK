@@ -127,7 +127,7 @@ public class DrinkChoice : MonoBehaviour
         for (int i = 0; i < 2; i++) { // Spawn 2 npcs, could be tweaked based on difficulty or whatever
             var obj = TerrainGeneratorScript.SpawnNPC(LastEntrencePos);
 
-            obj.GetComponent<NPCManager>().StartChasing();
+            obj.GetComponent<NPCManager>().SpawnChasing();
         }
     }
 }
