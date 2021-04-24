@@ -42,9 +42,13 @@ public class NPCManager : MonoBehaviour
         set => _punching = value;
     }
 
-    void Awake()
+    private void Start()
     {
         _playerRigidbody = Indestructibles.Player.GetComponent<Rigidbody>();
+    }
+
+    void Awake()
+    {
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
@@ -94,7 +98,9 @@ public class NPCManager : MonoBehaviour
 
     public bool IsChasing()
     {
-        return _stateMachine != null && _stateMachine.CurrentState.GetType() == typeof(Chase);
+        var state = _stateMachine != null ? _stateMachine.CurrentState : null;
+
+        return state != null && state.GetType() == typeof(Chase);
     }
     public void StartPunching()
     {

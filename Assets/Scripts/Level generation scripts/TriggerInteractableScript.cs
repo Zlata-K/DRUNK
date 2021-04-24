@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class TriggerInteractableScript : MonoBehaviour
@@ -9,10 +7,12 @@ public class TriggerInteractableScript : MonoBehaviour
     [SerializeField] private float _mapTime = 2;
     private static readonly int Activated = Animator.StringToHash("Activated");
     [SerializeField] private float cooldown;
-    private float _timer = 0;
+    [SerializeField] private AudioClip barrelFall;
     
+    private float _timer = 0;
     private bool _triggered = false;
     private bool _mapTriggered = false;
+    private AudioSource _audioSource;
 
     private void OnTriggerExit(Collider other)
     {
@@ -20,6 +20,7 @@ public class TriggerInteractableScript : MonoBehaviour
         {
             _animator.SetBool(Activated, true);
             _timer = 0.0f;
+            PlayBarrelFallSound();
             StartCoroutine(RefreshCluster(_mapTime));
         }
     }
@@ -59,5 +60,11 @@ public class TriggerInteractableScript : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(t);
         NavigationGraph.ReGenerateClusterLinks(transform.position);
+    }
+
+    private void PlayBarrelFallSound()
+    {
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.PlayOneShot(barrelFall);
     }
 }
