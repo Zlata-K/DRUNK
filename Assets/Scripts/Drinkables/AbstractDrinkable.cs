@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 namespace Drinkables
@@ -27,7 +28,7 @@ namespace Drinkables
             {
                 _vignette.intensity.value = Indestructibles.PlayerData.IntoxicationLevel;
             }
-            Indestructibles.PlayerData.ScoreMultiplier = (int) Mathf.Exp(3.0f * Indestructibles.PlayerData.IntoxicationLevel);
+            Indestructibles.PlayerData.ScoreMultiplier = Mathf.CeilToInt(Mathf.Exp(4.0f * Indestructibles.PlayerData.IntoxicationLevel));
             Indestructibles.UIManager.RefreshUI();
         }
 
@@ -39,7 +40,7 @@ namespace Drinkables
             {
                 _vignette.intensity.value = Indestructibles.PlayerData.IntoxicationLevel;
             }
-            Indestructibles.PlayerData.ScoreMultiplier = (int) Mathf.Exp(3.0f * Indestructibles.PlayerData.IntoxicationLevel);
+            Indestructibles.PlayerData.ScoreMultiplier = (int) Mathf.Exp(4.0f * Indestructibles.PlayerData.IntoxicationLevel);
             Indestructibles.UIManager.RefreshUI();
             Destroy(gameObject);
         }
