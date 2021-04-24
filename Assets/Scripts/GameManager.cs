@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    /*private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         var graph = NavigationGraph.graph;
 
@@ -52,5 +52,5 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }*/
+    }
 }
