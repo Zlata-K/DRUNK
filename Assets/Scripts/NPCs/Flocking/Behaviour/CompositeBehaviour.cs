@@ -9,6 +9,8 @@ namespace NPCs.Flocking.Behaviour
         [SerializeField] private FlockBehaviour[] behaviours;
         [SerializeField] private float[] weights;
 
+        [SerializeField] private CollisionAvoidance _collisionAvoidance;
+
         public FlockBehaviour[] Behaviours
         {
             get => behaviours;
@@ -46,6 +48,7 @@ namespace NPCs.Flocking.Behaviour
                     move += partialMove;
                 }
             }
+
             move.y = 0;
             return move;
         }

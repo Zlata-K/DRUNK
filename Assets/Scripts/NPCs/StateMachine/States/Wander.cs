@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NPCs.Flocking;
+using NPCs.Flocking.Behaviour;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,7 +19,7 @@ namespace NPCs.StateMachine.States
         private int _numberOfMoves;
         private float _waitTimeStamp;
 
-        public Wander(NPCManager npcManager, FlockBehaviour avoidObstacles, FlockBehaviour avoidNpcs)
+        public Wander(NPCManager npcManager, CollisionAvoidance avoidObstacles, FlockBehaviour avoidNpcs)
         {
             NpcManager = npcManager;
             _numberOfMoves = (int) Random.Range(1.0f, 10.0f);
@@ -131,11 +132,9 @@ namespace NPCs.StateMachine.States
         private Vector3 CalculateVelocity()
         {
             Vector3 velocity = _currentTargetNode - NpcManager.transform.position;
-            velocity += AvoidObstacles.CalculateMove(NpcManager, NpcManager.GetNearbyObjects(0.5f), null) *
-                        NpcGlobalVariables.WanderObstacleAvoidanceMultiplier;
-            velocity += AvoidNpcs.CalculateMove(NpcManager, NpcManager.GetNearbyObjects(0.5f), null) *
-                        NpcGlobalVariables.WanderNpcAvoidanceMultiplier;
             velocity = Vector3.Normalize(velocity);
+            velocity += AvoidObstacles.CalculateMove(NpcManager, velocity) *
+                        NpcGlobalVariables.WanderObstacleAvoidanceMultiplier;
             velocity.y = 0;
 
             return velocity;

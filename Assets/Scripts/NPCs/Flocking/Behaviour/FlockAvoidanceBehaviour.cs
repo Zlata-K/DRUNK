@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace NPCs.Flocking.Behaviour
 {
-    [CreateAssetMenu(menuName = "Flock/Behaviour/Avoidance")]
+    [CreateAssetMenu(menuName = "Flock/Behaviour/FlockAvoidance")]
 
 //Move agent away from the neighbour agents
-    public class AvoidanceBehaviour : FilteredFlockBehavior
+    public class FlockAvoidanceBehaviour : FilteredFlockBehavior
     {
         public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
         {

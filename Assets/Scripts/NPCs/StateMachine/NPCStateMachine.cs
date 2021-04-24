@@ -1,4 +1,5 @@
 ﻿using NPCs.Flocking;
+using NPCs.Flocking.Behaviour;
 using NPCs.StateMachine.States;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace NPCs.StateMachine
         private NPCManager _npcManager;
         private FlockManager _flockManager;
 
-        [SerializeField] private FlockBehaviour avoidObstacles;
+        [SerializeField] private CollisionAvoidance avoidObstacles;
         [SerializeField] private FlockBehaviour avoidNpCs;
 
         void Start()

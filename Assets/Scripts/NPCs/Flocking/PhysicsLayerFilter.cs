@@ -6,7 +6,7 @@ namespace NPCs.Flocking
     [CreateAssetMenu(menuName = "Flock/Filter/Physics Layer")]
     public class PhysicsLayerFilter : ContextFilter
     {
-        [SerializeField] private LayerMask mask;
+        [SerializeField] public LayerMask mask;
 
         public override List<Transform> Filter(NPCManager npc, List<Transform> original)
         {

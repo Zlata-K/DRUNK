@@ -5,7 +5,7 @@ namespace NPCs.Flocking
 {
     public abstract class FilteredFlockBehavior : FlockBehaviour
     {
-        [SerializeField] protected ContextFilter filter;
+        [SerializeField] protected PhysicsLayerFilter filter;
     
         protected List<Transform> RemoveElementFromContextByName(List<Transform> context, string gameObjectName)
         {
