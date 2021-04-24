@@ -341,14 +341,14 @@ public class NavigationGraph
 
             foreach (var node in cluster)
             {
-                foreach (var node2 in neighbourCluster)
+                foreach (var neighbour_cluster_node in neighbourCluster)
                 {
-                    Vector3 tmp_dir = (node2.position - node.position);
+                    Vector3 tmp_dir = (neighbour_cluster_node.position - node.position);
                     float dist = tmp_dir.magnitude;
 
-                    if (node.CanSeeNode(node2, dist, tmp_dir))
+                    if (node.CanSeeNode(neighbour_cluster_node, dist, tmp_dir))
                     {
-                        node.AddLink(node2, dist);
+                        node.AddLink(neighbour_cluster_node, dist);
                     }
                 }
             }
