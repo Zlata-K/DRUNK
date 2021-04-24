@@ -47,19 +47,9 @@ namespace NPCs.StateMachine.States
 
         private Vector3 ComputeChaseVelocity()
         {
-            
             ComputeCurrentTargetLocation();
-
-            Vector3 desiredVelocity = Vector3.Normalize(_currentTargetLocation - NpcManager.transform.position) *
-                                      NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
-
-            Vector3 currentVelocity = NpcManager.Rigidbody.velocity;
-
-            Vector3 steering = desiredVelocity - currentVelocity;
-
-            var velocity = ComputeVelocity(currentVelocity, steering);
-
-            return velocity;
+            
+            return ComputeVelocity();
         }
 
         private void ComputeAStarForSteering()
@@ -79,7 +69,8 @@ namespace NPCs.StateMachine.States
 
         private void ComputeCurrentTargetLocation()
         {
-            Ray ray = new Ray(NpcManager.transform.position, _playerData.LastSeenPosition);
+            Vector3 direction = (_playerData.LastSeenPosition - NpcManager.transform.position);
+            Ray ray = new Ray(NpcManager.transform.position, direction);
             float maxDistance = Mathf.Min(NpcGlobalVariables.ChasePlayerRange,
                 Vector3.Distance(NpcManager.transform.position, _playerData.LastSeenPosition));
             
@@ -100,8 +91,21 @@ namespace NPCs.StateMachine.States
             }
         }
 
-        private Vector3 ComputeVelocity(Vector3 currentVelocity, Vector3 steering)
+        private Vector3 ComputeVelocity()
         {
+            Vector3 desiredVelocity = Vector3.Normalize(_currentTargetLocation - NpcManager.transform.position) *
+                                      NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
+
+            Vector3 currentVelocity = NpcManager.Rigidbody.velocity;
+
+            Vector3 steering = desiredVelocity - currentVelocity;
+            
+            if (steering.magnitude > NpcGlobalVariables.ChaseAcceleration)
+            {
+                steering = (steering / Vector3.Magnitude(steering)) *
+                           NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
+            }
+
             Vector3 velocity = currentVelocity + steering;
 
             velocity += AvoidObstacles.CalculateMove(NpcManager, NpcManager.GetNearbyObjects(1f), null) *

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NPCs.Flocking.Behaviour
@@ -11,12 +12,18 @@ namespace NPCs.Flocking.Behaviour
         public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
         {
             Vector3 desiredVelocity = Vector3.Normalize(flock.CurrentTargetLocation - npc.transform.position) *
-                                      npc.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
+                                      npc.GetModelSpeed(NpcGlobalVariables.ChaseMaxVelocity);
 
             Vector3 currentVelocity = npc.Rigidbody.velocity;
 
             Vector3 steering = desiredVelocity - currentVelocity;
 
+            if (steering.magnitude > NpcGlobalVariables.ChaseAcceleration)
+            {
+                steering = (steering / Vector3.Magnitude(steering)) *
+                           npc.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
+            }
+            
             Vector3 velocity = currentVelocity + steering;
 
             if (Vector3.Magnitude(velocity) > npc.GetModelSpeed(NpcGlobalVariables.ChaseMaxVelocity))
