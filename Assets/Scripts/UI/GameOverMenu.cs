@@ -11,24 +11,30 @@ namespace UI
         [SerializeField] private GameObject scoreInput;
         [SerializeField] private TMP_Text inputText;
         [SerializeField] private GameObject submitSuccessText;
-
+        
+        private int _score;
         private bool _scoreSubmitted;
         
         public void Awake()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            scoreText.text = "Score: " + Indestructibles.PlayerData.CurrentScore;
+            if (Indestructibles.PlayerData != null)
+            {
+                _score = Indestructibles.PlayerData.CurrentScore;
+            }
+            
+            scoreText.text = "Score: " + _score;
         }
         public void PlayAgain()
         {
-            ScoreManager.AddScore("Player", Indestructibles.PlayerData.CurrentScore);
+            ScoreManager.AddScore("Player", _score);
             SceneManager.LoadScene(1);
         }
         
         public void Quit2MainMenu()
         {
-            ScoreManager.AddScore("Player", Indestructibles.PlayerData.CurrentScore);
+            ScoreManager.AddScore("Player", _score);
             SceneManager.LoadScene(0);
         }
 
@@ -39,11 +45,11 @@ namespace UI
             submitSuccessText.SetActive(true);
             if (inputText.text != "")
             {
-                ScoreManager.AddScore(inputText.text, Indestructibles.PlayerData.CurrentScore);
+                ScoreManager.AddScore(inputText.text, _score);
             }
             else
             {
-                ScoreManager.AddScore("Player", Indestructibles.PlayerData.CurrentScore);
+                ScoreManager.AddScore("Player", _score);
             }
           
         }

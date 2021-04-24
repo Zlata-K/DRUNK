@@ -2318,7 +2318,7 @@ MonoBehaviour:
   highScoreTextPanel: {fileID: 1924761922}
   scoreText: {fileID: 1976662775}
   scoreInput: {fileID: 145763933}
-  inputText: {fileID: 0}
+  inputText: {fileID: 1788464931}
   submitSuccessText: {fileID: 464516276}
 --- !u!222 &1229695251
 CanvasRenderer:
