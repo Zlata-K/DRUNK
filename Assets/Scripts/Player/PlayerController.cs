@@ -1,10 +1,6 @@
-﻿using System;
-using Drinkables;
-using NPCs;
-using UI;
+﻿using Drinkables;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Player

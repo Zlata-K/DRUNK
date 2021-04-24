@@ -7,12 +7,15 @@ using Random = UnityEngine.Random;
 public class TerrainGeneratorScript : MonoBehaviour
 {
     private readonly float _tileWidth = 10.0f;
-    
+    private const string SpawnPointName = "NPC Spawn point";
+
     [SerializeField] private int blocks = 2; //number of blocks being made, block x block
     [SerializeField] private int size = 5;
     [SerializeField] private float tavernPercent = 0.25f;
     [SerializeField] private GameObject outerTile;
-    
+    [SerializeField] private List<GameObject> _NPCs;
+    private static List<GameObject> NPCs;
+
     private RoadGenerationScript _roadScript;
     private CrossGenerationScript _crossRoadScript;
     private TavernGenerationScript _tavernScript;
@@ -28,6 +31,7 @@ public class TerrainGeneratorScript : MonoBehaviour
 
     private void Awake()
     {
+        NPCs = _NPCs;
         //Initialize tile scripts
         _roadScript = GetComponent<RoadGenerationScript>();
         _roadScript.Size = size;
@@ -79,23 +83,27 @@ public class TerrainGeneratorScript : MonoBehaviour
             for (int j = 0; j < temp; j++)
             {
                 GameObject obj;
+                Transform npc_spawn = null;
 
                 if (i % (size - 1) == 0 && j % (size - 1) == 0)
                 {
                     obj = _crossRoadScript.Generate(i, j);
+                    npc_spawn = obj.transform.Find("NPC Spawn point");
                 }
                 else if (i % (size - 1) == 0 || j % (size - 1) == 0)
                 {
                     obj = _roadScript.Generate(i, j);
-                }
-                else if ((i % (size - 1) == 1 || j % (size - 1) == 1 || i % (size - 1) == size - 2 ||
+                    npc_spawn = obj.transform.Find("NPC Spawn point");
+                } else if ((i % (size - 1) == 1 || j % (size - 1) == 1 || i % (size - 1) == size - 2 ||
                           j % (size - 1) == size - 2) && Random.value > (1-tavernPercent))
                 {
                     obj = _tavernScript.Generate(i, j);
+                    // Don't generate NPC on taverns yet, we will do it after the player drinks a beer
                 }
                 else
                 {
                     obj = _fillerScript.Generate(i, j);
+                    npc_spawn = obj.transform.Find("NPC Spawn point");
                 }
                 // Small hack to refresh the colliders (saw that on internet, no idea if it really working or not)
                 obj.SetActive(false);
@@ -107,8 +115,19 @@ public class TerrainGeneratorScript : MonoBehaviour
                         Destroy(child.gameObject);
                     }
                 }
+                // Spawn a NPC with 20% chance, could be adjusted if we have a difficulty setting
+                // (the issue stated to spawn a fixed amount of NPC, but i think a fixed probability would do the trick too)
+                if (Random.Range(0, 4) == 3 && npc_spawn != null)
+                    SpawnNPC(npc_spawn.position);
             }
         }
         NavigationGraph.ReGenerateAllLinks();
+    }
+
+    public static GameObject SpawnNPC(Vector3 pos)
+    {
+        GameObject obj = NPCs[Random.Range(0, NPCs.Count - 1)];
+
+        return Instantiate(obj, pos, Quaternion.identity);
     }
 }

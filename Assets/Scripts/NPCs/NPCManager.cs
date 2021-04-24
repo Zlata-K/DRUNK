@@ -21,6 +21,25 @@ namespace NPCs
         private bool _canChase = true;
         private bool _canPunch;
 
+    public bool Punching
+    {
+        get => _punching;
+        set => _punching = value;
+    }
+
+    private void Start()
+    {
+        _playerRigidbody = Indestructibles.Player.GetComponent<Rigidbody>();
+    }
+
+    void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
+        _stateMachine = GetComponent<NPCStateMachine>();
+        _punchLayerIndex = _animator.GetLayerIndex("Punch Layer");
+    }
         //For some reason, some models are faster than others
         [SerializeField] private float modelSpeedMultiplier;
         [SerializeField] private AudioClip[] bumpingSounds;
@@ -85,7 +104,15 @@ namespace NPCs
             return normalSpeed * modelSpeedMultiplier;
         }
 
-        public float GetDistanceWithPlayer()
+    public bool IsChasing()
+    {
+        var state = _stateMachine != null ? _stateMachine.CurrentState : null;
+
+        return state != null && state.GetType() == typeof(Chase);
+    }
+    public void StartPunching()
+    {
+        if (_canPunch && !Punching)
         {
             return Vector3.Distance(Indestructibles.PlayerData.LastSeenPosition, transform.position);
         }
@@ -94,6 +121,15 @@ namespace NPCs
         {
             return _stateMachine.CurrentState.GetType() == typeof(Chase);
         }
+    public void StopPunching()
+    {
+        Punching = false;
+    }
+
+    public void OnPlayerHit()
+    {
+        _stateMachine.StartWandering();
+        StopPunching();
 
         public void StartPunching()
         {
@@ -164,6 +200,9 @@ namespace NPCs
             }
 
             return context;
+            
+            Animator.SetTrigger(Animator.StringToHash("Get Hit"));
+            StartChasing();
         }
 
         private void GetUnstuck()
@@ -176,5 +215,13 @@ namespace NPCs
 
             _previousLocation = transform.position;
         }
+    }
+
+    public void StartChasing()
+    {
+        _stateMachine.StartChasing();
+
+        _canPunch = false;
+        Invoke(nameof(PunchCooldown), 1.0f);
     }
 }
