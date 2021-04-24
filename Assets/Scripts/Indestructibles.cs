@@ -12,7 +12,7 @@ public static class Indestructibles
     public static PostProcessVolume Volume;
     
     // Time stuff
-    public const float SoberingTime = 30.0f;
+    public const float SoberingTime = 60.0f;
 
     // Player stuff
     public static GameObject Player;
