@@ -20,16 +20,15 @@ public class Node
 
         if (other == this || link != null) // Don't try to link with yourself and don't link twice
             return;
-        links.Add(new Link {node = other, weight = weight});
-        other.links.Add(new Link {node = this, weight = weight}); // Link in both ways
+        links.Add(new Link { node = other, weight = weight });
+        other.links.Add(new Link { node = this, weight = weight }); // Link in both ways
     }
 
     public void RemoveLink(Node other)
     {
         Link link = links.Find((Link l) => { return l.node == other; });
 
-        if (link != null)
-        {
+        if (link != null) {
             links.Remove(link);
             other.RemoveLink(this);
         }
@@ -37,7 +36,12 @@ public class Node
 
     public static bool CanSeeNode(Node node, Vector3 pos)
     {
-        return node.CanSeeNode(new Node {position = pos, links = null});
+        return node.CanSeeNode(new Node { position = pos, links = null });
+    }
+
+    public static bool CanSeeNode(Node node, Vector3 pos, float dist, Vector3 dir)
+    {
+        return node.CanSeeNode(new Node { position = pos, links = null }, dist, dir);
     }
 
     public bool CanSeeNode(Node node)
@@ -49,20 +53,18 @@ public class Node
 
     public bool CanSeeNode(Node node, float dist, Vector3 dir)
     {
-        return !Physics.SphereCast(position, NavigationGraph.nodeSize, node.position - position, out _, dist);
+        return !Physics.SphereCast(position, NavigationGraph.nodeSize, dir, out _, dist) && !Physics.Raycast(position, dir, dist);
     }
 
     // Check this node links to remove non-valid ones
     public void CheckOldLinks()
     {
-        for (int i = links.Count - 1; i >= 0; i--)
-        {
+        for (int i = links.Count - 1; i >= 0; i--) {
             // iterating in reverse to safely remove items while iterationg
             Node other = links[i].node;
 
             // Check if we can still see the other node
-            if (!CanSeeNode(other))
-            {
+            if (!CanSeeNode(other)) {
                 // If we hit smth, remove the link : it's not accurate anymore
                 RemoveLink(other);
             }
@@ -82,14 +84,12 @@ public class Node
     {
         bool addedNewNodes = false;
 
-        foreach (var node in cluster.ToArray())
-        {
+        foreach (var node in cluster.ToArray()) {
             // The ToArray is to iterate over a copy of the list, and so we can add new items while iterating
-            Vector3 tmp_dir = (position - node.position);
+            Vector3 tmp_dir = (node.position - position);
             float dist = tmp_dir.magnitude;
 
-            if (CanSeeNode(node, dist, tmp_dir))
-            {
+            if (CanSeeNode(node, dist, tmp_dir)) {
                 // If we can see the node, link the 2 nodes together
 
 
@@ -99,29 +99,24 @@ public class Node
                 // continue;
 
                 // if dist > nodesMaxDistance, add in between nodes
-                if (dist > NavigationGraph.maxLinkLength && dist < NavigationGraph.nodesMaxDistance && canCreateNew)
+                if (dist > NavigationGraph.maxLinkLength && dist < NavigationGraph.nodesMaxDistance && canCreateNew && false) // Disable this for now
                 {
-                    int nb = (int) (dist / NavigationGraph.maxLinkLength); // compute nb of nodes to add
+                    int nb = (int)(dist / NavigationGraph.maxLinkLength); // compute nb of nodes to add
                     Vector3 dir = (node.position - position).normalized;
                     float intermediateDist = dist / (nb + 1); // distance between nodes
                     Node prev = this; // Keep track of the previous node to add in between links
 
-                    while (nb > 0)
-                    {
+                    while (nb > 0) {
                         Vector3 pos = prev.position + dir * intermediateDist;
                         Node tmp = NavigationGraph.CreateNode(pos, cluster);
 
-                        if (tmp == null)
-                        {
+                        if (tmp == null) {
                             // If we fail creating an intermediate node, try to use the closest one
                             Node close = NavigationGraph.GetClosestNode(pos);
 
-                            if (close != null && (close.position - pos).magnitude < NavigationGraph.wallOffset)
-                            {
+                            if (close != null && (close.position - pos).magnitude < NavigationGraph.wallOffset) {
                                 tmp = close;
-                            }
-                            else
-                            {
+                            } else {
                                 // if we can't have a close node, just keep a long link and don't bother more
                                 prev.AddLink(node);
                                 break;
@@ -137,9 +132,7 @@ public class Node
                     }
 
                     prev.AddLink(node); // don't forget to link the last node
-                }
-                else if (dist < NavigationGraph.nodesMaxDistance)
-                {
+                } else if (dist < NavigationGraph.nodesMaxDistance) {
                     AddLink(node, dist);
                 }
             }
@@ -191,17 +184,15 @@ public class NavigationGraph
     public static List<Node> GetCluster(Vector3 pos)
     {
         pos.y = nodesSpawnY; // Ensure the keys in the graph has the same height
-        foreach (var key in graph.Keys)
-        {
-            if (Mathf.Abs(key.x - pos.x) < clusterWidth && Mathf.Abs(key.z - pos.z) < clusterWidth)
-            {
+        foreach (var key in graph.Keys) {
+            if (Mathf.Abs(key.x - pos.x) < clusterWidth && Mathf.Abs(key.z - pos.z) < clusterWidth) {
                 return graph[key];
             }
         }
 
         // If we didn't found the key, we just gonna create it and return the new cluster
-        Vector3 vec = new Vector3((int) (pos.x / clusterWidth) * clusterWidth, nodesSpawnY,
-            (int) (pos.z / clusterWidth) * clusterWidth);
+        Vector3 vec = new Vector3((int)(pos.x / clusterWidth) * clusterWidth, nodesSpawnY,
+            (int)(pos.z / clusterWidth) * clusterWidth);
         List<Node> res = new List<Node>();
 
         graph.Add(vec, res);
@@ -209,27 +200,26 @@ public class NavigationGraph
     }
 
     // A function to get the closest node to a point
-    // TODO (non-urgent) : check in neighbouring clusters too, maybe there will be a closer point
-    public static Node GetClosestNode(Vector3 pos)
+    public static Node GetClosestNode(Vector3 pos, bool check_see = true)
     {
-        List<Node> nodes = GetCluster(pos); // Get the cluster containing this position
+        List<List<Node>> nodes_list = GetNeighbourClusters(pos);
         Node res = null;
         float minDist = clusterWidth * 2; // Big init value
 
-        foreach (var item in nodes)
-        {
-            // Look over all the nodes to find the closest
-            float dist = (item.position - pos).magnitude;
+        nodes_list.Add(GetCluster(pos)); // Get the cluster containing this position
 
-            // && Node.CanSeeNode(item, pos) was removed
-            if (dist < minDist )
-            {
-                res = item;
-                minDist = dist;
+        foreach (var nodes in nodes_list) {
+            foreach (var item in nodes) { // Look over all the nodes to find the closest
+                Vector3 dir = (pos - item.position);
+                float dist = dir.magnitude;
+
+                if (dist < minDist && (check_see || Node.CanSeeNode(item, pos, (dist > 1 ? dist - 1 : dist - (dist / 10)), dir))) {
+                    res = item;
+                    minDist = dist;
+                }
             }
         }
-
-        return res;
+        return res == null && check_see ? GetClosestNode(pos, false) : res;
     }
 
     // Internal utility fonction to recursively get the compoments of "Environment" gameObjects.
@@ -238,10 +228,8 @@ public class NavigationGraph
     {
         List<T> res = new List<T>();
 
-        foreach (Transform child in obj.transform)
-        {
-            if (child.gameObject.layer == LayerMask.NameToLayer(environementLayerName))
-            {
+        foreach (Transform child in obj.transform) {
+            if (child.gameObject.layer == LayerMask.NameToLayer(environementLayerName)) {
                 res.AddRange(child.gameObject.GetComponents<T>());
                 res.AddRange(GetEnvironmentComponents<T>(child.gameObject));
             }
@@ -259,14 +247,13 @@ public class NavigationGraph
     public static Node CreateNode(Vector3 pos, List<Node> cluster)
     {
         pos.y = nodesSpawnY; // Ensure all nodes spawn at the same height
-        Node node = new Node
-        {
+        Node node = new Node {
             position = pos,
             links = new List<Link>()
         };
         Node close = GetClosestNode(pos);
 
-        if (close != null && (close.position - pos).magnitude < wallOffset) // If we have a very close neighbour, abort
+        if (close != null && (close.position - pos).magnitude <= nodeSize) // If we have a very close neighbour, abort
             return null;
         if (Physics.CheckSphere(node.position, nodeSize)) // if we are inside/close to a wall, abort
             return null;
@@ -287,14 +274,11 @@ public class NavigationGraph
         var collider = GetEnvironmentComponents<Collider>(obj);
         var renderer = GetEnvironmentComponents<Renderer>(obj);
 
-        if (collider.Length > 0)
-        {
+        if (collider.Length > 0) {
             // If there is colliders, we gonna use this data to compute the bounding volume
             foreach (var iter in collider)
                 bounds.Encapsulate(iter.bounds);
-        }
-        else if (renderer.Length > 0)
-        {
+        } else if (renderer.Length > 0) {
             // If there is no collider, we fallback on renderers (if any)
             foreach (var iter in renderer)
                 bounds.Encapsulate(iter.bounds);
@@ -307,42 +291,44 @@ public class NavigationGraph
     // Warning : doesn't add links between nodes
     public static void AddNodes(Bounds bounds)
     {
-        if (bounds.extents == Vector3.zero)
-        {
+        if (bounds.extents == Vector3.zero) {
             // If we have an empty bounding volume, just create a node in the center 
             CreateNode(bounds.center);
             return;
         }
 
-        foreach (Vector3 dir in ordinalDirections)
-        {
+        foreach (Vector3 dir in ordinalDirections) {
             Vector3 pos = bounds.center + Vector3.Scale(bounds.extents, dir) + dir * nodeSize * 2;
 
             CreateNode(pos);
         }
     }
 
+    private static List<List<Node>> GetNeighbourClusters(Vector3 position)
+    {
+        List<List<Node>> res = new List<List<Node>>();
+
+        foreach (var dir in ordinalDirections) {
+            Vector3 pos = position + (dir * clusterWidth); // Use the current cluster position to get the next one
+            res.Add(GetCluster(pos));
+        }
+        return res;
+    }
+
     // Generate links between neighbour clusters
     private static void ReGenerateNeighbourClusterLinks(Vector3 position)
     {
         List<Node> cluster = GetCluster(position);
+        List<List<Node>> neighbourClusters = GetNeighbourClusters(position);
 
-        // Look for the clusters around the current one
-        foreach (var dir in ordinalDirections)
-        {
-            Vector3 pos = position + (dir * clusterWidth); // Use the current cluster position to get the next one
-            List<Node> neighbourCluster = GetCluster(pos);
-
-            foreach (var node in cluster)
-            {
-                foreach (var node2 in neighbourCluster)
-                {
-                    Vector3 tmp_dir = (node.position - node2.position);
+        foreach (var node in cluster) {
+            foreach (var neighbourCluster in neighbourClusters) {
+                foreach (var neighbour_cluster_node in neighbourCluster) {
+                    Vector3 tmp_dir = (neighbour_cluster_node.position - node.position);
                     float dist = tmp_dir.magnitude;
 
-                    if (node.CanSeeNode(node2, dist, tmp_dir))
-                    {
-                        node.AddLink(node2, dist);
+                    if (node.CanSeeNode(neighbour_cluster_node, dist, tmp_dir)) {
+                        node.AddLink(neighbour_cluster_node, dist);
                     }
                 }
             }
@@ -352,24 +338,26 @@ public class NavigationGraph
     // Regenerate this cluster links, will remove non-valid ones, and add new ones
     public static void ReGenerateClusterLinks(Vector3 position)
     {
-        List<Node> cluster = GetCluster(position);
-        bool addedNewNodes = false;
+        List<List<Node>> clusters = GetNeighbourClusters(position);
 
-        foreach (var node in cluster.ToArray())
-        {
-            // The ToArray is to iterate over a copy of the list, and so we can add new items while iterating
-            node.CheckOldLinks(); // Remove old links that are not valid anymore
+        clusters.Add(GetCluster(position));
 
-            // Now let's find new links for this node in the cluster
-            addedNewNodes = node.CheckNewLinks(cluster);
-        }
+        foreach (var cluster in clusters) {
+            bool addedNewNodes = false;
 
-        if (addedNewNodes)
-        {
-            // If we added nodes in between long links, new links might be possible 
-            foreach (var node in cluster)
-            {
-                node.CheckNewLinks(cluster, false);
+            foreach (var node in cluster.ToArray()) {
+                // The ToArray is to iterate over a copy of the list, and so we can add new items while iterating
+                node.CheckOldLinks(); // Remove old links that are not valid anymore
+
+                // Now let's find new links for this node in the cluster
+                addedNewNodes = node.CheckNewLinks(cluster);
+            }
+
+            if (addedNewNodes) {
+                // If we added nodes in between long links, new links might be possible 
+                foreach (var node in cluster) {
+                    node.CheckNewLinks(cluster, false);
+                }
             }
         }
 
@@ -380,19 +368,15 @@ public class NavigationGraph
     public static void ReGenerateAllLinks()
     {
         // Just iterate through all clusters and regenerate them
-        foreach (var cluster in graph.Keys.ToList())
-        {
+        foreach (var cluster in graph.Keys.ToList()) {
             ReGenerateClusterLinks(cluster);
         }
 
         // Remove orphan nodes
         // TODO : also remove orphan sub-graphs
-        foreach (var cluster in graph.Values)
-        {
-            foreach (var iter in cluster.ToArray())
-            {
-                if (iter.links.Count == 0)
-                {
+        foreach (var cluster in graph.Values) {
+            foreach (var iter in cluster.ToArray()) {
+                if (iter.links.Count == 0) {
                     cluster.Remove(iter);
                 }
             }
