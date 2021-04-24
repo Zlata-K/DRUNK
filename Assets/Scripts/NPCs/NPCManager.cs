@@ -41,7 +41,8 @@ public class NPCManager : MonoBehaviour
         get => _punching;
         set => _punching = value;
     }
-    void Start()
+
+    void Awake()
     {
         _playerRigidbody = Indestructibles.Player.GetComponent<Rigidbody>();
         _rigidbody = GetComponent<Rigidbody>();
@@ -93,7 +94,7 @@ public class NPCManager : MonoBehaviour
 
     public bool IsChasing()
     {
-        return _stateMachine.CurrentState.GetType() == typeof(Chase);
+        return _stateMachine != null && _stateMachine.CurrentState.GetType() == typeof(Chase);
     }
     public void StartPunching()
     {
@@ -109,6 +110,7 @@ public class NPCManager : MonoBehaviour
     {
         Punching = false;
     }
+
     public void OnPlayerHit()
     {
         _stateMachine.StartWandering();
@@ -141,10 +143,15 @@ public class NPCManager : MonoBehaviour
             }
             
             Animator.SetTrigger(Animator.StringToHash("Get Hit"));
-            _stateMachine.StartChasing();
-
-            _canPunch = false;
-            Invoke(nameof(PunchCooldown), 1.0f);
+            StartChasing();
         }
+    }
+
+    public void StartChasing()
+    {
+        _stateMachine.StartChasing();
+
+        _canPunch = false;
+        Invoke(nameof(PunchCooldown), 1.0f);
     }
 }
