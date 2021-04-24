@@ -24,7 +24,7 @@ public class NPCStateMachine : MonoBehaviour
         _flockManager = Indestructibles.FlockManagerInstance;
 
         _wander = new Wander(_npcManager, _avoidObstacles, _avoidNPCs);
-        _chase = new Chase(_npcManager);
+        _chase = new Chase(_npcManager, _avoidObstacles, _avoidNPCs);
         _idle = new Idle();
         _flocking = new Flocking();
 
@@ -77,6 +77,11 @@ public class NPCStateMachine : MonoBehaviour
     public void StartChasing()
     {
         CurrentState = _chase;
+    }
+
+    public void StartIdle()
+    {
+        CurrentState = _idle;
     }
     
     /*

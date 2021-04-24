@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Wander : State
 {
@@ -67,7 +69,22 @@ public class Wander : State
         Node currentNode = NavigationGraph.GetClosestNode(npcPosition);
         Node targetNode = NavigationGraph.GetClosestNode(target);
 
-        _pathToTarget = new Queue<Node>(Pathfinding.Astar(currentNode, targetNode));
+        try
+        {
+            _pathToTarget = new Queue<Node>(Pathfinding.Astar(currentNode, targetNode));
+        }
+        catch (Exception e)
+        {
+            Debug.Log(_npcManager.name + " tried to go on a seperated graph. Will stay Idle.");
+            _npcManager.GetComponent<NPCStateMachine>().StartIdle();
+        }
+
+        if (_pathToTarget == null)
+        {
+            _npcManager.GetComponent<NPCStateMachine>().StartIdle();
+            return;
+        }
+        
         _currentTargetNode = _pathToTarget.Dequeue().position;
         _currentTargetNode.y = 0;
 

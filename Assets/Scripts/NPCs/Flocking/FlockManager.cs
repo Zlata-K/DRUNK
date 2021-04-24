@@ -60,7 +60,7 @@ public class FlockManager : MonoBehaviour
 
         if (agentReachedNode)
         {
-            ComputeAStar();
+            ComputeAStarForFlock();
             agentReachedNode = false;
         }
 
@@ -78,7 +78,7 @@ public class FlockManager : MonoBehaviour
         }
     }
 
-    private void ComputeAStar()
+    private void ComputeAStarForFlock()
     {
         Vector3 nodeWithoutY = Vector3.zero;
         if (_currentTargetLocation != NPCsGlobalVariables.DefaultInitialVector)
@@ -140,13 +140,13 @@ public class FlockManager : MonoBehaviour
     public void AddNPCToFlock(NPCManager npc)
     {
         _agents.Add(npc);
-        ComputeAStar();
+        ComputeAStarForFlock();
     }
 
     public void RemoveNPCFromFlock(NPCManager npc)
     {
         _agents.Remove(npc);
-        ComputeAStar();
+        ComputeAStarForFlock();
     }
 
     public bool IsNPCInFlock(NPCManager npc)
