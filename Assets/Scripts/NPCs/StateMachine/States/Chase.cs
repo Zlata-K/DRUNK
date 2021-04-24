@@ -1,103 +1,127 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using NPCs.Flocking;
+using NPCs.Flocking.Behaviour;
 using Player;
 using Structs;
 using UnityEngine;
 
-public class Chase : State
+namespace NPCs.StateMachine.States
 {
-    private Vector3 _currentTargetLocation = NPCsGlobalVariables.DefaultInitialVector;
-    private readonly PlayerData _playerData;
-
-    public Chase(NPCManager npcManager)
+    public class Chase : State
     {
-        _npcManager = npcManager;
-        _playerData = Indestructibles.Player.GetComponent<PlayerDataManager>().PlayerData;
-    }
+        private readonly PlayerData _playerData;
+        private Vector3 _currentTargetLocation = NpcGlobalVariables.DefaultInitialVector;
+        private readonly LayerMask _environmentMask;
 
-    public override void Move()
-    {
-        Chasing();
-    }
-
-    private void Chasing()
-    {
-        Vector3 velocity = ComputeChaseVelocity();
-
-        //The NPC will always looking where it needs to go.
-        float anglePlayerNpc = _npcManager.LookWhereYouAreGoing(velocity);
-
-        //If the player is out FOV, NPC stop moving and rotate until the player is back in FOV
-        if (anglePlayerNpc > NPCsGlobalVariables.FieldOfView && _npcManager.GetDistanceWithPlayer() > NPCsGlobalVariables.ChasePlayerRange)
+        public Chase(NPCManager npcManager, CollisionAvoidance avoidObstacles, FlockBehaviour avoidNpcs)
         {
-            velocity = Vector3.zero;
+            NpcManager = npcManager;
+            _playerData = Indestructibles.Player.GetComponent<PlayerDataManager>().PlayerData;
+            _environmentMask = LayerMask.GetMask("Environment");
+            AvoidObstacles = avoidObstacles;
+            AvoidNpcs = avoidNpcs;
         }
 
-        //The NPC always walk forward.
-        _npcManager.SetAnimatorVelocity(Vector3.forward * velocity.magnitude);
-    }
-
-    private Vector3 ComputeChaseVelocity()
-    {
-        Vector3 targetLocation;
-
-        //The NPC will predict the future position of the player (pursuit behavior)
-        if (_npcManager.GetDistanceWithPlayer() > NPCsGlobalVariables.ChasePlayerRange) // TODO add raycast here
+        public override void Move()
         {
-            ComputeAStar();
-            targetLocation = _currentTargetLocation;
-        }
-        //If the NPC is close to the player, just go directly on him
-        else
-        {
-            _currentTargetLocation = NPCsGlobalVariables.DefaultInitialVector;
-            targetLocation = _playerData.LastSeenPosition;
+            Chasing();
         }
 
-        // TODO Check if we can't see the target (raycast) and do smth
-        Vector3 desiredVelocity = Vector3.Normalize(targetLocation - _npcManager.transform.position) *
-                                  _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseAcceleration);
-
-        Vector3 currentVelocity = _npcManager.Rigidbody.velocity;
-
-        Vector3 steering = desiredVelocity - currentVelocity;
-
-        Vector3 velocity = currentVelocity + steering;
-
-        if (Vector3.Magnitude(velocity) > _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity))
+        private void Chasing()
         {
-            velocity = (velocity / Vector3.Magnitude(velocity)) *
-                       _npcManager.GetModelSpeed(NPCsGlobalVariables.ChaseMaxVelocity);
+            Vector3 velocity = ComputeChaseVelocity();
+
+            //The NPC will always looking where it needs to go.
+            float anglePlayerNpc = NpcManager.LookWhereYouAreGoing(velocity);
+
+            //If the player is out FOV, NPC stop moving and rotate until the player is back in FOV
+            if (anglePlayerNpc > NpcGlobalVariables.FieldOfView &&
+                NpcManager.GetDistanceWithPlayer() > NpcGlobalVariables.ChasePlayerRange)
+            {
+                velocity = Vector3.zero;
+            }
+
+            //The NPC always walk forward.
+            NpcManager.SetAnimatorVelocity(Vector3.forward * velocity.magnitude);
         }
 
-        velocity.y = 0;
-
-        return velocity;
-    }
-
-    private void ComputeAStar()
-    {
-        Vector3 nodeWithoutY = Vector3.zero;
-        if (_currentTargetLocation != NPCsGlobalVariables.DefaultInitialVector)
+        private Vector3 ComputeChaseVelocity()
         {
-            nodeWithoutY = new Vector3(_currentTargetLocation.x, 0, _currentTargetLocation.z);
+            ComputeCurrentTargetLocation();
+            
+            return ComputeVelocity();
+        }
+        
+        
+        private void ComputeCurrentTargetLocation()
+        {
+            Vector3 direction = (_playerData.LastSeenPosition - NpcManager.transform.position);
+            Ray ray = new Ray(NpcManager.transform.position, direction);
+            float maxDistance = Mathf.Min(NpcGlobalVariables.ChasePlayerRange,
+                Vector3.Distance(NpcManager.transform.position, _playerData.LastSeenPosition));
+            
+            if (!Physics.SphereCast(ray, 0.5f, maxDistance, _environmentMask))
+            {
+                _currentTargetLocation = _playerData.LastSeenPosition;
+            }
+            else
+            {
+                try
+                {
+                    ComputeAStarForSteering();
+                }
+                catch (Exception)
+                {
+                    _currentTargetLocation = _playerData.LastSeenPosition;
+                }
+            }
         }
 
-        if (_currentTargetLocation == NPCsGlobalVariables.DefaultInitialVector ||
-            Vector3.Distance(_npcManager.transform.position, nodeWithoutY) <
-            NPCsGlobalVariables.WithinTargetNodeRange) // TODO Add check if we can see target node
+        private void ComputeAStarForSteering()
         {
-            Node npcNode = NavigationGraph.GetClosestNode(_npcManager.transform.position);
+            Node npcNode = NavigationGraph.GetClosestNode(NpcManager.transform.position);
             Node playerNode = NavigationGraph.GetClosestNode(_playerData.LastSeenPosition);
 
             List<Node> path = Pathfinding.Astar(npcNode, playerNode);
 
-            if (path.Count < 2)
+            if (path == null)
             {
-                _currentTargetLocation = _playerData.LastSeenPosition;
-            } else
-            {
-                _currentTargetLocation = path[NPCsGlobalVariables.NextElementInPath].position;
+                Debug.Log(npcNode);
             }
+
+            _currentTargetLocation = path[NpcGlobalVariables.NextElementInPath].position;
+        }
+        
+        private Vector3 ComputeVelocity()
+        {
+            Vector3 desiredVelocity = Vector3.Normalize(_currentTargetLocation - NpcManager.transform.position) *
+                                      NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
+
+            Vector3 currentVelocity = NpcManager.Rigidbody.velocity;
+
+            Vector3 steering = desiredVelocity - currentVelocity;
+            
+            if (steering.magnitude > NpcGlobalVariables.ChaseAcceleration)
+            {
+                steering = (steering / Vector3.Magnitude(steering)) *
+                           NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseAcceleration);
+            }
+
+            Vector3 velocity = currentVelocity + steering;
+
+            if (Vector3.Magnitude(velocity) > NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseMaxVelocity))
+            {
+                velocity = (velocity / Vector3.Magnitude(velocity)) *
+                           NpcManager.GetModelSpeed(NpcGlobalVariables.ChaseMaxVelocity);
+            }
+            
+            velocity += AvoidObstacles.CalculateMove(NpcManager, velocity) *
+                        NpcGlobalVariables.ChaseObstacleAvoidanceMultiplier;
+
+            velocity.y = 0;
+
+            return velocity;
         }
     }
 }
