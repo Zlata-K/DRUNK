@@ -6,6 +6,7 @@ namespace Structs
     {
         private float _intoxicationLevel;
         private int _scoreMultiplier;
+        private int _healthPoints;
         public Vector3 LastSeenPosition { get; set; }
         
         
@@ -17,14 +18,18 @@ namespace Structs
         public int ScoreMultiplier 
         {
             get => _scoreMultiplier;
-            set => _scoreMultiplier = Mathf.Max(value, 0);
+            set => _scoreMultiplier = Mathf.Max(value, 1);
         }
         public float IntoxicationLevel
         {
             get => _intoxicationLevel;
             set => _intoxicationLevel = Mathf.Clamp(value, 0.0f, 1.0f);
         }
-
+        public int HealthPoints 
+        {
+            get => _healthPoints;
+            set => _healthPoints = Mathf.Max(value, 0);
+        }
         
         public PlayerData(Vector3 currentPosition)
         {
@@ -35,6 +40,7 @@ namespace Structs
             IntoxicationLevel = 0.0f;
             CurrentScore = 0;
             IsKnockedOut = false;
+            HealthPoints = 3;
         }
     }
 }

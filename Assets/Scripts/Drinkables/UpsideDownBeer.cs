@@ -9,6 +9,7 @@ namespace Drinkables
             Drink();
             Invoke($"StopDrinkingEffect", 15.0f);
             Invoke($"SoberUp", Indestructibles.SoberingTime);
+            Indestructibles.UIManager.AddEffect("UpsideDown", Color.red, 15.0f);
         }
 
         protected override void Drink()
@@ -21,7 +22,7 @@ namespace Drinkables
                 Indestructibles.MovementControls.InverseKeys();
             }
 
-            Indestructibles.PlayerData.ScoreMultiplier *= 2;
+            Indestructibles.PlayerData.CurrentScore += 40 * Indestructibles.PlayerData.ScoreMultiplier;
             CommonDrunkennessEffects();
         }
 
@@ -35,8 +36,6 @@ namespace Drinkables
             }
 
             Indestructibles.PlayerData.UpsideDownStack--;
-
-            Indestructibles.PlayerData.ScoreMultiplier /= 2;
         }
     }
 }

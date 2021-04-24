@@ -25,15 +25,18 @@ namespace UI
                 Time.timeScale = drinkChoiceCanvas.activeSelf ? 0 : 1;
                 pausePanel.SetActive(!pausePanel.activeSelf);
 
-                if (!pausePanel.activeSelf && drinkChoiceCanvas.GetComponent<DrinkChoice>().wasActive)
+                if (!pausePanel.activeSelf)
                 {
-                    drinkChoiceCanvas.transform.Find("Menu").gameObject.SetActive(true);
+                    UnpauseGame();
                 }
             }
         }
 
         public void UnpauseGame()
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+            
             Time.timeScale = 1;
             pausePanel.SetActive(false);
             
@@ -41,6 +44,7 @@ namespace UI
             {
                 drinkChoiceCanvas.transform.Find("Menu").gameObject.SetActive(true);
             }
+            
         }
 
         public void Quit2MainMenu()

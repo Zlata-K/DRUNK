@@ -1,4 +1,6 @@
-﻿namespace Drinkables
+﻿using UnityEngine;
+
+namespace Drinkables
 {
     public class RegularBeer : AbstractDrinkable
     {
@@ -11,6 +13,7 @@
         
         protected override void Drink()
         {
+            Indestructibles.PlayerData.CurrentScore += 20 * Indestructibles.PlayerData.ScoreMultiplier;
             CommonDrunkennessEffects();
         }
 
