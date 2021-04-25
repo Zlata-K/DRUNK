@@ -12,8 +12,8 @@ namespace Structs
         
         public bool Stuck = false;
         public bool CanChase = true;
-        public bool CanPunch;
+        public bool CanPunch = true;
         public bool LookingForPlayer = false;
-        public bool Punching;
+        public bool Punching = false;
     }
 }

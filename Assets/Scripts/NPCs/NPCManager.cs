@@ -172,8 +172,9 @@ namespace NPCs
         public void StartChasing()
         {
             _npcData.StateMachine.StartChasing();
+            _npcData.LookingForPlayer = true;
 
-            _npcData.CanPunch = false;
+            _npcData.CanPunch = true;
             Invoke(nameof(PunchCooldown), 1.0f);
         }
 
