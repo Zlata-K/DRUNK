@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class TriggerInteractableScript : MonoBehaviour
@@ -9,27 +11,51 @@ public class TriggerInteractableScript : MonoBehaviour
     [SerializeField] private float cooldown;
     [SerializeField] private AudioClip barrelFall;
     
+    private TMP_Text _indicator;
+    
     private float _timer = 0;
     private bool _triggered = false;
     private bool _mapTriggered = false;
     private AudioSource _audioSource;
 
+    private void Awake()
+    {
+        _indicator = GameObject.Find("InteractIndicator").GetComponent<TMP_Text>();
+        _indicator.enabled = false;
+    }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name.ToLower().Contains("player") && _triggered)
+        if (other.gameObject.name.ToLower().Contains("player"))
         {
-            _animator.SetBool(Activated, true);
-            _timer = 0.0f;
-            PlayBarrelFallSound();
-            StartCoroutine(RefreshCluster(_mapTime));
+            if (_triggered)
+            {
+                _animator.SetBool(Activated, true);
+                _timer = 0.0f;
+                PlayBarrelFallSound();
+                StartCoroutine(RefreshCluster(_mapTime));
+            }
+            else
+            {
+                _indicator.enabled = false;
+            }
+            
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.ToLower().Contains("player") && Input.GetButtonDown("Jump"))
+        if (other.gameObject.name.ToLower().Contains("player"))
         {
-            _triggered = true;
+            if (Input.GetButtonDown("Jump"))
+            {
+                _triggered = true;
+                _indicator.enabled = false;
+            }
+            else
+            {
+                _indicator.enabled = true;
+            }
         }
     }
 
@@ -38,6 +64,7 @@ public class TriggerInteractableScript : MonoBehaviour
         if (other.gameObject.name.ToLower().Contains("player") && Input.GetButtonDown("Jump"))
         {
             _triggered = true;
+            _indicator.enabled = false;
         }
     }
 

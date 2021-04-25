@@ -36,11 +36,12 @@ namespace Drinkables
         {
             Indestructibles.PlayerData.IntoxicationLevel -= 0.1f;
             Indestructibles.PlayerAnimator.SetFloat(IntoxicationHash, Indestructibles.PlayerData.IntoxicationLevel);
+            Indestructibles.Volume.profile.TryGetSettings(out _vignette);
             if (_vignette != null)
             {
                 _vignette.intensity.value = Indestructibles.PlayerData.IntoxicationLevel;
             }
-            Indestructibles.PlayerData.ScoreMultiplier = (int) Mathf.Exp(4.0f * Indestructibles.PlayerData.IntoxicationLevel);
+            Indestructibles.PlayerData.ScoreMultiplier = Mathf.CeilToInt(Mathf.Exp(4.0f * Indestructibles.PlayerData.IntoxicationLevel));
             Indestructibles.UIManager.RefreshUI();
             Destroy(gameObject);
         }
