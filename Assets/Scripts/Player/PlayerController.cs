@@ -33,7 +33,7 @@ namespace Player
             _animator = GetComponent<Animator>();
             
             Indestructibles.Volume.profile.TryGetSettings(out _vignette);
-            
+            _animator.speed = Indestructibles.PlayerData.Speed;
             // Add a point every second
             InvokeRepeating(nameof(AddPoint),0.0f,1.0f);
         }
