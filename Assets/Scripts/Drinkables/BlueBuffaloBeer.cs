@@ -15,14 +15,14 @@ namespace Drinkables
         
         protected override void Drink()
         {
-            Indestructibles.Player.GetComponent<Animator>().speed = 1.5f;
+            Indestructibles.Player.GetComponent<Animator>().speed = Indestructibles.PlayerData.Speed + 0.3f;
             Indestructibles.PlayerData.CurrentScore += 10 * Indestructibles.PlayerData.ScoreMultiplier;
             CommonDrunkennessEffects();
         }
 
         protected override void StopDrinkingEffect()
         {
-            Indestructibles.Player.GetComponent<Animator>().speed = 1.2f;
+            Indestructibles.Player.GetComponent<Animator>().speed = Indestructibles.PlayerData.Speed;
         }
     }
 }
