@@ -13,10 +13,10 @@ namespace UI
         {
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
+#else
+            UnityEngine.Application.Quit();
+#endif
         }
-        
+
     }
 }
