@@ -29,6 +29,8 @@ namespace UI
         }
         public void PlayAgain()
         {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
             if (!_scoreSubmitted)
             {
                 ScoreManager.AddScore("Player", _score);
