@@ -1,10 +1,10 @@
 ﻿namespace NPCs.StateMachine.States
 {
-    public class Idle : State
+    public class FlockingState : State
     {
         public override void Move()
         {
-            //No movement
+            //Let the flocking manager define NPC movements
         }
     }
 }

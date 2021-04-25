@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NPCs.Flocking.Behaviour
 {
-    [CreateAssetMenu(menuName = "Flock/Behaviour/Chase")]
+    [CreateAssetMenu(menuName = "Flock/Behaviour/FlockChase")]
 
 //Make the agent move towards the players
-    public class ChaseBehaviour : FilteredFlockBehavior
+    public class FlockChaseBehaviour : FilteredFlockBehavior
     {
         public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
         {
