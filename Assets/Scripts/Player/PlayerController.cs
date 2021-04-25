@@ -33,7 +33,7 @@ namespace Player
             _animator = GetComponent<Animator>();
             
             Indestructibles.Volume.profile.TryGetSettings(out _vignette);
-            
+            _animator.speed = Indestructibles.PlayerData.Speed;
             // Add a point every second
             InvokeRepeating(nameof(AddPoint),0.0f,1.0f);
         }
@@ -139,7 +139,7 @@ namespace Player
             if (other.gameObject.CompareTag("Hand") && !invincible)
             {
                 var npcManager = other.transform.root.gameObject.GetComponent<NPCManager>();
-                if (npcManager.IsChasing() && npcManager.Punching && !Indestructibles.PlayerData.IsKnockedOut)
+                if (npcManager.IsChasing() && npcManager._npcData.Punching && !Indestructibles.PlayerData.IsKnockedOut)
                 {
                     npcManager.OnPlayerHit();
                     // Play a random grunt sound

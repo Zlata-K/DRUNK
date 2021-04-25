@@ -7,6 +7,7 @@ namespace Structs
         private float _intoxicationLevel;
         private int _scoreMultiplier;
         private int _healthPoints;
+        public float Speed { get; set; }
         public Vector3 LastSeenPosition { get; set; }
         
         
@@ -41,6 +42,7 @@ namespace Structs
             CurrentScore = 0;
             IsKnockedOut = false;
             HealthPoints = 3;
+            Speed = 1.2f;
         }
     }
 }

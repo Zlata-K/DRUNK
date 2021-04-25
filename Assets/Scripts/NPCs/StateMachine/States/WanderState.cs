@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace NPCs.StateMachine.States
 {
-    public class Wander : State
+    public class WanderState : State
     {
         private Queue<Node> _pathToTarget;
         private Vector3 _currentTargetNode;
@@ -19,7 +19,7 @@ namespace NPCs.StateMachine.States
         private int _numberOfMoves;
         private float _waitTimeStamp;
 
-        public Wander(NPCManager npcManager, CollisionAvoidance avoidObstacles, FlockBehaviour avoidNpcs)
+        public WanderState(NPCManager npcManager, CollisionAvoidance avoidObstacles, FlockBehaviour avoidNpcs)
         {
             NpcManager = npcManager;
             _numberOfMoves = (int) Random.Range(1.0f, 10.0f);
@@ -113,6 +113,11 @@ namespace NPCs.StateMachine.States
 
         private bool TargetReached()
         {
+            if (_pathToTarget == null)
+            {
+                return true;
+            }
+            
             if (_pathToTarget.Count < 1)
             {
                 return Vector3.Distance(NpcManager.transform.position, _currentTargetNode) <

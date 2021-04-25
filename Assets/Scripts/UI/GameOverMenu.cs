@@ -17,6 +17,7 @@ namespace UI
         
         public void Awake()
         {
+            _scoreSubmitted = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             if (Indestructibles.PlayerData != null)
@@ -28,15 +29,21 @@ namespace UI
         }
         public void PlayAgain()
         {
-            ScoreManager.AddScore("Player", _score);
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
+            if (!_scoreSubmitted)
+            {
+                ScoreManager.AddScore("Player", _score);
+            }
             SceneManager.LoadScene(1);
         }
         
         public void Quit2MainMenu()
         {
-            ScoreManager.AddScore("Player", _score);
+            if (!_scoreSubmitted)
+            {
+                ScoreManager.AddScore("Player", _score);
+            }
             SceneManager.LoadScene(0);
         }
 

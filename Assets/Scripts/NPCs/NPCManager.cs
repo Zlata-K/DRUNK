@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using NPCs.Decision_Tree;
 using NPCs.StateMachine;
 using NPCs.StateMachine.States;
+using Structs;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,28 +10,17 @@ namespace NPCs
 {
     public class NPCManager : MonoBehaviour
     {
+        public NpcData _npcData;
         private Rigidbody _playerRigidbody;
-
         private Rigidbody _rigidbody;
         private Animator _animator;
         private AudioSource _audioSource;
-        private NPCStateMachine _stateMachine;
         private Collider _agentCollider;
-
         private int _punchLayerIndex;
-
-        private bool _canChase = true;
-        private bool _canPunch;
 
         //For some reason, some models are faster than others
         [SerializeField] private float ModelSpeedMultiplier;
         [SerializeField] private AudioClip[] bumpingSounds;
-
-        private bool _lookingForPlayer = false;
-
-        private bool _punching;
-
-        private Vector3 _previousLocation = NpcGlobalVariables.DefaultInitialVector;
 
         public Rigidbody PlayerRigidbody => _playerRigidbody;
         public Rigidbody Rigidbody => _rigidbody;
@@ -38,18 +29,6 @@ namespace NPCs
         public int PunchLayerIndex => _punchLayerIndex;
         public Collider AgentCollider => _agentCollider;
 
-        public bool LookingForPlayer
-        {
-            get => _lookingForPlayer;
-            set => _lookingForPlayer = value;
-        }
-
-        public bool Punching
-        {
-            get => _punching;
-            set => _punching = value;
-        }
-
         private void Start()
         {
             _playerRigidbody = Indestructibles.Player.GetComponent<Rigidbody>();
@@ -57,14 +36,15 @@ namespace NPCs
 
         void Awake()
         {
+            _npcData = new NpcData();
             _agentCollider = GetComponent<Collider>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _audioSource = GetComponent<AudioSource>();
-            _stateMachine = GetComponent<NPCStateMachine>();
+            _npcData.StateMachine = GetComponent<NPCStateMachine>();
             _punchLayerIndex = _animator.GetLayerIndex("Punch Layer");
-            _previousLocation = transform.position;
-            InvokeRepeating(nameof(GetUnstuck), 2.0f, 1.0f);
+            _npcData.PreviousLocation = transform.position;
+            InvokeRepeating("GotStuck", 0.5f, 1f);
         }
 
         private void Update()
@@ -72,15 +52,18 @@ namespace NPCs
             var stateInfo = Animator.GetCurrentAnimatorStateInfo(PunchLayerIndex);
 
             // To let the punching animation finish 
-            if (!Punching && stateInfo.normalizedTime % 1 < 0.1f)
+            if (!_npcData.Punching && stateInfo.normalizedTime % 1 < 0.1f)
             {
                 Animator.SetLayerWeight(PunchLayerIndex, 0.0f);
             }
 
             if (Indestructibles.PlayerData.IsKnockedOut)
             {
-                _stateMachine.StartWandering();
+                _npcData.StateMachine.StartWandering();
             }
+            
+            NpcDecisionTree.NpcDetermineAction(transform.position, this);
+            _npcData.StateMachine.CurrentState.Move();
         }
 
         public void SetAnimatorVelocity(Vector3 velocity)
@@ -110,16 +93,16 @@ namespace NPCs
 
         public bool IsChasing()
         {
-            var state = _stateMachine != null ? _stateMachine.CurrentState : null;
+            var state = _npcData.StateMachine != null ? _npcData.StateMachine.CurrentState : null;
 
-            return state != null && state.GetType() == typeof(Chase);
+            return state != null && state.GetType() == typeof(ChaseState);
         }
 
         public void StartPunching()
         {
-            if (_canPunch && !Punching)
+            if (_npcData.CanPunch && !_npcData.Punching)
             {
-                Punching = true;
+                _npcData.Punching = true;
                 Animator.Play("Punch", PunchLayerIndex, 0f);
                 Animator.SetLayerWeight(PunchLayerIndex, 1.0f);
             }
@@ -127,26 +110,27 @@ namespace NPCs
 
         public void StopPunching()
         {
-            Punching = false;
+            _npcData.Punching = false;
         }
 
         public void OnPlayerHit()
         {
-            _stateMachine.StartWandering();
+            _npcData.StateMachine.StartWandering();
+            _npcData.LookingForPlayer = false;
             StopPunching();
 
-            _canChase = false;
+            _npcData.CanChase = false;
             Invoke(nameof(ChaseCooldown), 3.0f);
         }
 
         private void ChaseCooldown()
         {
-            _canChase = true;
+            _npcData.CanChase = true;
         }
 
         private void PunchCooldown()
         {
-            _canPunch = true;
+            _npcData.CanPunch = true;
         }
 
         /*
@@ -155,7 +139,7 @@ namespace NPCs
      */
         void OnTriggerEnter(Collider collision)
         {
-            if (_canChase && !IsChasing() && collision.gameObject.CompareTag($"Player"))
+            if (_npcData.CanChase && !IsChasing() && collision.gameObject.CompareTag($"Player"))
             {
                 if (bumpingSounds.Length > 0)
                 {
@@ -163,9 +147,9 @@ namespace NPCs
                 }
 
                 Animator.SetTrigger(Animator.StringToHash($"Get Hit"));
-                _stateMachine.StartChasing();
+                _npcData.LookingForPlayer = true;
 
-                _canPunch = false;
+                _npcData.CanPunch = false;
                 Invoke(nameof(PunchCooldown), 1.0f);
             }
         }
@@ -186,23 +170,30 @@ namespace NPCs
             return context;
         }
 
-        private void GetUnstuck()
-        {
-            if (Vector3.Distance(_previousLocation, transform.position) < 0.3f &&
-                _stateMachine.CurrentState.GetType() == typeof(StateMachine.States.Flocking))
-            {
-                _stateMachine.StartChasing();
-            }
-
-            _previousLocation = transform.position;
-        }
-        
         public void StartChasing()
         {
-            _stateMachine.StartChasing();
+            _npcData.StateMachine.StartChasing();
+            _npcData.LookingForPlayer = true;
 
-            _canPunch = false;
+            _npcData.CanPunch = false;
             Invoke(nameof(PunchCooldown), 1.0f);
+        }
+
+        private void GotStuck()
+        {
+            if (_npcData.StateMachine.CurrentState.GetType() == typeof(WanderState))
+                return;
+
+            if (Vector3.Distance(_npcData.PreviousLocation, transform.position) < 0.8f)
+            {
+                _npcData.PreviousLocation = transform.position;
+                _npcData.Stuck = true;
+            }
+            else
+            {
+                _npcData.PreviousLocation = transform.position;
+                _npcData.Stuck = false;
+            }
         }
             
         public void SpawnChasing()

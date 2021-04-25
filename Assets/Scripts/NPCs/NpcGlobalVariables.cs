@@ -19,7 +19,7 @@ namespace NPCs
         public const float WanderNpcAvoidanceMultiplier = 4.0f;
 
         //Chasing behavior variables
-        public const float ChaseMaxVelocity = 2.5f;
+        public const float ChaseMaxVelocity = 2f;
         public const float ChaseAcceleration = 1.6f;
         public const float FieldOfView = 40.0f;
         public const float ChasePlayerRange = 5f;
