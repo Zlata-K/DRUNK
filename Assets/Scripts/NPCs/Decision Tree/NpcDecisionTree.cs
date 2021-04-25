@@ -5,66 +5,66 @@ namespace NPCs.Decision_Tree
 {
     public static class NpcDecisionTree
     {
-        public static void NpcDetermineAction(Vector3 npcPosition, NpcData npcData)
+        public static void NpcDetermineAction(Vector3 npcPosition, NPCManager npcManager)
         {
-            if (npcData.LookingForPlayer)
+            if (npcManager._npcData.LookingForPlayer)
             {
-                IsWithinFiveMeters(npcPosition, npcData);
+                IsWithinFiveMeters(npcPosition, npcManager);
             }
             else
             {
-                npcData.StateMachine.StartWandering();
+                npcManager._npcData.StateMachine.StartWandering();
             }
         }
 
-        private static void IsWithinFiveMeters(Vector3 npcPosition, NpcData npcData)
+        private static void IsWithinFiveMeters(Vector3 npcPosition,  NPCManager npcManager)
         {
             if (Vector3.Distance(npcPosition, Indestructibles.PlayerData.LastSeenPosition) < 5.0f)
             {
-                DetermineChaseType(npcPosition, npcData);
+                DetermineChaseType(npcPosition, npcManager);
             }
             else
             {
-                IsWithinThirtyMeters(npcPosition, npcData);
+                IsWithinThirtyMeters(npcPosition, npcManager);
             }
         }
         
-        private static void IsWithinThirtyMeters(Vector3 npcPosition, NpcData npcData)
+        private static void IsWithinThirtyMeters(Vector3 npcPosition, NPCManager npcManager)
         {
             if (Vector3.Distance(npcPosition, Indestructibles.PlayerData.LastSeenPosition) < 30.0f)
             {
-                Flock(npcData);
+                Flock(npcManager);
             }
             else
             {
-                IsWithinFortyMeters(npcPosition, npcData);
+                IsWithinFortyMeters(npcPosition, npcManager);
             }
         }
         
         
-        private static void Flock(NpcData npcData)
+        private static void Flock(NPCManager npcManager)
         {
-            if (npcData.Stuck)
+            if (npcManager._npcData.Stuck)
             {
-                npcData.StateMachine.StartChasing();
-                npcData.StateMachine.Chase.TargetAStarPathNode();
+                npcManager.StartChasing();
+                npcManager._npcData.StateMachine.Chase.TargetAStarPathNode();
             }
             else
             {
-                npcData.StateMachine.StartFlocking();
+                npcManager._npcData.StateMachine.StartFlocking();
             }
         }
         
-        private static void IsWithinFortyMeters(Vector3 npcPosition, NpcData npcData)
+        private static void IsWithinFortyMeters(Vector3 npcPosition, NPCManager npcManager)
         {
             if (Vector3.Distance(npcPosition, Indestructibles.PlayerData.LastSeenPosition) < 40.0f)
             {
-                npcData.StateMachine.StartChasing();
-                npcData.StateMachine.Chase.TargetAStarPathNode();
+                npcManager.StartChasing();
+                npcManager._npcData.StateMachine.Chase.TargetAStarPathNode();
             }
             else
             {
-                npcData.StateMachine.StartWandering();
+                npcManager._npcData.StateMachine.StartWandering();
             }
         }
 
@@ -78,16 +78,16 @@ namespace NPCs.Decision_Tree
             return Physics.SphereCast(ray, 0.5f, maxDistance, layerMask);
         }
 
-        private static void DetermineChaseType(Vector3 npcPosition,  NpcData npcData)
+        private static void DetermineChaseType(Vector3 npcPosition,   NPCManager npcManager)
         {
-            npcData.StateMachine.StartChasing();
+            npcManager.StartChasing();
             if (DoRaycastOnEnvironment(npcPosition))
             {
-                npcData.StateMachine.Chase.TargetAStarPathNode();
+                npcManager._npcData.StateMachine.Chase.TargetAStarPathNode();
             }
             else
             {
-                npcData.StateMachine.Chase.TargetPlayerLocation();
+                npcManager._npcData.StateMachine.Chase.TargetPlayerLocation();
             }
         }
     }

@@ -62,7 +62,7 @@ namespace NPCs
                 _npcData.StateMachine.StartWandering();
             }
             
-            NpcDecisionTree.NpcDetermineAction(transform.position, _npcData);
+            NpcDecisionTree.NpcDetermineAction(transform.position, this);
             _npcData.StateMachine.CurrentState.Move();
         }
 
@@ -116,6 +116,7 @@ namespace NPCs
         public void OnPlayerHit()
         {
             _npcData.StateMachine.StartWandering();
+            _npcData.LookingForPlayer = false;
             StopPunching();
 
             _npcData.CanChase = false;
@@ -129,7 +130,7 @@ namespace NPCs
 
         private void PunchCooldown()
         {
-            _npcData.CanChase = true;
+            _npcData.CanPunch = true;
         }
 
         /*
@@ -174,7 +175,7 @@ namespace NPCs
             _npcData.StateMachine.StartChasing();
             _npcData.LookingForPlayer = true;
 
-            _npcData.CanPunch = true;
+            _npcData.CanPunch = false;
             Invoke(nameof(PunchCooldown), 1.0f);
         }
 
