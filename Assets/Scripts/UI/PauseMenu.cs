@@ -24,6 +24,7 @@ namespace UI
             {
                 Time.timeScale = drinkChoiceCanvas.activeSelf ? 0 : 1;
                 pausePanel.SetActive(!pausePanel.activeSelf);
+                Cursor.visible = true;
 
                 if (!pausePanel.activeSelf)
                 {
@@ -50,6 +51,7 @@ namespace UI
         public void Quit2MainMenu()
         {
             Time.timeScale = 1;
+            Cursor.visible = true;
             pausePanel.SetActive(false);
             SceneManager.LoadScene(0);
         }
