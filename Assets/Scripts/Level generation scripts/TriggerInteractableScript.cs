@@ -20,7 +20,7 @@ public class TriggerInteractableScript : MonoBehaviour
 
     private void Awake()
     {
-        _indicator = GameObject.Find("InteractIndicator").GetComponent<TMP_Text>();
+        _indicator = GameObject.Find("Indicator").GetComponent<TMP_Text>();
         _indicator.enabled = false;
     }
 
