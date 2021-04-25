@@ -1333,7 +1333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed9c945424cda848adb607e9e38f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModelSpeedMultiplier: 0.8
+  ModelSpeedMultiplier: 0.9
   bumpingSounds:
   - {fileID: 8300000, guid: 5658fdda65f59ec41b7147b533b6ed85, type: 3}
   - {fileID: 8300000, guid: f3e65452acdaf1e49ad50b10ca24ce58, type: 3}
@@ -1360,7 +1360,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4879426342101109162}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 431878ca8e312184f9c5731faedfcee8, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
@@ -1374,7 +1374,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4879426342101109162}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 431878ca8e312184f9c5731faedfcee8, type: 2}
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
