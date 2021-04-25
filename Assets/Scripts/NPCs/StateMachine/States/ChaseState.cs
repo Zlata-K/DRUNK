@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NPCs.Flocking;
 using NPCs.Flocking.Behaviour;
 using Player;
 using Structs;
@@ -8,29 +7,43 @@ using UnityEngine;
 
 namespace NPCs.StateMachine.States
 {
-    public class Chase : State
+    public class ChaseState : State
     {
         private readonly PlayerData _playerData;
         private Vector3 _currentTargetLocation = NpcGlobalVariables.DefaultInitialVector;
-        private readonly LayerMask _environmentMask;
 
-        public Chase(NPCManager npcManager, CollisionAvoidance avoidObstacles, FlockBehaviour avoidNpcs)
+        public ChaseState(NPCManager npcManager, CollisionAvoidance avoidObstacles)
         {
             NpcManager = npcManager;
             _playerData = Indestructibles.Player.GetComponent<PlayerDataManager>().PlayerData;
-            _environmentMask = LayerMask.GetMask("Environment");
             AvoidObstacles = avoidObstacles;
-            AvoidNpcs = avoidNpcs;
         }
 
+        public void TargetPlayerLocation()
+        {
+            _currentTargetLocation = _playerData.LastSeenPosition;
+        }
+        
+        public void TargetAStarPathNode()
+        {
+            try
+            {
+                ComputeAStarForSteering();
+            }
+            catch (Exception)
+            {
+                _currentTargetLocation = _playerData.LastSeenPosition;
+            }
+        }
+        
         public override void Move()
         {
             Chasing();
         }
-
+        
         private void Chasing()
         {
-            Vector3 velocity = ComputeChaseVelocity();
+            Vector3 velocity = ComputeVelocity();
 
             //The NPC will always looking where it needs to go.
             float anglePlayerNpc = NpcManager.LookWhereYouAreGoing(velocity);
@@ -46,38 +59,6 @@ namespace NPCs.StateMachine.States
             NpcManager.SetAnimatorVelocity(Vector3.forward * velocity.magnitude);
         }
 
-        private Vector3 ComputeChaseVelocity()
-        {
-            ComputeCurrentTargetLocation();
-            
-            return ComputeVelocity();
-        }
-        
-        
-        private void ComputeCurrentTargetLocation()
-        {
-            Vector3 direction = (_playerData.LastSeenPosition - NpcManager.transform.position);
-            Ray ray = new Ray(NpcManager.transform.position, direction);
-            float maxDistance = Mathf.Min(NpcGlobalVariables.ChasePlayerRange,
-                Vector3.Distance(NpcManager.transform.position, _playerData.LastSeenPosition));
-            
-            if (!Physics.SphereCast(ray, 0.5f, maxDistance, _environmentMask))
-            {
-                _currentTargetLocation = _playerData.LastSeenPosition;
-            }
-            else
-            {
-                try
-                {
-                    ComputeAStarForSteering();
-                }
-                catch (Exception)
-                {
-                    _currentTargetLocation = _playerData.LastSeenPosition;
-                }
-            }
-        }
-
         private void ComputeAStarForSteering()
         {
             Node npcNode = NavigationGraph.GetClosestNode(NpcManager.transform.position);
@@ -85,9 +66,10 @@ namespace NPCs.StateMachine.States
 
             List<Node> path = Pathfinding.Astar(npcNode, playerNode);
 
-            if (path == null)
+            if (path == null || path.Count < 1)
             {
                 Debug.Log(npcNode);
+                return;
             }
 
             _currentTargetLocation = path[NpcGlobalVariables.NextElementInPath].position;

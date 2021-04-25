@@ -11,17 +11,8 @@ namespace NPCs.Flocking.Behaviour
 
         [SerializeField] private CollisionAvoidance _collisionAvoidance;
 
-        public FlockBehaviour[] Behaviours
-        {
-            get => behaviours;
-            set => behaviours = value;
-        }
-
-        public float[] Weights
-        {
-            get => weights;
-            set => weights = value;
-        }
+        public FlockBehaviour[] Behaviours => behaviours;
+        public float[] Weights => weights;
     
         public override Vector3 CalculateMove(NPCManager npc, List<Transform> context, FlockManager flock)
         {
