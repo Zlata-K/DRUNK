@@ -8,7 +8,7 @@ namespace NPCs
         public const float MaxChaseDistance = 40.0f;
 
         //Look where you are going variables
-        public const float MaxAngleChange = 360.0f;
+        public const float MaxAngleChange = 200.0f;
     
         //Wandering behavior variables
         public const int WanderCircleDistance = 5;
@@ -20,7 +20,7 @@ namespace NPCs
 
         //Chasing behavior variables
         public const float ChaseMaxVelocity = 2f;
-        public const float ChaseAcceleration = 1.6f;
+        public const float ChaseAcceleration = 1.4f;
         public const float FieldOfView = 40.0f;
         public const float ChasePlayerRange = 5f;
         public const float WithinTargetNodeRange = 0.5f;

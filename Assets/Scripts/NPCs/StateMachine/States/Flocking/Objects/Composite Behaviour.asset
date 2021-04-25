@@ -23,6 +23,6 @@ MonoBehaviour:
   - 0.5
   - 1
   - 1
-  - 2
+  - 1
   _collisionAvoidance: {fileID: 11400000, guid: 6b4450b3dae635f4b807e9d37fd8bd4a,
     type: 2}
