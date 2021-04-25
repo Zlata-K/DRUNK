@@ -20,7 +20,7 @@ namespace NPCs.StateMachine
         [SerializeField] private CollisionAvoidance avoidObstacles;
         [SerializeField] private FlockBehaviour avoidNpCs;
 
-        void Start()
+        void Awake()
         {
             _npcManager = GetComponent<NPCManager>();
             _flockManager = Indestructibles.FlockManagerInstance;

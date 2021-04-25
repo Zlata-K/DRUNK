@@ -44,7 +44,7 @@ namespace NPCs
             _npcData.StateMachine = GetComponent<NPCStateMachine>();
             _punchLayerIndex = _animator.GetLayerIndex("Punch Layer");
             _npcData.PreviousLocation = transform.position;
-            Invoke("GotStuck", 0.5f);
+            InvokeRepeating("GotStuck", 0.5f, 1f);
         }
 
         private void Update()
@@ -182,12 +182,14 @@ namespace NPCs
             if (_npcData.StateMachine.CurrentState.GetType() == typeof(WanderState))
                 return;
 
-            if (Vector3.Distance(_npcData.PreviousLocation, transform.position) < 0.2f)
+            if (Vector3.Distance(_npcData.PreviousLocation, transform.position) < 0.8f)
             {
+                _npcData.PreviousLocation = transform.position;
                 _npcData.Stuck = true;
             }
             else
             {
+                _npcData.PreviousLocation = transform.position;
                 _npcData.Stuck = false;
             }
         }
