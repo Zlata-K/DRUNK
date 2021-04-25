@@ -19,10 +19,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 541df5c2841ba0f4f936c3e416e0d8ae, type: 2}
   - {fileID: 11400000, guid: 0e1eaca2bb2bc724988edbc0caec2ec5, type: 2}
   weights:
+  - 0.2
+  - 0.2
+  - 0.2
   - 1
-  - 0.5
-  - 1
-  - 1
-  - 1
+  - 0.2
   _collisionAvoidance: {fileID: 11400000, guid: 6b4450b3dae635f4b807e9d37fd8bd4a,
     type: 2}
