@@ -139,7 +139,7 @@ namespace Player
             if (other.gameObject.CompareTag("Hand") && !invincible)
             {
                 var npcManager = other.transform.root.gameObject.GetComponent<NPCManager>();
-                if (npcManager.IsChasing() && npcManager.Punching && !Indestructibles.PlayerData.IsKnockedOut)
+                if (npcManager.IsChasing() && npcManager._npcData.Punching && !Indestructibles.PlayerData.IsKnockedOut)
                 {
                     npcManager.OnPlayerHit();
                     // Play a random grunt sound
