@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool debugEnabled = true;
     public void OnPlayerDeath()
     {
-        ScoreManager.AddScore("Player", Indestructibles.PlayerData.CurrentScore);
         Invoke(nameof(LoadGameOverScene), 3.0f);
     }
 

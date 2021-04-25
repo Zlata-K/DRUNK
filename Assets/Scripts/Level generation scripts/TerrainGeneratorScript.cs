@@ -126,7 +126,7 @@ public class TerrainGeneratorScript : MonoBehaviour
 
     public static GameObject SpawnNPC(Vector3 pos)
     {
-        GameObject obj = NPCs[Random.Range(0, NPCs.Count - 1)];
+        GameObject obj = NPCs[Random.Range(0, NPCs.Count)];
 
         return Instantiate(obj, pos, Quaternion.identity);
     }

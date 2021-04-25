@@ -191,5 +191,12 @@ namespace NPCs
                 _npcData.Stuck = false;
             }
         }
+            
+        public void SpawnChasing()
+        {
+            //I know people don't like Invoke but we need this to run 1 frame after start
+            Invoke("StartChasing", 0.1f);
+        }
     }
 }
+
