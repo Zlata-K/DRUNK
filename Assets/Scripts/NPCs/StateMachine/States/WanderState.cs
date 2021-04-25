@@ -113,6 +113,11 @@ namespace NPCs.StateMachine.States
 
         private bool TargetReached()
         {
+            if (_pathToTarget == null)
+            {
+                return true;
+            }
+            
             if (_pathToTarget.Count < 1)
             {
                 return Vector3.Distance(NpcManager.transform.position, _currentTargetNode) <
