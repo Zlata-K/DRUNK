@@ -5339,8 +5339,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behavior: {fileID: 11400000, guid: 7280db0c9f474bb49850cebd10f8cc62, type: 2}
   driveFactor: 10
-  maxSpeed: 5
-  neighborRadius: 1
+  maxSpeed: 3
+  neighborRadius: 2
 --- !u!4 &1761194549
 Transform:
   m_ObjectHideFlags: 0
